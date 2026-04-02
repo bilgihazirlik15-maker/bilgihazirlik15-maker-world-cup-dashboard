@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>World Cup 2026 Dashboard</title>
+<style>
+  :root{
+    --bg:#0b1020;
+    --panel:#121933;
+    --panel-2:#1b2345;
+    --text:#eef2ff;
+    --muted:#aab4d6;
+    --accent:#56e39f;
+    --border:rgba(255,255,255,0.08);
+    --warning:#ffd166;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(180deg,#09101f 0%,#0f1730 100%);
+    color:var(--text);
+  }
+
+  .container{
+    max-width:1360px;
+    margin:0 auto;
+    padding:24px;
+  }
+
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:20px;
+    padding:20px 22px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    border-radius:18px;
+  }
+
+  .title h1{
+    margin:0;
+    font-size:30px;
+    line-height:1.1;
+  }
+
+  .title p{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 12px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:999px;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .section{
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+
+  .section-header{
+    padding:16px 18px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .section-header h2{
+    margin:0;
+    font-size:20px;
+  }
+
+  .section-body{
+    padding:18px;
+  }
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .summary-item{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+  }
+
+  .summary-item .label{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    letter-spacing:.04em;
+  }
+
+  .summary-item .value{
+    font-size:28px;
+    font-weight:700;
+  }
+
+  .controls-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+
+  .controls-row label{
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  input[type="date"]{
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--panel-2);
+    color:var(--text);
+    font:inherit;
+  }
+
+  .content-grid{
+    display:grid;
+    grid-template-columns:1.25fr .9fr;
+    gap:20px;
+    align-items:start;
+  }
+
+  .stack{
+    display:grid;
+    gap:20px;
+  }
+
+  .groups-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:14px;
+  }
+
+  .group-card{
+    background:rgba(86,227,159,0.05);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .group-card-header{
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    font-weight:700;
+    color:var(--accent);
+  }
+
+  .group-table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+  }
+
+  .group-table th,
+  .group-table td{
+    padding:8px 10px;
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+    text-align:left;
+    vertical-align:top;
+  }
+
+  .group-table th{
+    color:var(--muted);
+    font-weight:600;
+  }
+
+  .group-table tr:last-child td{
+    border-bottom:none;
+  }
+
+  .group-table th:nth-child(1),
+  .group-table td:nth-child(1){
+    width:52%;
+    word-break:break-word;
+  }
+
+  .group-table th:nth-child(2),
+  .group-table td:nth-child(2),
+  .group-table th:nth-child(3),
+  .group-table td:nth-child(3),
+  .group-table th:nth-child(4),
+  .group-table td:nth-child(4),
+  .group-table th:nth-child(5),
+  .group-table td:nth-child(5){
+    width:12%;
+    text-align:center;
+  }
+
+  .list{
+    display:grid;
+    gap:12px;
+  }
+
+  .item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    align-items:center;
+    padding:14px 16px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+
+  .item strong{
+    display:block;
+    margin-bottom:4px;
+    font-size:15px;
+  }
+
+  .sub{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.4;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+    border:1px solid var(--border);
+    color:var(--warning);
+    background:var(--panel-2);
+    white-space:nowrap;
+  }
+
+  .pill.played{
+    color:var(--accent);
+  }
+
+  .empty{
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  @media (max-width:1100px){
+    .content-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:800px){
+    .summary-grid{
+      grid-template-columns:1fr;
+    }
+
+    .topbar{
+      flex-direction:column;
+    }
+
+    .item{
+      grid-template-columns:1fr;
+    }
+
+    .groups-grid{
+      grid-template-columns:1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="title">
+      <h1>World Cup 2026 Dashboard</h1>
+      <p>CSV-powered dashboard</p>
+    </div>
+    <div class="badges">
+      <div class="badge" id="source">loading...</div>
+      <div class="badge" id="teamsCount">Teams: —</div>
+      <div class="badge" id="matchesCount">Matches: —</div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Quick Summary</h2>
+    </div>
+    <div class="section-body">
+      <div class="summary-grid" id="summary"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Today’s Matches</h2>
+    </div>
+    <div class="section-body">
+      <div class="controls-row">
+        <label for="picker">Select date:</label>
+        <input type="date" id="picker">
+        <div class="badge" id="selectedDateBadge">Selected: —</div>
+      </div>
+      <div class="list" id="today"></div>
+    </div>
+  </section>
+
+  <div class="content-grid">
+    <section class="section">
+      <div class="section-header">
+        <h2>Groups</h2>
+      </div>
+      <div class="section-body">
+        <div class="groups-grid" id="groups"></div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="section">
+        <div class="section-header">
+          <h2>Next Matches</h2>
+        </div>
+        <div class="section-body">
+          <div class="list" id="next"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Recent Results</h2>
+        </div>
+        <div class="section-body">
+          <div class="list" id="results"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Group Leaders</h2>
+        </div>
+        <div class="section-body">
+          <div class="list" id="leaders"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+let matches = [], teams = [], standings = [], selectedDate = "";
+
+function splitCSVLine(line){
+  let result = [];
+  let current = "";
+  let inQuotes = false;
+
+  for(let i=0;i<line.length;i++){
+    let ch = line[i];
+    let next = line[i+1];
+
+    if(ch === '"'){
+      if(inQuotes && next === '"'){
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if(ch === ',' && !inQuotes){
+      result.push(current);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+
+  result.push(current);
+  return result;
+}
+
+function parseCSV(text){
+  const clean = text.replace(/^\uFEFF/, "").trim();
+  if(!clean) return [];
+
+  const lines = clean.split(/\r?\n/);
+  const headers = splitCSVLine(lines[0]).map(h => h.trim());
+
+  return lines.slice(1).filter(line => line.trim() !== "").map(line => {
+    const values = splitCSVLine(line);
+    const row = {};
+    headers.forEach((h,i) => row[h] = (values[i] || "").trim());
+    return row;
+  });
+}
+
+async function load(path){
+  const r = await fetch(path);
+  if(!r.ok) throw new Error("Could not load " + path);
+  const t = await r.text();
+  return parseCSV(t);
+}
+
+function pad(x){ return String(x).padStart(2, "0"); }
+
+function normalizeDate(v){
+  if(!v) return "";
+  v = String(v).trim().replace(/^"|"$/g, "");
+
+  if(/^\d{4}-\d{2}-\d{2}/.test(v)) return v.slice(0,10);
+
+  if(/^\d{1,2}\.\d{1,2}\.\d{4}/.test(v)){
+    const base = v.split(" ")[0];
+    const p = base.split(".");
+    return p[2] + "-" + pad(p[1]) + "-" + pad(p[0]);
+  }
+
+  if(/^\d{1,2}\/\d{1,2}\/\d{4}/.test(v)){
+    const base = v.split(" ")[0];
+    const p = base.split("/");
+    return p[2] + "-" + pad(p[0]) + "-" + pad(p[1]);
+  }
+
+  if(/^\d+(\.\d+)?$/.test(v)){
+    const n = Number(v);
+    if(!isNaN(n)){
+      const utcDays = Math.floor(n - 25569);
+      const utcValue = utcDays * 86400;
+      const dateInfo = new Date(utcValue * 1000);
+      if(!isNaN(dateInfo.getTime())){
+        return dateInfo.getUTCFullYear() + "-" + pad(dateInfo.getUTCMonth()+1) + "-" + pad(dateInfo.getUTCDate());
+      }
+    }
+  }
+
+  const parsed = new Date(v);
+  if(!isNaN(parsed.getTime())){
+    return parsed.getFullYear() + "-" + pad(parsed.getMonth()+1) + "-" + pad(parsed.getDate());
+  }
+
+  return "";
+}
+
+function normalizeTime(v){
+  if(!v) return "";
+  v = String(v).trim().replace(/^"|"$/g, "");
+
+  if(/^\d{1,2}:\d{2}$/.test(v)) return v;
+  if(/^\d{1,2}:\d{2}:\d{2}$/.test(v)) return v.slice(0,5);
+
+  const n = Number(v);
+  if(!isNaN(n)){
+    const totalMinutes = Math.round(n * 24 * 60);
+    return pad(Math.floor(totalMinutes/60)%24) + ":" + pad(totalMinutes%60);
+  }
+
+  return v;
+}
+
+function toNumber(v){
+  if(!v) return 0;
+  const n = Number(String(v).replace(",", "."));
+  return isNaN(n) ? 0 : n;
+}
+
+function renderSummary(){
+  const played = matches.filter(x => x.status === "Played").length;
+  const sched = matches.filter(x => x.status === "Scheduled").length;
+
+  document.getElementById("summary").innerHTML = `
+    <div class="summary-item">
+      <span class="label">Total Teams</span>
+      <span class="value">${teams.length}</span>
+    </div>
+    <div class="summary-item">
+      <span class="label">Played Matches</span>
+      <span class="value">${played}</span>
+    </div>
+    <div class="summary-item">
+      <span class="label">Scheduled Matches</span>
+      <span class="value">${sched}</span>
+    </div>
+  `;
+
+  document.getElementById("teamsCount").textContent = `Teams: ${teams.length}`;
+  document.getElementById("matchesCount").textContent = `Matches: ${matches.length}`;
+}
+
+function getDates(){
+  return [...new Set(matches.map(m => normalizeDate(m.match_date)).filter(Boolean))].sort();
+}
+
+function renderToday(){
+  const list = matches
+    .filter(m => normalizeDate(m.match_date) === selectedDate)
+    .map(m => ({...m, match_time: normalizeTime(m.match_time)}));
+
+  document.getElementById("selectedDateBadge").textContent = "Selected: " + (selectedDate || "—");
+
+  document.getElementById("today").innerHTML =
+    list.length
+      ? list.map(m => `
+          <div class="item">
+            <div>
+              <strong>${m.home_team} vs ${m.away_team}</strong>
+              <div class="sub">${normalizeDate(m.match_date)} • ${m.match_time} • ${m.city || ""} • ${m.status || ""}</div>
+            </div>
+            <div class="pill ${m.status === "Played" ? "played" : ""}">${m.status || ""}</div>
+          </div>
+        `).join("")
+      : `<div class="empty">No matches for selected date</div>`;
+}
+
+function renderNext(){
+  const list = matches
+    .filter(m => m.status === "Scheduled")
+    .map(m => ({...m, match_time: normalizeTime(m.match_time)}));
+
+  document.getElementById("next").innerHTML =
+    list.length
+      ? list.map(m => `
+          <div class="item">
+            <div>
+              <strong>${m.home_team} vs ${m.away_team}</strong>
+              <div class="sub">${normalizeDate(m.match_date)} • ${m.match_time} • ${m.city || ""}</div>
+            </div>
+            <div class="pill">Scheduled</div>
+          </div>
+        `).join("")
+      : `<div class="empty">No upcoming matches</div>`;
+}
+
+function renderResults(){
+  const list = matches
+    .filter(m => m.status === "Played")
+    .map(m => ({...m, match_time: normalizeTime(m.match_time)}));
+
+  document.getElementById("results").innerHTML =
+    list.length
+      ? list.map(m => `
+          <div class="item">
+            <div>
+              <strong>${m.home_team} ${m.home_score}-${m.away_score} ${m.away_team}</strong>
+              <div class="sub">${normalizeDate(m.match_date)} • ${m.city || ""}</div>
+            </div>
+            <div class="pill played">Played</div>
+          </div>
+        `).join("")
+      : `<div class="empty">No played matches yet</div>`;
+}
+
+function renderGroups(){
+  const g = [...new Set(standings.map(x => x.group_name))].sort();
+
+  document.getElementById("groups").innerHTML = g.map(name => {
+    const rows = standings
+      .filter(x => x.group_name === name)
+      .map(x => ({
+        ...x,
+        points: toNumber(x.points),
+        rank: toNumber(x.rank),
+        played: toNumber(x.played),
+        gd: toNumber(x.gd)
+      }))
+      .sort((a,b) => a.rank - b.rank || b.points - a.points || b.gd - a.gd);
+
+    return `
+      <div class="group-card">
+        <div class="group-card-header">Group ${name}</div>
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>P</th>
+              <th>GD</th>
+              <th>Pts</th>
+              <th>Rk</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>${r.team_name}</td>
+                <td>${r.played}</td>
+                <td>${r.gd}</td>
+                <td>${r.points}</td>
+                <td>${r.rank}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderLeaders(){
+  const list = standings
+    .filter(x => String(x.is_leader || "").toUpperCase() === "YES")
+    .map(x => ({
+      ...x,
+      points: toNumber(x.points),
+      rank: toNumber(x.rank)
+    }));
+
+  document.getElementById("leaders").innerHTML =
+    list.length
+      ? list.map(x => `
+          <div class="item">
+            <div>
+              <strong>Group ${x.group_name} — ${x.team_name}</strong>
+              <div class="sub">Points: ${x.points} • Rank: ${x.rank}</div>
+            </div>
+            <div class="pill played">Leader</div>
+          </div>
+        `).join("")
+      : `<div class="empty">No clear leaders yet</div>`;
+}
+
+async function init(){
+  try{
+    [teams, matches, standings] = await Promise.all([
+      load("./data/teams.csv"),
+      load("./data/matches.csv"),
+      load("./data/standings.csv")
+    ]);
+
+    document.getElementById("source").textContent = "CSV loaded";
+
+    renderSummary();
+    renderGroups();
+    renderNext();
+    renderResults();
+    renderLeaders();
+
+    const dates = getDates();
+    if(dates.length){
+      selectedDate = dates[0];
+      document.getElementById("picker").value = dates[0];
+    }
+
+    document.getElementById("picker").addEventListener("change", e => {
+      selectedDate = e.target.value;
+      renderToday();
+    });
+
+    renderToday();
+  } catch(err){
+    console.error(err);
+    document.getElementById("source").textContent = "CSV load error";
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
