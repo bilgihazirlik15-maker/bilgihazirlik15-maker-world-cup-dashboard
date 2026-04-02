@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Cup 2026 Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b1833;
+      color: #e5e7eb;
+    }
+
+    .page {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 44px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin: 0 0 24px 0;
+      color: #9fb3d9;
+      font-size: 18px;
+    }
+
+    .status {
+      background: #0f213f;
+      border: 1px solid #31476f;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      color: #dbe7ff;
+    }
+
+    .error {
+      background: #3a1c1c;
+      border-color: #7f1d1d;
+      color: #fecaca;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: #102242;
+      border: 1px solid #31476f;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .summary-label {
+      color: #9fb3d9;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      color: #ffffff;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1.2fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: #102242;
+      border: 1px solid #31476f;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px 0;
+      font-size: 22px;
+      color: #ffffff;
+    }
+
+    .scroll-box {
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .match-item,
+    .leader-item {
+      background: #152b52;
+      border: 1px solid #31476f;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .match-item:last-child,
+    .leader-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .match-meta {
+      font-size: 12px;
+      color: #a9bbdc;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .match-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #0d1d39;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+    }
+
+    .match-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .team-name {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .score {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .leader-title {
+      color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .leader-meta {
+      color: #a9bbdc;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .section-title {
+      margin: 0 0 14px 0;
+      font-size: 28px;
+      color: #ffffff;
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .group-card {
+      background: #102242;
+      border: 1px solid #31476f;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .group-title {
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .group-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .group-table th,
+    .group-table td {
+      padding: 7px 6px;
+      border-bottom: 1px solid #27416c;
+      text-align: left;
+    }
+
+    .group-table th {
+      color: #9ec5ff;
+      font-size: 12px;
+    }
+
+    .group-table td {
+      color: #e5e7eb;
+    }
+
+    .empty-note {
+      color: #9fb3d9;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .next-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .next-count {
+      font-size: 13px;
+      color: #a9bbdc;
+    }
+
+    .next-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .next-btn {
+      border: 1px solid #40629b;
+      background: #173564;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .next-btn:hover {
+      background: #1d427c;
+    }
+
+    .match-tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: #22457f;
+      color: #dbe7ff;
+    }
+
+    .tag-today {
+      background: #14532d;
+      color: #dcfce7;
+    }
+
+    .tag-tomorrow {
+      background: #92400e;
+      color: #ffedd5;
+    }
+
+    .tag-upcoming {
+      background: #1e3a8a;
+      color: #dbeafe;
+    }
+
+    @media (max-width: 1250px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .groups-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .groups-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>World Cup 2026 Dashboard</h1>
+    <p class="subtitle">Groups, Next Matches, Recent Results, and Group Leaders</p>
+
+    <div id="status" class="status">Loading CSV files...</div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">Total Teams</div>
+        <div id="statTeams" class="summary-value">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Total Matches</div>
+        <div id="statMatches" class="summary-value">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Played Matches</div>
+        <div id="statPlayed" class="summary-value">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Upcoming Matches</div>
+        <div id="statUpcoming" class="summary-value">-</div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div class="card">
+        <h2>Next Matches</h2>
+        <div class="next-header">
+          <div id="nextMatchesCount" class="next-count">0 matches</div>
+          <div class="next-controls">
+            <button id="nextToggleBtn" class="next-btn" type="button">Show More</button>
+          </div>
+        </div>
+        <div id="nextMatches" class="scroll-box"></div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Results</h2>
+        <div id="recentResults" class="scroll-box"></div>
+      </div>
+
+      <div class="card">
+        <h2>Group Leaders</h2>
+        <div id="groupLeaders" class="scroll-box"></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Groups</h2>
+    <div id="groupsGrid" class="groups-grid"></div>
+  </div>
+
+  <script>
+    let allUpcomingMatches = [];
+    let showAllNextMatches = false;
+
+    function setStatus(message, isError = false) {
+      const box = document.getElementById("status");
+      box.textContent = message;
+      box.className = isError ? "status error" : "status";
+    }
+
+    async function loadCSV(path) {
+      const response = await fetch(path);
+      if (!response.ok) {
+        throw new Error("Could not load " + path);
+      }
+      const text = await response.text();
+      return parseCSV(text);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (lines.length < 2) return [];
+
+      const headers = splitCSVLine(lines[0]).map(h => h.trim());
+      const rows = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+
+        const values = splitCSVLine(lines[i]);
+        const row = {};
+
+        headers.forEach((header, index) => {
+          row[header] = (values[index] || "").trim();
+        });
+
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
+    function splitCSVLine(line) {
+      const result = [];
+      let current = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"' && insideQuotes && next === '"') {
+          current += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+          result.push(current);
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      result.push(current);
+      return result;
+    }
+
+    function toNumber(value) {
+      if (value === null || value === undefined || value === "") return null;
+      const n = Number(value);
+      return Number.isNaN(n) ? null : n;
+    }
+
+    function parseMatchDate(dateStr, timeStr) {
+      if (!dateStr) return null;
+
+      const months = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      };
+
+      const parts = dateStr.split("-");
+      if (parts.length !== 3) return null;
+
+      const day = Number(parts[0]);
+      const month = months[parts[1]];
+      const year = 2000 + Number(parts[2]);
+
+      if (Number.isNaN(day) || month === undefined || Number.isNaN(year)) {
+        return null;
+      }
+
+      let hour = 0;
+      let minute = 0;
+
+      if (timeStr && timeStr.includes(":")) {
+        const timeParts = timeStr.split(":");
+        hour = Number(timeParts[0]);
+        minute = Number(timeParts[1]);
+      }
+
+      return new Date(year, month, day, hour, minute);
+    }
+
+    function isPlayedMatch(match) {
+      if ((match.status || "").toLowerCase() === "completed") return true;
+
+      const home = toNumber(match.home_score);
+      const away = toNumber(match.away_score);
+
+      return home !== null && away !== null;
+    }
+
+    function getMatchDayLabel(match) {
+      const matchDate = parseMatchDate(match.match_date, match.match_time);
+      if (!matchDate) return "Upcoming";
+
+      const today = new Date();
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const tomorrowStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      const dayAfterTomorrowStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2);
+      const matchDayStart = new Date(matchDate.getFullYear(), matchDate.getMonth(), matchDate.getDate());
+
+      if (matchDayStart.getTime() === todayStart.getTime()) return "Today";
+      if (matchDayStart.getTime() === tomorrowStart.getTime()) return "Tomorrow";
+      if (matchDayStart >= dayAfterTomorrowStart) return "Upcoming";
+
+      return "Upcoming";
+    }
+
+    function getMatchTagClass(label) {
+      if (label === "Today") return "match-tag tag-today";
+      if (label === "Tomorrow") return "match-tag tag-tomorrow";
+      return "match-tag tag-upcoming";
+    }
+
+    function formatMatchMeta(match) {
+      const parts = [];
+
+      if (match.match_date) parts.push(match.match_date);
+      if (match.match_time) parts.push(match.match_time);
+      if (match.stage) parts.push(match.stage);
+      if (match.group_name) parts.push("Group " + match.group_name);
+      if (match.city) parts.push(match.city);
+
+      return parts.join(" • ");
+    }
+
+    function createMatchItem(match, showDayTag = false) {
+      const item = document.createElement("div");
+      item.className = "match-item";
+
+      if (showDayTag) {
+        const label = getMatchDayLabel(match);
+        const tag = document.createElement("div");
+        tag.className = getMatchTagClass(label);
+        tag.textContent = label;
+        item.appendChild(tag);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "match-meta";
+      meta.textContent = formatMatchMeta(match);
+      item.appendChild(meta);
+
+      const homeLine = document.createElement("div");
+      homeLine.className = "match-line";
+      homeLine.innerHTML = `
+        <div class="team-name">${match.home_team || "TBD"}</div>
+        <div class="score">${match.home_score !== "" ? match.home_score : "-"}</div>
+      `;
+
+      const awayLine = document.createElement("div");
+      awayLine.className = "match-line";
+      awayLine.innerHTML = `
+        <div class="team-name">${match.away_team || "TBD"}</div>
+        <div class="score">${match.away_score !== "" ? match.away_score : "-"}</div>
+      `;
+
+      item.appendChild(homeLine);
+      item.appendChild(awayLine);
+
+      return item;
+    }
+
+    function updateNextMatchesView() {
+      const box = document.getElementById("nextMatches");
+      const countBox = document.getElementById("nextMatchesCount");
+      const toggleBtn = document.getElementById("nextToggleBtn");
+
+      box.innerHTML = "";
+
+      if (allUpcomingMatches.length === 0) {
+        countBox.textContent = "0 matches";
+        toggleBtn.style.display = "none";
+        box.innerHTML = '<div class="empty-note">No upcoming matches found.</div>';
+        return;
+      }
+
+      const visibleMatches = showAllNextMatches
+        ? allUpcomingMatches
+        : allUpcomingMatches.slice(0, 10);
+
+      countBox.textContent = showAllNextMatches
+        ? "Showing all " + allUpcomingMatches.length + " upcoming matches"
+        : "Showing 10 of " + allUpcomingMatches.length + " upcoming matches";
+
+      visibleMatches.forEach(match => {
+        box.appendChild(createMatchItem(match, true));
+      });
+
+      if (allUpcomingMatches.length <= 10) {
+        toggleBtn.style.display = "none";
+      } else {
+        toggleBtn.style.display = "inline-block";
+        toggleBtn.textContent = showAllNextMatches ? "Show Less" : "Show More";
+      }
+    }
+
+    function renderNextMatches(matches) {
+      allUpcomingMatches = matches
+        .filter(match => !isPlayedMatch(match))
+        .sort((a, b) => {
+          const da = parseMatchDate(a.match_date, a.match_time);
+          const db = parseMatchDate(b.match_date, b.match_time);
+          if (!da && !db) return 0;
+          if (!da) return 1;
+          if (!db) return -1;
+          return da - db;
+        });
+
+      showAllNextMatches = false;
+      updateNextMatchesView();
+    }
+
+    function renderRecentResults(matches) {
+      const box = document.getElementById("recentResults");
+      box.innerHTML = "";
+
+      const played = matches
+        .filter(match => isPlayedMatch(match))
+        .sort((a, b) => {
+          const da = parseMatchDate(a.match_date, a.match_time);
+          const db = parseMatchDate(b.match_date, b.match_time);
+          if (!da && !db) return 0;
+          if (!da) return 1;
+          if (!db) return -1;
+          return db - da;
+        });
+
+      if (played.length === 0) {
+        box.innerHTML = '<div class="empty-note">No recent results found.</div>';
+        return;
+      }
+
+      played.slice(0, 20).forEach(match => {
+        box.appendChild(createMatchItem(match, false));
+      });
+    }
+
+    function pickStandingsFields(standings) {
+      if (!standings.length) {
+        return {
+          groupField: "group_name",
+          teamField: "team_name",
+          rankField: "rank",
+          pointsField: "points"
+        };
+      }
+
+      const sample = standings[0];
+      const keys = Object.keys(sample);
+
+      function firstMatch(candidates) {
+        for (const c of candidates) {
+          if (keys.includes(c)) return c;
+        }
+        return null;
+      }
+
+      return {
+        groupField: firstMatch(["group_name", "group", "Group", "GroupName"]),
+        teamField: firstMatch(["team_name", "team", "Team", "name"]),
+        rankField: firstMatch(["rank", "Rank", "position", "Position"]),
+        pointsField: firstMatch(["points", "Points", "pts", "PTS"])
+      };
+    }
+
+    function renderGroupLeaders(standings) {
+      const box = document.getElementById("groupLeaders");
+      box.innerHTML = "";
+
+      const fields = pickStandingsFields(standings);
+      const groups = {};
+
+      standings.forEach(row => {
+        const groupName = row[fields.groupField];
+        if (!groupName) return;
+        if (!groups[groupName]) groups[groupName] = [];
+        groups[groupName].push(row);
+      });
+
+      const groupNames = Object.keys(groups).sort();
+
+      if (groupNames.length === 0) {
+        box.innerHTML = '<div class="empty-note">No group leader data found in standings.csv</div>';
+        return;
+      }
+
+      groupNames.forEach(groupName => {
+        const rows = groups[groupName];
+
+        rows.sort((a, b) => {
+          const rankA = toNumber(a[fields.rankField]);
+          const rankB = toNumber(b[fields.rankField]);
+
+          if (rankA !== null && rankB !== null) return rankA - rankB;
+
+          const ptsA = toNumber(a[fields.pointsField]);
+          const ptsB = toNumber(b[fields.pointsField]);
+
+          if (ptsA !== null && ptsB !== null) return ptsB - ptsA;
+
+          return 0;
+        });
+
+        const leader = rows[0];
+        const teamName = leader[fields.teamField] || "Unknown team";
+        const rank = leader[fields.rankField] || "1";
+        const points = leader[fields.pointsField] || "-";
+
+        const item = document.createElement("div");
+        item.className = "leader-item";
+        item.innerHTML = `
+          <div class="leader-title">Group ${groupName}: ${teamName}</div>
+          <div class="leader-meta">Rank: ${rank} • Points: ${points}</div>
+        `;
+        box.appendChild(item);
+      });
+    }
+
+    function renderGroups(standings) {
+      const container = document.getElementById("groupsGrid");
+      container.innerHTML = "";
+
+      const fields = pickStandingsFields(standings);
+      const groups = {};
+
+      standings.forEach(row => {
+        const groupName = row[fields.groupField];
+        if (!groupName) return;
+        if (!groups[groupName]) groups[groupName] = [];
+        groups[groupName].push(row);
+      });
+
+      const groupNames = Object.keys(groups).sort();
+
+      if (groupNames.length === 0) {
+        container.innerHTML = '<div class="empty-note">No standings data found.</div>';
+        return;
+      }
+
+      groupNames.forEach(groupName => {
+        const rows = groups[groupName];
+
+        rows.sort((a, b) => {
+          const rankA = toNumber(a[fields.rankField]);
+          const rankB = toNumber(b[fields.rankField]);
+
+          if (rankA !== null && rankB !== null) return rankA - rankB;
+
+          const ptsA = toNumber(a[fields.pointsField]);
+          const ptsB = toNumber(b[fields.pointsField]);
+
+          if (ptsA !== null && ptsB !== null) return ptsB - ptsA;
+
+          return 0;
+        });
+
+        const card = document.createElement("div");
+        card.className = "group-card";
+
+        const title = document.createElement("div");
+        title.className = "group-title";
+        title.textContent = "Group " + groupName;
+        card.appendChild(title);
+
+        const table = document.createElement("table");
+        table.className = "group-table";
+
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+
+        const tbody = table.querySelector("tbody");
+
+        rows.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${row[fields.rankField] || "-"}</td>
+            <td>${row[fields.teamField] || "-"}</td>
+            <td>${row[fields.pointsField] || "-"}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        card.appendChild(table);
+        container.appendChild(card);
+      });
+    }
+
+    function renderSummary(teams, matches) {
+      const played = matches.filter(isPlayedMatch).length;
+      const upcoming = matches.filter(match => !isPlayedMatch(match)).length;
+
+      document.getElementById("statTeams").textContent = teams.length;
+      document.getElementById("statMatches").textContent = matches.length;
+      document.getElementById("statPlayed").textContent = played;
+      document.getElementById("statUpcoming").textContent = upcoming;
+    }
+
+    function setupNextMatchesButton() {
+      const btn = document.getElementById("nextToggleBtn");
+      btn.addEventListener("click", function () {
+        showAllNextMatches = !showAllNextMatches;
+        updateNextMatchesView();
+      });
+    }
+
+    async function init() {
+      try {
+        const [teams, matches, standings] = await Promise.all([
+          loadCSV("teams.csv"),
+          loadCSV("matches.csv"),
+          loadCSV("standings.csv")
+        ]);
+
+        renderSummary(teams, matches);
+        renderNextMatches(matches);
+        renderRecentResults(matches);
+        renderGroupLeaders(standings);
+        renderGroups(standings);
+
+        setupNextMatchesButton();
+
+        setStatus("Dashboard loaded successfully.");
+      } catch (error) {
+        console.error(error);
+        setStatus("Error: " + error.message, true);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
