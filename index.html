@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 Dashboard</title>
+
+<style>
+
+/* ===== GENERAL ===== */
+body {
+  margin:0;
+  font-family: Arial;
+  background:#0b1833;
+  color:#e5e7eb;
+}
+
+.page {
+  max-width:1700px;
+  margin:auto;
+  padding:24px;
+}
+
+h1 {
+  font-size:42px;
+  color:#fff;
+}
+
+.section-title {
+  margin-top:30px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background:#102242;
+  border:1px solid #31476f;
+  border-radius:14px;
+  padding:16px;
+}
+
+/* ===== BRACKET ===== */
+.bracket-wrapper {
+  display:flex;
+  justify-content:center;
+}
+
+.bracket {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:24px;
+}
+
+.round-column {
+  width:280px;
+  position:relative;
+  padding-right:18px;
+}
+
+.round-title {
+  background:#2563eb;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.bracket-match-card {
+  background:#102242;
+  border:1px solid #31476f;
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:14px;
+  position:relative;
+}
+
+.bracket-team-row {
+  display:flex;
+  justify-content:space-between;
+  padding:6px;
+}
+
+.winner-row {
+  background:#065f46;
+}
+
+/* ===== PROFESSIONAL LINES ===== */
+.round-column:not(:last-child)::before {
+  content:"";
+  position:absolute;
+  top:60px;
+  right:4px;
+  width:2px;
+  height:calc(100% - 80px);
+  background:rgba(59,130,246,0.6);
+}
+
+.bracket-match-card::after {
+  content:"";
+  position:absolute;
+  top:50%;
+  right:-14px;
+  width:14px;
+  height:2px;
+  background:#3b82f6;
+}
+
+.bracket-match-card::before {
+  content:"";
+  position:absolute;
+  top:50%;
+  right:-18px;
+  width:6px;
+  height:6px;
+  background:#60a5fa;
+  border-radius:50%;
+}
+
+.round-column:last-child::before,
+.round-column:last-child .bracket-match-card::after,
+.round-column:last-child .bracket-match-card::before {
+  display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+<h1>World Cup 2026 Dashboard</h1>
+
+<h2 class="section-title">Knockout Bracket</h2>
+<div class="bracket-wrapper">
+<div id="bracket" class="bracket"></div>
+</div>
+
+</div>
+
+<script>
+
+const ORDER = [
+"Round of 32",
+"Round of 16",
+"Quarter-final",
+"Semi-final",
+"Third place",
+"Final"
+];
+
+async function load() {
+  const r = await fetch("matches.csv");
+  const text = await r.text();
+  const data = parse(text);
+
+  render(data);
+}
+
+function parse(t) {
+  const l = t.trim().split("\n");
+  const h = l[0].split(",");
+  return l.slice(1).map(r=>{
+    const v=r.split(",");
+    let o={};
+    h.forEach((k,i)=>o[k]=v[i]);
+    return o;
+  });
+}
+
+function num(v){
+  return v===""?null:Number(v);
+}
+
+function winner(m){
+  let h=num(m.home_score);
+  let a=num(m.away_score);
+  if(h==null||a==null) return null;
+  return h>a?"home":"away";
+}
+
+function render(data){
+
+  const bracket=document.getElementById("bracket");
+
+  const groups={};
+  ORDER.forEach(r=>groups[r]=[]);
+
+  data.forEach(m=>{
+    if(ORDER.includes(m.stage)){
+      groups[m.stage].push(m);
+    }
+  });
+
+  ORDER.forEach(round=>{
+    if(!groups[round].length) return;
+
+    const col=document.createElement("div");
+    col.className="round-column";
+
+    const title=document.createElement("div");
+    title.className="round-title";
+    title.innerText=round;
+
+    col.appendChild(title);
+
+    groups[round].forEach(m=>{
+      const card=document.createElement("div");
+      card.className="bracket-match-card";
+
+      const w=winner(m);
+
+      const home=document.createElement("div");
+      home.className="bracket-team-row"+(w==="home"?" winner-row":"");
+      home.innerHTML=`<span>${m.home_team}</span><span>${m.home_score||"-"}</span>`;
+
+      const away=document.createElement("div");
+      away.className="bracket-team-row"+(w==="away"?" winner-row":"");
+      away.innerHTML=`<span>${m.away_team}</span><span>${m.away_score||"-"}</span>`;
+
+      card.appendChild(home);
+      card.appendChild(away);
+
+      col.appendChild(card);
+    });
+
+    bracket.appendChild(col);
+  });
+}
+
+load();
+
+</script>
+
+</body>
+</html>
