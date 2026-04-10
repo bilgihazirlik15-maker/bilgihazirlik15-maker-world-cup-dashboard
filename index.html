@@ -616,6 +616,17 @@
 .round-column:hover .round-title {
   transform: translateY(-1px);
 }
+ /* ===== GROUP WINNER EMPHASIS ===== */
+
+.group-winner {
+  background: linear-gradient(135deg, rgba(250,204,21,0.18), rgba(250,204,21,0.08));
+  border-left: 4px solid #facc15;
+}
+
+.group-winner td {
+  color: #fde68a;
+  font-weight: 700;
+}
   </style>
 </head>
 <body>
@@ -1266,8 +1277,11 @@ function buildGroupStandings(matches, teams) {
     rows.forEach(row => {
   const tr = document.createElement("tr");
 
-  if (row.rank === 1 || row.rank === 2) {
-    tr.classList.add("group-qualified");
+  if (row.rank === 1) {
+  tr.classList.add("group-winner");
+} else if (row.rank === 2) {
+  tr.classList.add("group-qualified");
+}
   }
       tr.innerHTML = `
         <td>${row.rank}</td>
