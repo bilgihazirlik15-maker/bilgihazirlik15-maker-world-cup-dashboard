@@ -562,6 +562,60 @@
   color: #bbf7d0;
   font-weight: 600;
 }
+/* ===== UI / UX UPGRADE ===== */
+
+.group-card,
+.match-item,
+.leader-item,
+.bracket-match-card,
+.summary-card,
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.group-card:hover,
+.match-item:hover,
+.leader-item:hover,
+.summary-card:hover,
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.group-table tbody tr {
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.group-table tbody tr:hover {
+  background: rgba(96, 165, 250, 0.12);
+}
+
+.group-table tbody tr:hover td {
+  color: #ffffff;
+}
+
+.match-line:hover,
+.bracket-team-row:hover {
+  background: #18345f;
+}
+
+.toolbar-btn {
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.toolbar-btn:hover {
+  transform: translateY(-1px);
+}
+
+.group-title,
+.round-title {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group-card:hover .group-title,
+.round-column:hover .round-title {
+  transform: translateY(-1px);
+}
   </style>
 </head>
 <body>
