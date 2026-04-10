@@ -1229,7 +1229,7 @@ function buildGroupStandings(matches, teams) {
       });
     }
 
-    function renderGroupsFromMatches(groupedStandings) {
+ function renderGroupsFromMatches(groupedStandings) {
   const container = document.getElementById("groupsGrid");
   container.innerHTML = "";
 
@@ -1275,14 +1275,14 @@ function buildGroupStandings(matches, teams) {
     const tbody = table.querySelector("tbody");
 
     rows.forEach(row => {
-  const tr = document.createElement("tr");
+      const tr = document.createElement("tr");
 
-  if (row.rank === 1) {
-  tr.classList.add("group-winner");
-} else if (row.rank === 2) {
-  tr.classList.add("group-qualified");
-}
-  }
+      if (row.rank === 1) {
+        tr.classList.add("group-winner");
+      } else if (row.rank === 2) {
+        tr.classList.add("group-qualified");
+      }
+
       tr.innerHTML = `
         <td>${row.rank}</td>
         <td>${row.rank === 1 ? "🥇 " : ""}${row.team_name}</td>
@@ -1295,6 +1295,7 @@ function buildGroupStandings(matches, teams) {
         <td>${row.gd}</td>
         <td>${row.points}</td>
       `;
+
       tbody.appendChild(tr);
     });
 
