@@ -1,7 +1,7 @@
 ﻿match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,away_score,status,venue,city
 1,Group,A,11-Jun-26,22:00,Mexico,South Africa,2,1,Scheduled,Test Stadium,Miami
 2,Group,A,12-Jun-26,5:00,South Korea,Czechia,4,3,Scheduled,Test Arena,Dallas
-3,Group,B,12-Jun-26,22:00,Canada,Bosnia and Herzegovina,2,1,Scheduled,Test Stadium,Miami
+3,Group,B,12-Jun-26,22:00,Canada,Bosnia and Herzegovina,3,5,Scheduled,Test Stadium,Miami
 4,Group,D,13-Jun-26,4:00,United States,Paraguay,,,Scheduled,Test Arena,Dallas
 5,Group,B,13-Jun-26,22:00,Qatar,Switzerland,,,Scheduled,Test Stadium,Miami
 6,Group,C,14-Jun-26,1:00,Brazil,Morocco,,,Scheduled,Test Arena,Dallas
