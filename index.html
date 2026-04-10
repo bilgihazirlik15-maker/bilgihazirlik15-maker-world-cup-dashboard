@@ -1155,58 +1155,71 @@ function buildGroupStandings(matches, teams) {
     }
 
     function renderGroupsFromMatches(groupedStandings) {
-      const container = document.getElementById("groupsGrid");
-      container.innerHTML = "";
+  const container = document.getElementById("groupsGrid");
+  container.innerHTML = "";
 
-      const groupNames = Object.keys(groupedStandings).sort();
+  const groupNames = Object.keys(groupedStandings).sort();
 
-      if (groupNames.length === 0) {
-        container.innerHTML = '<div class="empty-note">No group standings available.</div>';
-        return;
-      }
+  if (groupNames.length === 0) {
+    container.innerHTML = '<div class="empty-note">No group standings available.</div>';
+    return;
+  }
 
-      groupNames.forEach(groupName => {
-        const rows = groupedStandings[groupName];
+  groupNames.forEach(groupName => {
+    const rows = groupedStandings[groupName];
 
-        const card = document.createElement("div");
-        card.className = "group-card";
+    const card = document.createElement("div");
+    card.className = "group-card";
 
-        const title = document.createElement("div");
-        title.className = "group-title";
-        title.textContent = "Group " + groupName;
-        card.appendChild(title);
+    const title = document.createElement("div");
+    title.className = "group-title";
+    title.textContent = "Group " + groupName;
+    card.appendChild(title);
 
-        const table = document.createElement("table");
-        table.className = "group-table";
+    const table = document.createElement("table");
+    table.className = "group-table";
 
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>Pts</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>P</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>GF</th>
+          <th>GA</th>
+          <th>GD</th>
+          <th>Pts</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
 
-        const tbody = table.querySelector("tbody");
+    const tbody = table.querySelector("tbody");
 
-        rows.forEach(row => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${row.rank}</td>
-            <td>${row.team_name}</td>
-            <td>${row.points}</td>
-          `;
-          tbody.appendChild(tr);
-        });
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.rank}</td>
+        <td>${row.team_name}</td>
+        <td>${row.played}</td>
+        <td>${row.won}</td>
+        <td>${row.draw}</td>
+        <td>${row.lost}</td>
+        <td>${row.gf}</td>
+        <td>${row.ga}</td>
+        <td>${row.gd}</td>
+        <td>${row.points}</td>
+      `;
+      tbody.appendChild(tr);
+    });
 
-        card.appendChild(table);
-        container.appendChild(card);
-      });
-    }
-
+    card.appendChild(table);
+    container.appendChild(card);
+  });
+}
     function getKnockoutMatches(matches) {
       return matches.filter(match => {
         const stage = (match.stage || "").trim();
