@@ -794,6 +794,70 @@
       if (value === null || value === undefined || value === "") return null;
       const n = Number(value);
       return Number.isNaN(n) ? null : n;
+   function countryCodeToFlag(code) {
+  if (!code || code.length !== 2) return "";
+  return code
+    .toUpperCase()
+    .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt()));
+}
+
+function getFlagEmoji(teamName) {
+  const flags = {
+    "Argentina": "AR",
+    "Australia": "AU",
+    "Austria": "AT",
+    "Belgium": "BE",
+    "Bosnia and Herzegovina": "BA",
+    "Brazil": "BR",
+    "Canada": "CA",
+    "Chile": "CL",
+    "Colombia": "CO",
+    "Costa Rica": "CR",
+    "Croatia": "HR",
+    "Czechia": "CZ",
+    "Denmark": "DK",
+    "Ecuador": "EC",
+    "Egypt": "EG",
+    "England": "GB",
+    "France": "FR",
+    "Germany": "DE",
+    "Ghana": "GH",
+    "Haiti": "HT",
+    "Iran": "IR",
+    "Iraq": "IQ",
+    "Italy": "IT",
+    "Japan": "JP",
+    "Mexico": "MX",
+    "Morocco": "MA",
+    "Netherlands": "NL",
+    "New Zealand": "NZ",
+    "Nigeria": "NG",
+    "Norway": "NO",
+    "Paraguay": "PY",
+    "Peru": "PE",
+    "Poland": "PL",
+    "Portugal": "PT",
+    "Qatar": "QA",
+    "Saudi Arabia": "SA",
+    "Scotland": "GB",
+    "Senegal": "SN",
+    "Serbia": "RS",
+    "South Africa": "ZA",
+    "South Korea": "KR",
+    "Spain": "ES",
+    "Sweden": "SE",
+    "Switzerland": "CH",
+    "Tunisia": "TN",
+    "Turkey": "TR",
+    "Ukraine": "UA",
+    "United States": "US",
+    "Uruguay": "UY",
+    "Wales": "GB"
+  };
+
+  const code = flags[(teamName || "").trim()];
+  return code ? countryCodeToFlag(code) : "🏳️";
+}
     }
 
     function parseMatchDate(dateStr, timeStr) {
@@ -913,19 +977,22 @@
       meta.textContent = formatMatchMeta(match);
       item.appendChild(meta);
 
-      const homeLine = document.createElement("div");
-      homeLine.className = "match-line";
-      homeLine.innerHTML = `
-        <div class="team-name">${match.home_team || "TBD"}</div>
-        <div class="score">${match.home_score !== "" ? match.home_score : "-"}</div>
-      `;
+      const homeTeamText = `${getFlagEmoji(match.home_team)} ${match.home_team || "TBD"}`;
+const awayTeamText = `${getFlagEmoji(match.away_team)} ${match.away_team || "TBD"}`;
 
-      const awayLine = document.createElement("div");
-      awayLine.className = "match-line";
-      awayLine.innerHTML = `
-        <div class="team-name">${match.away_team || "TBD"}</div>
-        <div class="score">${match.away_score !== "" ? match.away_score : "-"}</div>
-      `;
+const homeLine = document.createElement("div");
+homeLine.className = "match-line";
+homeLine.innerHTML = `
+  <div class="team-name">${homeTeamText}</div>
+  <div class="score">${match.home_score !== "" ? match.home_score : "-"}</div>
+`;
+
+const awayLine = document.createElement("div");
+awayLine.className = "match-line";
+awayLine.innerHTML = `
+  <div class="team-name">${awayTeamText}</div>
+  <div class="score">${match.away_score !== "" ? match.away_score : "-"}</div>
+`;
 
       item.appendChild(homeLine);
       item.appendChild(awayLine);
@@ -1212,7 +1279,7 @@ function buildGroupStandings(matches, teams) {
         const item = document.createElement("div");
         item.className = "leader-item";
         item.innerHTML = `
-          <div class="leader-title">Group ${groupName}: ${leader.team_name}</div>
+          <div class="leader-title">Group ${groupName}: ${getFlagEmoji(leader.team_name)} ${leader.team_name}</div>
           <div class="leader-meta">Rank: ${leader.rank} • Points: ${leader.points}</div>
 
           <div class="leader-stats">
@@ -1295,7 +1362,7 @@ function buildGroupStandings(matches, teams) {
 
       tr.innerHTML = `
         <td>${row.rank}</td>
-        <td>${row.rank === 1 ? "🥇 " : ""}${row.team_name}</td>
+        <td>${row.rank === 1 ? "🥇 " : ""}${getFlagEmoji(row.team_name)} ${row.team_name}</td>
         <td>${row.played}</td>
         <td>${row.won}</td>
         <td>${row.draw}</td>
@@ -1398,8 +1465,13 @@ function buildGroupStandings(matches, teams) {
       const homeScoreText = (match.home_score ?? "").toString().trim();
       const awayScoreText = (match.away_score ?? "").toString().trim();
 
-      const homeName = winner === "home" ? "✓ " + homeTeamName : homeTeamName;
-      const awayName = winner === "away" ? "✓ " + awayTeamName : awayTeamName;
+      const homeName = winner === "home"
+  ? `✓ ${getFlagEmoji(homeTeamName)} ${homeTeamName}`
+  : `${getFlagEmoji(homeTeamName)} ${homeTeamName}`;
+
+const awayName = winner === "away"
+  ? `✓ ${getFlagEmoji(awayTeamName)} ${awayTeamName}`
+  : `${getFlagEmoji(awayTeamName)} ${awayTeamName}`;
 
       const homeRow = document.createElement("div");
       homeRow.className = "bracket-team-row" + (winner === "home" ? " winner-row" : "");
