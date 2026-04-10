@@ -743,13 +743,18 @@
     }
 
     function isPlayedMatch(match) {
-      if ((match.status || "").toLowerCase() === "completed") return true;
+  const homeRaw = (match.home_score ?? "").toString().trim();
+  const awayRaw = (match.away_score ?? "").toString().trim();
 
-      const home = toNumber(match.home_score);
-      const away = toNumber(match.away_score);
+  if (homeRaw === "" || awayRaw === "") {
+    return false;
+  }
 
-      return home !== null && away !== null;
-    }
+  const home = Number(homeRaw);
+  const away = Number(awayRaw);
+
+  return !Number.isNaN(home) && !Number.isNaN(away);
+}
 
     function getTodayStart() {
       const now = new Date();
@@ -963,118 +968,37 @@
       updateRecentResultsView();
     }
 
-    function buildGroupStandings(matches, teams) {
-      const groupMatches = matches.filter(match => (match.stage || "").trim() === "Group");
-      const table = {};
-      const teamGroupMap = {};
-
-      groupMatches.forEach(match => {
-        const groupName = (match.group_name || "").trim();
-        const homeTeam = (match.home_team || "").trim();
-        const awayTeam = (match.away_team || "").trim();
-
-        if (!groupName || !homeTeam || !awayTeam) return;
-
-        if (!table[groupName]) table[groupName] = {};
-
-        if (!table[groupName][homeTeam]) {
-          table[groupName][homeTeam] = createBlankStanding(groupName, homeTeam);
-        }
-        if (!table[groupName][awayTeam]) {
-          table[groupName][awayTeam] = createBlankStanding(groupName, awayTeam);
-        }
-
-        teamGroupMap[homeTeam] = groupName;
-        teamGroupMap[awayTeam] = groupName;
-
-        if (!isPlayedMatch(match)) return;
-
-        const homeScore = toNumber(match.home_score) ?? 0;
-        const awayScore = toNumber(match.away_score) ?? 0;
-
-        const home = table[groupName][homeTeam];
-        const away = table[groupName][awayTeam];
-
-        home.played += 1;
-        away.played += 1;
-
-        home.gf += homeScore;
-        home.ga += awayScore;
-        away.gf += awayScore;
-        away.ga += homeScore;
-
-        home.gd = home.gf - home.ga;
-        away.gd = away.gf - away.ga;
-
-        if (homeScore > awayScore) {
-          home.won += 1;
-          home.points += 3;
-          away.lost += 1;
-        } else if (awayScore > homeScore) {
-          away.won += 1;
-          away.points += 3;
-          home.lost += 1;
-        } else {
-          home.draw += 1;
-          away.draw += 1;
-          home.points += 1;
-          away.points += 1;
-        }
-      });
-
-      // teams.csv içinden hiç maç oynamamış takımları da ekle
-      teams.forEach(teamRow => {
-        const possibleTeamName =
-          (teamRow.team_name || teamRow.team || teamRow.Team || teamRow.name || "").trim();
-
-        const possibleGroup =
-          (teamRow.group_name || teamRow.group || teamRow.Group || "").trim();
-
-        if (!possibleTeamName || !possibleGroup) return;
-
-        if (!table[possibleGroup]) table[possibleGroup] = {};
-        if (!table[possibleGroup][possibleTeamName]) {
-          table[possibleGroup][possibleTeamName] = createBlankStanding(possibleGroup, possibleTeamName);
-        }
-      });
-
-      const groupedRows = {};
-
-      Object.keys(table).forEach(groupName => {
-        const rows = Object.values(table[groupName]);
-
-        rows.sort((a, b) => {
-          if (b.points !== a.points) return b.points - a.points;
-          if (b.gd !== a.gd) return b.gd - a.gd;
-          if (b.gf !== a.gf) return b.gf - a.gf;
-          return a.team_name.localeCompare(b.team_name);
-        });
-
-        rows.forEach((row, index) => {
-          row.rank = index + 1;
-        });
-
-        groupedRows[groupName] = rows;
-      });
-
-      return groupedRows;
-    }
+    function createBlankStanding(groupName, teamName) {
+  return {
+    group_name: groupName,
+    team_name: teamName,
+    rank: 0,
+    played: 0,
+    won: 0,
+    draw: 0,
+    lost: 0,
+    gf: 0,
+    ga: 0,
+    gd: 0,
+    points: 0
+  };
+}
 
     function createBlankStanding(groupName, teamName) {
-      return {
-        group_name: groupName,
-        team_name: teamName,
-        rank: 0,
-        played: 0,
-        won: 0,
-        draw: 0,
-        lost: 0,
-        gf: 0,
-        ga: 0,
-        gd: 0,
-        points: 0
-      };
-    }
+  return {
+    group_name: groupName,
+    team_name: teamName,
+    rank: 0,
+    played: 0,
+    won: 0,
+    draw: 0,
+    lost: 0,
+    gf: 0,
+    ga: 0,
+    gd: 0,
+    points: 0
+  };
+}
 
     function renderGroupLeadersFromMatches(groupedStandings) {
       const box = document.getElementById("groupLeaders");
