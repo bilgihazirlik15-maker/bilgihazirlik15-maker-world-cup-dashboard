@@ -1217,7 +1217,7 @@ function buildGroupStandings(matches, teams) {
   }
       tr.innerHTML = `
         <td>${row.rank}</td>
-        <td>${row.team_name}</td>
+        <td>${row.rank === 1 ? "🥇 " : ""}${row.team_name}</td>
         <td>${row.played}</td>
         <td>${row.won}</td>
         <td>${row.draw}</td>
