@@ -552,6 +552,16 @@
         gap: 18px;
       }
     }
+  /* ===== GROUP QUALIFIED ===== */
+
+.group-qualified {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.group-qualified td {
+  color: #bbf7d0;
+  font-weight: 600;
+}
   </style>
 </head>
 <body>
@@ -1200,7 +1210,11 @@ function buildGroupStandings(matches, teams) {
     const tbody = table.querySelector("tbody");
 
     rows.forEach(row => {
-      const tr = document.createElement("tr");
+  const tr = document.createElement("tr");
+
+  if (row.rank === 1 || row.rank === 2) {
+    tr.classList.add("group-qualified");
+  }
       tr.innerHTML = `
         <td>${row.rank}</td>
         <td>${row.team_name}</td>
