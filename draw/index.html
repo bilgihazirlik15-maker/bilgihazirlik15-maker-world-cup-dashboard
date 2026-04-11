@@ -771,16 +771,16 @@ Zeynep"></textarea>
     }
 
     function teamPillHTML(item){
-      return `
-        <div class="team-pill">
-          <span class="flag">${item.flag || "🏳️"}</span>
-          <span class="team-text">
-            <span>${item.team}</span>
-            ${item.group ? `<span class="group-badge">Grup ${item.group}</span>` : ""}
-          </span>
-        </div>
-      `;
-    }
+  return `
+    <div class="team-pill">
+      <span class="flag">${getFlagHTML(item.flag) || "🏳️"}</span>
+      <span class="team-text">
+        <span>${item.team}</span>
+        ${item.group ? `<span class="group-badge">Grup ${item.group}</span>` : ""}
+      </span>
+    </div>
+  `;
+}
 
     function renderResults(assignmentMap){
       const people = Object.keys(assignmentMap);
