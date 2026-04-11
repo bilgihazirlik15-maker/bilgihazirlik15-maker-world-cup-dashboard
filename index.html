@@ -611,6 +611,15 @@
         gap: 18px;
       }
     }
+.flag-icon {
+  width: 18px;
+  height: 12px;
+  object-fit: cover;
+  border-radius: 2px;
+  vertical-align: -1px;
+  margin-right: 6px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+}
   </style>
 </head>
 <body>
@@ -770,78 +779,74 @@
       return Number.isNaN(n) ? null : n;
     }
 
-    /* ===== FLAG HELPERS ===== */
+function getCountryCode(teamName) {
+  const flags = {
+    "Argentina": "ar",
+    "Australia": "au",
+    "Austria": "at",
+    "Belgium": "be",
+    "Bosnia and Herzegovina": "ba",
+    "Brazil": "br",
+    "Canada": "ca",
+    "Chile": "cl",
+    "Colombia": "co",
+    "Costa Rica": "cr",
+    "Croatia": "hr",
+    "Czechia": "cz",
+    "Denmark": "dk",
+    "Ecuador": "ec",
+    "Egypt": "eg",
+    "England": "gb",
+    "France": "fr",
+    "Germany": "de",
+    "Ghana": "gh",
+    "Haiti": "ht",
+    "Iran": "ir",
+    "Iraq": "iq",
+    "Italy": "it",
+    "Japan": "jp",
+    "Mexico": "mx",
+    "Morocco": "ma",
+    "Netherlands": "nl",
+    "New Zealand": "nz",
+    "Nigeria": "ng",
+    "Norway": "no",
+    "Paraguay": "py",
+    "Peru": "pe",
+    "Poland": "pl",
+    "Portugal": "pt",
+    "Qatar": "qa",
+    "Saudi Arabia": "sa",
+    "Scotland": "gb",
+    "Senegal": "sn",
+    "Serbia": "rs",
+    "South Africa": "za",
+    "South Korea": "kr",
+    "Spain": "es",
+    "Sweden": "se",
+    "Switzerland": "ch",
+    "Tunisia": "tn",
+    "Turkey": "tr",
+    "Ukraine": "ua",
+    "United States": "us",
+    "Uruguay": "uy",
+    "Wales": "gb"
+  };
 
-    function countryCodeToFlag(code) {
-      if (!code || code.length !== 2) return "";
-      return code
-        .toUpperCase()
-        .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt()));
-    }
+  return flags[(teamName || "").trim()] || null;
+}
 
-    function getFlagEmoji(teamName) {
-      const flags = {
-        "Argentina": "AR",
-        "Australia": "AU",
-        "Austria": "AT",
-        "Belgium": "BE",
-        "Bosnia and Herzegovina": "BA",
-        "Brazil": "BR",
-        "Canada": "CA",
-        "Chile": "CL",
-        "Colombia": "CO",
-        "Costa Rica": "CR",
-        "Croatia": "HR",
-        "Czechia": "CZ",
-        "Denmark": "DK",
-        "Ecuador": "EC",
-        "Egypt": "EG",
-        "England": "GB",
-        "France": "FR",
-        "Germany": "DE",
-        "Ghana": "GH",
-        "Haiti": "HT",
-        "Iran": "IR",
-        "Iraq": "IQ",
-        "Italy": "IT",
-        "Japan": "JP",
-        "Mexico": "MX",
-        "Morocco": "MA",
-        "Netherlands": "NL",
-        "New Zealand": "NZ",
-        "Nigeria": "NG",
-        "Norway": "NO",
-        "Paraguay": "PY",
-        "Peru": "PE",
-        "Poland": "PL",
-        "Portugal": "PT",
-        "Qatar": "QA",
-        "Saudi Arabia": "SA",
-        "Scotland": "GB",
-        "Senegal": "SN",
-        "Serbia": "RS",
-        "South Africa": "ZA",
-        "South Korea": "KR",
-        "Spain": "ES",
-        "Sweden": "SE",
-        "Switzerland": "CH",
-        "Tunisia": "TN",
-        "Turkey": "TR",
-        "Ukraine": "UA",
-        "United States": "US",
-        "Uruguay": "UY",
-        "Wales": "GB"
-      };
+function withFlag(teamName) {
+  const cleanName = (teamName || "TBD").toString().trim();
+  const code = getCountryCode(cleanName);
 
-      const code = flags[(teamName || "").trim()];
-      return code ? countryCodeToFlag(code) : "🏳️";
-    }
+  if (!code) {
+    return cleanName;
+  }
 
-    function withFlag(teamName) {
-      const cleanName = (teamName || "TBD").toString().trim();
-      return `${getFlagEmoji(cleanName)} ${cleanName}`;
-    }
-
+  return `<img class="flag-icon" src="https://flagcdn.com/w20/${code}.png" alt="${cleanName} flag"> ${cleanName}`;
+}
+    
     function parseMatchDate(dateStr, timeStr) {
       if (!dateStr) return null;
 
