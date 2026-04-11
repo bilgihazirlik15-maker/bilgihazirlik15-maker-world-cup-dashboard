@@ -1,49 +1,60 @@
 team_id,team_name,group_name,short_name,flag,status
-1,Mexico,A,MEX,????,Active
-2,South Africa,A,RSA,????,Active
-3,South Korea,A,KOR,????,Active
-4,Czechia,A,CZE,????,Active
-5,Canada,B,CAN,????,Active
-6,Qatar,B,QAT,????,Active
-7,Switzerland,B,SUI,????,Active
-8,Bosnia and Herzegovina,B,BA,????,Active
-9,Brazil,C,BRA,????,Active
-10,Morocco,C,MAR,????,Active
-11,Scotland,C,SCO,????,Active
-12,Haiti,C,HAI,????,Active
-13,United States,D,USA,????,Active
-14,Paraguay,D,PAR,????,Active
-15,Australia,D,AUS,????,Active
-16,Turkey,D,TUR,????,Active
-17,Germany,E,GER,????,Active
-18,Ivory Coast,E,CIV,????,Active
-19,Equador,E,ECU,????,Active
-20,Curacao,E,CUW,????,Active
-21,Netherlands,F,NED,????,Active
-22,Japan,F,JPN,????,Active
-23,Tunusia,F,TUN,????,Active
-24,Sweden,F,SWE,????,Active
-25,Belgium,G,BEL,????,Active
-26,Egypt,G,EGY,????,Active
-27,Iran,G,IRN,????,Active
-28,New Zeland,G,NZL,????,Active
-29,Spain,H,ESP,????,Active
-30,Saudi Arabia,H,KSA,????,Active
-31,Uruguay,H,URU,????,Active
-32,Cape Verde,H,CPV,????,Active
-33,France,I,FRA,????,Active
-34,Senegal,I,SEN,????,Active
-35,Norway,I,NOR,????,Active
-36,Iraq,I,IRQ,????,Active
-37,Argentina,J,ARG,????,Active
-38,Algeria,J,ALG,????,Active
-39,Austria,J,AUT,????,Active
-40,Jordan,J,JOR,????,Active
-41,Portugal,K,POR,????,Active
-42,Uzbekistan,K,UZB,????,Active
-43,Colombia,K,COL,????,Active
-44,Democratic Republic of the Congo,K,COD,????,Active
-45,England,L,ENG,????,Active
-46,Crotia,L,CRO,????,Active
-47,Panama,L,PAN,????,Active
-48,Ghana,L,GHA,????,Active
+1,Brazil,A,BRA,🇧🇷,active
+2,Argentina,A,ARG,🇦🇷,active
+3,France,A,FRA,🇫🇷,active
+4,Germany,A,GER,🇩🇪,active
+
+5,Spain,B,ESP,🇪🇸,active
+6,England,B,ENG,🇬🇧,active
+7,Italy,B,ITA,🇮🇹,active
+8,Netherlands,B,NED,🇳🇱,active
+
+9,Portugal,C,POR,🇵🇹,active
+10,Belgium,C,BEL,🇧🇪,active
+11,Croatia,C,CRO,🇭🇷,active
+12,Denmark,C,DEN,🇩🇰,active
+
+13,Switzerland,D,SUI,🇨🇭,active
+14,Austria,D,AUT,🇦🇹,active
+15,Poland,D,POL,🇵🇱,active
+16,Czech Republic,D,CZE,🇨🇿,active
+
+17,USA,E,USA,🇺🇸,active
+18,Mexico,E,MEX,🇲🇽,active
+19,Canada,E,CAN,🇨🇦,active
+20,Costa Rica,E,CRC,🇨🇷,active
+
+21,Japan,F,JPN,🇯🇵,active
+22,South Korea,F,KOR,🇰🇷,active
+23,Iran,F,IRN,🇮🇷,active
+24,Saudi Arabia,F,KSA,🇸🇦,active
+
+25,Senegal,G,SEN,🇸🇳,active
+26,Morocco,G,MAR,🇲🇦,active
+27,Nigeria,G,NGA,🇳🇬,active
+28,Egypt,G,EGY,🇪🇬,active
+
+29,Cameroon,H,CMR,🇨🇲,active
+30,Ghana,H,GHA,🇬🇭,active
+31,Ivory Coast,H,CIV,🇨🇮,active
+32,Tunisia,H,TUN,🇹🇳,active
+
+33,Australia,I,AUS,🇦🇺,active
+34,New Zealand,I,NZL,🇳🇿,active
+35,Qatar,I,QAT,🇶🇦,active
+36,UAE,I,UAE,🇦🇪,active
+
+37,Colombia,J,COL,🇨🇴,active
+38,Chile,J,CHI,🇨🇱,active
+39,Peru,J,PER,🇵🇪,active
+40,Uruguay,J,URU,🇺🇾,active
+
+41,Ecuador,K,ECU,🇪🇨,active
+42,Paraguay,K,PAR,🇵🇾,active
+43,Bolivia,K,BOL,🇧🇴,active
+44,Venezuela,K,VEN,🇻🇪,active
+
+45,Turkey,L,TUR,🇹🇷,active
+46,Greece,L,GRE,🇬🇷,active
+47,Norway,L,NOR,🇳🇴,active
+48,Sweden,L,SWE,🇸🇪,active
