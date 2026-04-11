@@ -1,1 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Cup 2026 Draw</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #08152e;
+      color: #e5e7eb;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 40px;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin: 0 0 22px 0;
+      color: #9fb3d9;
+      font-size: 18px;
+    }
+
+    .status {
+      background: #102242;
+      border: 1px solid #31476f;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      color: #dbe7ff;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: #102242;
+      border: 1px solid #31476f;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px 0;
+      color: #ffffff;
+      font-size: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cfe0ff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid #31476f;
+      background: #0d1d39;
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #60a5fa;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: 1px solid #40629b;
+      background: #173564;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #1d427c;
+      transform: translateY(-1px);
+    }
+
+    .btn.secondary {
+      background: #0f213f;
+    }
+
+    .top-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card {
+      background: #0d1d39;
+      border: 1px solid #27416c;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #9fb3d9;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .result-item {
+      background: #152b52;
+      border: 1px solid #31476f;
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .result-item:hover {
+      transform: translateY(-1px);
+      border-color: #60a5fa;
+    }
+
+    .participant-name {
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .arrow {
+      font-weight: 800;
+      color: #9fb3d9;
+      text-align: center;
+    }
+
+    .team-name {
+      font-weight: 700;
+      color: #bbf7d0;
+      font-size: 15px;
+    }
+
+    .small-note {
+      margin-top: 12px;
+      color: #9fb3d9;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .empty-box {
+      background: #0d1d39;
+      border: 1px dashed #31476f;
+      border-radius: 12px;
+      padding: 18px;
+      color: #9fb3d9;
+    }
+
+    @media (max-width: 1000px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .top-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>World Cup 2026 Draw</h1>
+    <p class="subtitle">Enter participant names, then draw teams randomly.</p>
+
+    <div id="status" class="status">Loading teams...</div>
+
+    <div class="layout">
+      <div class="card">
+        <h2>Participants</h2>
+
+        <label for="namesInput">One name per line</label>
+        <textarea id="namesInput" placeholder="Arya
+Mehmet
+Elif
+Can"></textarea>
+
+        <div class="controls">
+          <button id="loadExampleBtn" class="btn secondary" type="button">Load Example Names</button>
+          <button id="drawBtn" class="btn" type="button">Run Draw</button>
+          <button id="resetBtn" class="btn secondary" type="button">Reset</button>
+        </div>
+
+        <div class="small-note">
+          Rule: each participant gets one random team.  
+          If there are more names than teams, extra names will not get a team.  
+          If there are fewer names than teams, some teams will stay unused.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Draw Results</h2>
+
+        <div class="top-stats">
+          <div class="stat-card">
+            <div class="stat-label">Participants</div>
+            <div id="statParticipants" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Available Teams</div>
+            <div id="statTeams" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Assigned</div>
+            <div id="statAssigned" class="stat-value">0</div>
+          </div>
+        </div>
+
+        <div id="resultsBox" class="result-list">
+          <div class="empty-box">No draw results yet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let ALL_TEAMS = [];
+
+    function setStatus(message) {
+      document.getElementById("status").textContent = message;
+    }
+
+    async function loadCSV(path) {
+      const response = await fetch(path);
+      if (!response.ok) {
+        throw new Error("Could not load " + path);
+      }
+      const text = await response.text();
+      return parseCSV(text);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (lines.length < 2) return [];
+
+      const headers = splitCSVLine(lines[0]).map(h => h.trim());
+      const rows = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+
+        const values = splitCSVLine(lines[i]);
+        const row = {};
+
+        headers.forEach((header, index) => {
+          row[header] = (values[index] || "").trim();
+        });
+
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
+    function splitCSVLine(line) {
+      const result = [];
+      let current = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"' && insideQuotes && next === '"') {
+          current += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+          result.push(current);
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      result.push(current);
+      return result;
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getTeamName(row) {
+      return (row.team_name || row.team || row.Team || row.name || "").trim();
+    }
+
+    function getParticipantNames() {
+      const raw = document.getElementById("namesInput").value;
+
+      return raw
+        .split(/\r?\n/)
+        .map(name => name.trim())
+        .filter(name => name !== "");
+    }
+
+    function updateStats(participantsCount, teamsCount, assignedCount) {
+      document.getElementById("statParticipants").textContent = participantsCount;
+      document.getElementById("statTeams").textContent = teamsCount;
+      document.getElementById("statAssigned").textContent = assignedCount;
+    }
+
+    function renderResults(assignments, unassignedParticipants = [], unusedTeams = []) {
+      const box = document.getElementById("resultsBox");
+      box.innerHTML = "";
+
+      if (assignments.length === 0) {
+        box.innerHTML = '<div class="empty-box">No draw results yet.</div>';
+        return;
+      }
+
+      assignments.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "result-item";
+        row.innerHTML = `
+          <div class="participant-name">${item.name}</div>
+          <div class="arrow">→</div>
+          <div class="team-name">${item.team}</div>
+        `;
+        box.appendChild(row);
+      });
+
+      if (unassignedParticipants.length > 0) {
+        const row = document.createElement("div");
+        row.className = "empty-box";
+        row.innerHTML = `<strong>No team left for:</strong> ${unassignedParticipants.join(", ")}`;
+        box.appendChild(row);
+      }
+
+      if (unusedTeams.length > 0) {
+        const row = document.createElement("div");
+        row.className = "empty-box";
+        row.innerHTML = `<strong>Unused teams:</strong> ${unusedTeams.join(", ")}`;
+        box.appendChild(row);
+      }
+    }
+
+    function runDraw() {
+      const participants = getParticipantNames();
+
+      if (participants.length === 0) {
+        setStatus("Please enter at least one participant name.");
+        renderResults([]);
+        updateStats(0, ALL_TEAMS.length, 0);
+        return;
+      }
+
+      const shuffledParticipants = shuffle(participants);
+      const shuffledTeams = shuffle(ALL_TEAMS.map(getTeamName).filter(Boolean));
+
+      const limit = Math.min(shuffledParticipants.length, shuffledTeams.length);
+      const assignments = [];
+
+      for (let i = 0; i < limit; i++) {
+        assignments.push({
+          name: shuffledParticipants[i],
+          team: shuffledTeams[i]
+        });
+      }
+
+      const unassignedParticipants = shuffledParticipants.slice(limit);
+      const unusedTeams = shuffledTeams.slice(limit);
+
+      renderResults(assignments, unassignedParticipants, unusedTeams);
+      updateStats(participants.length, ALL_TEAMS.length, assignments.length);
+      setStatus("Draw completed successfully.");
+    }
+
+    function loadExampleNames() {
+      document.getElementById("namesInput").value = [
+        "Arya",
+        "Mehmet",
+        "Elif",
+        "Can",
+        "Zeynep",
+        "Ali",
+        "Defne",
+        "Mert"
+      ].join("\n");
+    }
+
+    function resetPage() {
+      document.getElementById("namesInput").value = "";
+      renderResults([]);
+      updateStats(0, ALL_TEAMS.length, 0);
+      setStatus("Reset complete.");
+    }
+
+    function setupControls() {
+      document.getElementById("drawBtn").addEventListener("click", runDraw);
+      document.getElementById("loadExampleBtn").addEventListener("click", loadExampleNames);
+      document.getElementById("resetBtn").addEventListener("click", resetPage);
+    }
+
+    async function init() {
+      try {
+        const rows = await loadCSV("../teams.csv");
+        ALL_TEAMS = rows.filter(row => getTeamName(row) !== "");
+
+        updateStats(0, ALL_TEAMS.length, 0);
+        setupControls();
+        setStatus("Draw page loaded successfully.");
+      } catch (error) {
+        console.error(error);
+        setStatus("Error: " + error.message);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
