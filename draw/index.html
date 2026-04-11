@@ -105,7 +105,7 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     }
 
     .btn:hover {
@@ -115,6 +115,12 @@
 
     .btn.secondary {
       background: #0f213f;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .top-stats {
@@ -143,6 +149,44 @@
       color: #ffffff;
     }
 
+    .animation-box {
+      background: #0d1d39;
+      border: 1px solid #27416c;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .animation-label {
+      font-size: 13px;
+      color: #9fb3d9;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 700;
+    }
+
+    .animation-name {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .animation-team {
+      font-size: 22px;
+      font-weight: 700;
+      color: #bbf7d0;
+    }
+
+    .animation-team.spinning {
+      color: #93c5fd;
+      animation: pulseText 0.55s ease-in-out infinite;
+    }
+
     .result-list {
       display: flex;
       flex-direction: column;
@@ -158,12 +202,16 @@
       grid-template-columns: 1fr auto 1fr;
       gap: 10px;
       align-items: center;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: revealRow 0.35s ease forwards;
     }
 
     .result-item:hover {
       transform: translateY(-1px);
       border-color: #60a5fa;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
     }
 
     .participant-name {
@@ -197,6 +245,23 @@
       border-radius: 12px;
       padding: 18px;
       color: #9fb3d9;
+    }
+
+    @keyframes pulseText {
+      0% { opacity: 0.45; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-1px); }
+      100% { opacity: 0.45; transform: translateY(0); }
+    }
+
+    @keyframes revealRow {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 1000px) {
@@ -234,8 +299,8 @@ Can"></textarea>
         </div>
 
         <div class="small-note">
-          Rule: each participant gets one random team.  
-          If there are more names than teams, extra names will not get a team.  
+          Rule: each participant gets one random team.
+          If there are more names than teams, extra names will not get a team.
           If there are fewer names than teams, some teams will stay unused.
         </div>
       </div>
@@ -258,6 +323,12 @@ Can"></textarea>
           </div>
         </div>
 
+        <div id="animationBox" class="animation-box">
+          <div class="animation-label">Draw animation</div>
+          <div id="animationName" class="animation-name">Waiting to start</div>
+          <div id="animationTeam" class="animation-team">—</div>
+        </div>
+
         <div id="resultsBox" class="result-list">
           <div class="empty-box">No draw results yet.</div>
         </div>
@@ -267,6 +338,7 @@ Can"></textarea>
 
   <script>
     let ALL_TEAMS = [];
+    let DRAW_RUNNING = false;
 
     function setStatus(message) {
       document.getElementById("status").textContent = message;
@@ -367,9 +439,10 @@ Can"></textarea>
         return;
       }
 
-      assignments.forEach(item => {
+      assignments.forEach((item, index) => {
         const row = document.createElement("div");
         row.className = "result-item";
+        row.style.animationDelay = `${index * 0.05}s`;
         row.innerHTML = `
           <div class="participant-name">${item.name}</div>
           <div class="arrow">→</div>
@@ -393,7 +466,76 @@ Can"></textarea>
       }
     }
 
-    function runDraw() {
+    function loadExampleNames() {
+      document.getElementById("namesInput").value = [
+        "Arya",
+        "Mehmet",
+        "Elif",
+        "Can",
+        "Zeynep",
+        "Ali",
+        "Defne",
+        "Mert"
+      ].join("\n");
+    }
+
+    function resetPage() {
+      if (DRAW_RUNNING) return;
+
+      document.getElementById("namesInput").value = "";
+      renderResults([]);
+      updateStats(0, ALL_TEAMS.length, 0);
+      updateAnimation("Waiting to start", "—", false);
+      setStatus("Reset complete.");
+    }
+
+    function updateAnimation(nameText, teamText, spinning = false) {
+      const nameEl = document.getElementById("animationName");
+      const teamEl = document.getElementById("animationTeam");
+
+      nameEl.textContent = nameText;
+      teamEl.textContent = teamText;
+
+      if (spinning) {
+        teamEl.classList.add("spinning");
+      } else {
+        teamEl.classList.remove("spinning");
+      }
+    }
+
+    function setControlsDisabled(disabled) {
+      document.getElementById("drawBtn").disabled = disabled;
+      document.getElementById("loadExampleBtn").disabled = disabled;
+      document.getElementById("resetBtn").disabled = disabled;
+      document.getElementById("namesInput").disabled = disabled;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function animateAssignments(assignments) {
+      const teamPool = shuffle(ALL_TEAMS.map(getTeamName).filter(Boolean));
+
+      for (let i = 0; i < assignments.length; i++) {
+        const assignment = assignments[i];
+
+        updateAnimation(`Drawing for ${assignment.name}`, "Searching...", true);
+
+        for (let spin = 0; spin < 10; spin++) {
+          const tempTeam = teamPool[(i + spin) % teamPool.length] || "Team";
+          updateAnimation(`Drawing for ${assignment.name}`, tempTeam, true);
+          await sleep(90);
+        }
+
+        updateAnimation(`Assigned to ${assignment.name}`, assignment.team, false);
+        await sleep(280);
+      }
+    }
+
+    async function runDraw() {
+      if (DRAW_RUNNING) return;
+
       const participants = getParticipantNames();
 
       if (participants.length === 0) {
@@ -402,6 +544,9 @@ Can"></textarea>
         updateStats(0, ALL_TEAMS.length, 0);
         return;
       }
+
+      DRAW_RUNNING = true;
+      setControlsDisabled(true);
 
       const shuffledParticipants = shuffle(participants);
       const shuffledTeams = shuffle(ALL_TEAMS.map(getTeamName).filter(Boolean));
@@ -419,29 +564,19 @@ Can"></textarea>
       const unassignedParticipants = shuffledParticipants.slice(limit);
       const unusedTeams = shuffledTeams.slice(limit);
 
+      updateStats(participants.length, ALL_TEAMS.length, 0);
+      renderResults([]);
+      setStatus("Draw animation is running...");
+
+      await animateAssignments(assignments);
+
       renderResults(assignments, unassignedParticipants, unusedTeams);
       updateStats(participants.length, ALL_TEAMS.length, assignments.length);
       setStatus("Draw completed successfully.");
-    }
+      updateAnimation("Draw complete", `${assignments.length} assignments`, false);
 
-    function loadExampleNames() {
-      document.getElementById("namesInput").value = [
-        "Arya",
-        "Mehmet",
-        "Elif",
-        "Can",
-        "Zeynep",
-        "Ali",
-        "Defne",
-        "Mert"
-      ].join("\n");
-    }
-
-    function resetPage() {
-      document.getElementById("namesInput").value = "";
-      renderResults([]);
-      updateStats(0, ALL_TEAMS.length, 0);
-      setStatus("Reset complete.");
+      DRAW_RUNNING = false;
+      setControlsDisabled(false);
     }
 
     function setupControls() {
@@ -457,6 +592,7 @@ Can"></textarea>
 
         updateStats(0, ALL_TEAMS.length, 0);
         setupControls();
+        updateAnimation("Waiting to start", "—", false);
         setStatus("Draw page loaded successfully.");
       } catch (error) {
         console.error(error);
