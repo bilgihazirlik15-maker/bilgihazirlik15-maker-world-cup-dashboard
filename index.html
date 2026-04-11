@@ -361,7 +361,6 @@
       font-weight: 700;
     }
 
-    /* BRACKET */
     .bracket-wrapper {
       overflow: visible;
       display: flex;
@@ -520,7 +519,6 @@
       display: none;
     }
 
-    /* UX */
     .group-card,
     .match-item,
     .leader-item,
@@ -611,15 +609,16 @@
         gap: 18px;
       }
     }
-.flag-icon {
-  width: 18px;
-  height: 12px;
-  object-fit: cover;
-  border-radius: 2px;
-  vertical-align: -1px;
-  margin-right: 6px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
-}
+
+    .flag-icon {
+      width: 18px;
+      height: 12px;
+      object-fit: cover;
+      border-radius: 2px;
+      vertical-align: -1px;
+      margin-right: 6px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+    }
   </style>
 </head>
 <body>
@@ -773,90 +772,123 @@
       return result;
     }
 
+    function normalizeTeamName(name) {
+      return (name || "")
+        .toString()
+        .trim()
+        .toLowerCase();
+    }
+
+    function buildTeamMetaMap(teams) {
+      const map = new Map();
+
+      teams.forEach(team => {
+        const teamName = team.team_name || team.team || team.name || "";
+        const key = normalizeTeamName(teamName);
+        if (!key) return;
+
+        map.set(key, {
+          team_name: teamName,
+          group_name: (team.group_name || team.group || "").toString().trim(),
+          short_name: (team.short_name || "").toString().trim(),
+          flag: (team.flag || "").toString().trim(),
+          status: (team.status || "").toString().trim()
+        });
+      });
+
+      return map;
+    }
+
     function toNumber(value) {
       if (value === null || value === undefined || value === "") return null;
       const n = Number(value);
       return Number.isNaN(n) ? null : n;
     }
 
-function getCountryCode(teamName) {
-  const flags = {
-    "Argentina": "ar",
-    "Australia": "au",
-    "Austria": "at",
-    "Belgium": "be",
-    "Bosnia and Herzegovina": "ba",
-    "Brazil": "br",
-    "Canada": "ca",
-    "Chile": "cl",
-    "Colombia": "co",
-    "Costa Rica": "cr",
-    "Croatia": "hr",
-    "Czechia": "cz",
-    "Democratic Republic of the Congo": "cd",
-    "DR Congo": "cd",
-    "Congo DR": "cd",
-    "Denmark": "dk",
-    "Ecuador": "ec",
-    "Egypt": "eg",
-    "England": "gb",
-    "France": "fr",
-    "Germany": "de",
-    "Ghana": "gh",
-    "Haiti": "ht",
-    "Iran": "ir",
-    "Iraq": "iq",
-    "Italy": "it",
-    "Ivory Coast": "ci",
-    "Cote d'Ivoire": "ci",
-    "Côte d'Ivoire": "ci",
-    "Japan": "jp",
-    "Jordan": "jo",
-    "Mexico": "mx",
-    "Morocco": "ma",
-    "Netherlands": "nl",
-    "New Zealand": "nz",
-    "New Zeland": "nz",
-    "Nigeria": "ng",
-    "Norway": "no",
-    "Panama": "pa",
-    "Paraguay": "py",
-    "Peru": "pe",
-    "Poland": "pl",
-    "Portugal": "pt",
-    "Qatar": "qa",
-    "Saudi Arabia": "sa",
-    "Scotland": "gb",
-    "Senegal": "sn",
-    "Serbia": "rs",
-    "South Africa": "za",
-    "South Korea": "kr",
-    "Spain": "es",
-    "Sweden": "se",
-    "Switzerland": "ch",
-    "Tunisia": "tn",
-    "Tunusia": "tn",
-    "Turkey": "tr",
-    "Ukraine": "ua",
-    "United States": "us",
-    "Uruguay": "uy",
-    "Uzbekistan": "uz",
-    "Wales": "gb"
-  };
+    function getCountryCode(teamName) {
+      const flags = {
+        "Argentina": "ar",
+        "Australia": "au",
+        "Austria": "at",
+        "Belgium": "be",
+        "Bosnia and Herzegovina": "ba",
+        "Brazil": "br",
+        "Canada": "ca",
+        "Chile": "cl",
+        "Colombia": "co",
+        "Costa Rica": "cr",
+        "Croatia": "hr",
+        "Czech Republic": "cz",
+        "Czechia": "cz",
+        "Denmark": "dk",
+        "Ecuador": "ec",
+        "Egypt": "eg",
+        "England": "gb",
+        "France": "fr",
+        "Germany": "de",
+        "Ghana": "gh",
+        "Greece": "gr",
+        "Iran": "ir",
+        "Iraq": "iq",
+        "Italy": "it",
+        "Ivory Coast": "ci",
+        "Cote d'Ivoire": "ci",
+        "Côte d'Ivoire": "ci",
+        "Japan": "jp",
+        "Jordan": "jo",
+        "Mexico": "mx",
+        "Morocco": "ma",
+        "Netherlands": "nl",
+        "New Zealand": "nz",
+        "Nigeria": "ng",
+        "Norway": "no",
+        "Paraguay": "py",
+        "Peru": "pe",
+        "Poland": "pl",
+        "Portugal": "pt",
+        "Qatar": "qa",
+        "Saudi Arabia": "sa",
+        "Scotland": "gb",
+        "Senegal": "sn",
+        "South Korea": "kr",
+        "Spain": "es",
+        "Sweden": "se",
+        "Switzerland": "ch",
+        "Tunisia": "tn",
+        "Turkey": "tr",
+        "Ukraine": "ua",
+        "UAE": "ae",
+        "USA": "us",
+        "United States": "us",
+        "Uruguay": "uy",
+        "Uzbekistan": "uz",
+        "Venezuela": "ve",
+        "Wales": "gb"
+      };
 
-  return flags[(teamName || "").trim()] || null;
-}
-function withFlag(teamName) {
-  const cleanName = (teamName || "TBD").toString().trim();
-  const code = getCountryCode(cleanName);
+      return flags[(teamName || "").trim()] || null;
+    }
 
-  if (!code) {
-    return cleanName;
-  }
+    function withFlag(teamName, teamMetaMap = null) {
+      const cleanName = (teamName || "TBD").toString().trim();
+      if (!cleanName) return "TBD";
 
-  return `<img class="flag-icon" src="https://flagcdn.com/w20/${code}.png" alt="${cleanName} flag"> ${cleanName}`;
-}
-    
+      let flagUrl = "";
+      if (teamMetaMap) {
+        const meta = teamMetaMap.get(normalizeTeamName(cleanName));
+        if (meta && meta.flag) flagUrl = meta.flag;
+      }
+
+      if (!flagUrl) {
+        const code = getCountryCode(cleanName);
+        if (code) flagUrl = "https://flagcdn.com/w20/" + code + ".png";
+      }
+
+      if (!flagUrl) return cleanName;
+
+      return `<img class="flag-icon" src="${flagUrl}" alt="${cleanName} flag"> ${cleanName}`;
+    }
+
     function parseMatchDate(dateStr, timeStr) {
       if (!dateStr) return null;
 
@@ -950,7 +982,7 @@ function withFlag(teamName) {
       return parts.join(" • ");
     }
 
-    function createMatchItem(match, showDayTag = false, resultIndex = null) {
+    function createMatchItem(match, teamMetaMap, showDayTag = false, resultIndex = null) {
       const item = document.createElement("div");
       item.className = "match-item";
 
@@ -974,8 +1006,8 @@ function withFlag(teamName) {
       meta.textContent = formatMatchMeta(match);
       item.appendChild(meta);
 
-      const homeTeamText = withFlag(match.home_team);
-      const awayTeamText = withFlag(match.away_team);
+      const homeTeamText = withFlag(match.home_team, teamMetaMap);
+      const awayTeamText = withFlag(match.away_team, teamMetaMap);
 
       const homeLine = document.createElement("div");
       homeLine.className = "match-line";
@@ -1015,7 +1047,7 @@ function withFlag(teamName) {
       return allUpcomingMatches;
     }
 
-    function updateNextMatchesView() {
+    function updateNextMatchesView(teamMetaMap) {
       const box = document.getElementById("nextMatches");
       const countBox = document.getElementById("nextMatchesCount");
       const toggleBtn = document.getElementById("nextToggleBtn");
@@ -1039,7 +1071,7 @@ function withFlag(teamName) {
         : "Showing " + Math.min(10, filteredMatches.length) + " of " + filteredMatches.length + " matches";
 
       visibleMatches.forEach(match => {
-        box.appendChild(createMatchItem(match, true));
+        box.appendChild(createMatchItem(match, teamMetaMap, true));
       });
 
       if (filteredMatches.length <= 10) {
@@ -1050,7 +1082,7 @@ function withFlag(teamName) {
       }
     }
 
-    function renderNextMatches(matches) {
+    function renderNextMatches(matches, teamMetaMap) {
       allUpcomingMatches = matches
         .filter(match => !isPlayedMatch(match))
         .sort((a, b) => {
@@ -1064,10 +1096,10 @@ function withFlag(teamName) {
 
       nextMatchesFilter = "all";
       showAllNextMatches = false;
-      updateNextMatchesView();
+      updateNextMatchesView(teamMetaMap);
     }
 
-    function updateRecentResultsView() {
+    function updateRecentResultsView(teamMetaMap) {
       const box = document.getElementById("recentResults");
       const countBox = document.getElementById("recentResultsCount");
       const toggleBtn = document.getElementById("recentToggleBtn");
@@ -1089,7 +1121,7 @@ function withFlag(teamName) {
         : "Showing " + Math.min(10, allRecentResults.length) + " of " + allRecentResults.length + " results";
 
       visibleResults.forEach((match, index) => {
-        box.appendChild(createMatchItem(match, false, index + 1));
+        box.appendChild(createMatchItem(match, teamMetaMap, false, index + 1));
       });
 
       if (allRecentResults.length <= 10) {
@@ -1101,7 +1133,7 @@ function withFlag(teamName) {
       }
     }
 
-    function renderRecentResults(matches) {
+    function renderRecentResults(matches, teamMetaMap) {
       allRecentResults = matches
         .filter(match => isPlayedMatch(match))
         .sort((a, b) => {
@@ -1114,7 +1146,7 @@ function withFlag(teamName) {
         });
 
       showAllRecentResults = false;
-      updateRecentResultsView();
+      updateRecentResultsView(teamMetaMap);
     }
 
     function createBlankStanding(groupName, teamName) {
@@ -1228,7 +1260,7 @@ function withFlag(teamName) {
       return groupedRows;
     }
 
-    function renderGroupLeadersFromMatches(groupedStandings) {
+    function renderGroupLeadersFromMatches(groupedStandings, teamMetaMap) {
       const box = document.getElementById("groupLeaders");
       box.innerHTML = "";
 
@@ -1246,7 +1278,7 @@ function withFlag(teamName) {
         const item = document.createElement("div");
         item.className = "leader-item";
         item.innerHTML = `
-          <div class="leader-title">Group ${groupName}: ${withFlag(leader.team_name)}</div>
+          <div class="leader-title">Group ${groupName}: ${withFlag(leader.team_name, teamMetaMap)}</div>
           <div class="leader-meta">Rank: ${leader.rank} • Points: ${leader.points}</div>
 
           <div class="leader-stats">
@@ -1273,40 +1305,52 @@ function withFlag(teamName) {
       });
     }
 
-    function renderGroupsFromMatches(groupedStandings) {
+    function renderGroupsFromMatches(groupedStandings, teams, teamMetaMap) {
+      const container = document.getElementById("groupsGrid");
+      container.innerHTML = "";
 
-  const container = document.getElementById("groupsGrid");
-  container.innerHTML = "";
+      const groupsFromTeams = {};
 
-  // 👉 TEAMS.CSV'DEN GRUPLARI AL
-  fetch("teams.csv")
-    .then(res => res.text())
-    .then(text => {
+      teams.forEach(team => {
+        const groupName = (team.group_name || team.group || "").toString().trim();
+        const teamName = (team.team_name || team.team || "").toString().trim();
 
-      const rows = text.trim().split("\n").slice(1);
+        if (!groupName || !teamName) return;
 
-      const groups = {};
-
-      rows.forEach(row => {
-        const cols = row.split(",");
-
-        const teamName = cols[1];
-        const groupName = cols[2];
-        const flag = cols[4];
-
-        if (!groups[groupName]) {
-          groups[groupName] = [];
-        }
-
-        groups[groupName].push({
-          team_name: teamName,
-          flag: flag
-        });
+        if (!groupsFromTeams[groupName]) groupsFromTeams[groupName] = [];
+        groupsFromTeams[groupName].push(teamName);
       });
 
-      const groupNames = Object.keys(groups).sort();
+      const groupNames = Object.keys(groupsFromTeams).sort();
+
+      if (groupNames.length === 0) {
+        container.innerHTML = '<div class="empty-note">No group standings available.</div>';
+        return;
+      }
 
       groupNames.forEach(groupName => {
+        const rows = groupedStandings[groupName] ? [...groupedStandings[groupName]] : [];
+        const teamNamesInGroup = groupsFromTeams[groupName];
+
+        const existing = new Set(rows.map(row => normalizeTeamName(row.team_name)));
+
+        teamNamesInGroup.forEach(teamName => {
+          const key = normalizeTeamName(teamName);
+          if (!existing.has(key)) {
+            rows.push(createBlankStanding(groupName, teamName));
+          }
+        });
+
+        rows.sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          if (b.gd !== a.gd) return b.gd - a.gd;
+          if (b.gf !== a.gf) return b.gf - a.gf;
+          return a.team_name.localeCompare(b.team_name);
+        });
+
+        rows.forEach((row, index) => {
+          row.rank = index + 1;
+        });
 
         const card = document.createElement("div");
         card.className = "group-card";
@@ -1339,53 +1383,31 @@ function withFlag(teamName) {
 
         const tbody = table.querySelector("tbody");
 
-        const standings = groupedStandings[groupName] || [];
-
-        // 👉 TEAMS.CSV SIRASINA GÖRE GÖSTER
-        groups[groupName].forEach((team, index) => {
-
-          const rowData = standings.find(s => s.team_name === team.team_name) || {
-            rank: index + 1,
-            played: 0,
-            won: 0,
-            draw: 0,
-            lost: 0,
-            gf: 0,
-            ga: 0,
-            gd: 0,
-            points: 0
-          };
-
+        rows.forEach(row => {
           const tr = document.createElement("tr");
 
-          if (rowData.rank === 1) {
+          if (row.rank === 1) {
             tr.classList.add("group-winner");
-          } else if (rowData.rank === 2) {
+          } else if (row.rank === 2) {
             tr.classList.add("group-qualified");
           }
 
           tr.innerHTML = `
-            <td>${rowData.rank}</td>
-            <td>${withFlag(team.team_name)}</td>
-            <td>${rowData.played}</td>
-            <td>${rowData.won}</td>
-            <td>${rowData.draw}</td>
-            <td>${rowData.lost}</td>
-            <td>${rowData.gf}</td>
-            <td>${rowData.ga}</td>
-            <td>${rowData.gd}</td>
-            <td>${rowData.points}</td>
+            <td>${row.rank}</td>
+            <td>${row.rank === 1 ? "🥇 " : ""}${withFlag(row.team_name, teamMetaMap)}</td>
+            <td>${row.played}</td>
+            <td>${row.won}</td>
+            <td>${row.draw}</td>
+            <td>${row.lost}</td>
+            <td>${row.gf}</td>
+            <td>${row.ga}</td>
+            <td>${row.gd}</td>
+            <td>${row.points}</td>
           `;
 
           tbody.appendChild(tr);
         });
 
-        card.appendChild(table);
-        container.appendChild(card);
-      });
-
-    });
-}
         card.appendChild(table);
         container.appendChild(card);
       });
@@ -1442,7 +1464,7 @@ function withFlag(teamName) {
       return null;
     }
 
-    function createBracketMatchCard(match, isLastColumn, extraClass = "") {
+    function createBracketMatchCard(match, teamMetaMap, isLastColumn, extraClass = "") {
       const card = document.createElement("div");
       card.className = "bracket-match-card" + (extraClass ? " " + extraClass : "");
 
@@ -1476,8 +1498,8 @@ function withFlag(teamName) {
       const homeScoreText = (match.home_score ?? "").toString().trim();
       const awayScoreText = (match.away_score ?? "").toString().trim();
 
-      const homeName = winner === "home" ? `✓ ${withFlag(homeTeamName)}` : withFlag(homeTeamName);
-      const awayName = winner === "away" ? `✓ ${withFlag(awayTeamName)}` : withFlag(awayTeamName);
+      const homeName = winner === "home" ? `✓ ${withFlag(homeTeamName, teamMetaMap)}` : withFlag(homeTeamName, teamMetaMap);
+      const awayName = winner === "away" ? `✓ ${withFlag(awayTeamName, teamMetaMap)}` : withFlag(awayTeamName, teamMetaMap);
 
       const homeRow = document.createElement("div");
       homeRow.className = "bracket-team-row" + (winner === "home" ? " winner-row" : "");
@@ -1499,7 +1521,7 @@ function withFlag(teamName) {
       return card;
     }
 
-    function renderBracket(matches) {
+    function renderBracket(matches, teamMetaMap) {
       const bracket = document.getElementById("bracket");
       bracket.innerHTML = "";
 
@@ -1530,7 +1552,7 @@ function withFlag(teamName) {
 
         roundMatches.forEach(match => {
           const extraClass = isLastColumn ? "main-final" : "";
-          list.appendChild(createBracketMatchCard(match, isLastColumn, extraClass));
+          list.appendChild(createBracketMatchCard(match, teamMetaMap, isLastColumn, extraClass));
         });
 
         column.appendChild(title);
@@ -1546,7 +1568,7 @@ function withFlag(teamName) {
           thirdBlock.appendChild(thirdLabel);
 
           grouped["Third place"].forEach(match => {
-            thirdBlock.appendChild(createBracketMatchCard(match, true));
+            thirdBlock.appendChild(createBracketMatchCard(match, teamMetaMap, true));
           });
 
           column.appendChild(thirdBlock);
@@ -1566,36 +1588,36 @@ function withFlag(teamName) {
       document.getElementById("statUpcoming").textContent = upcoming;
     }
 
-    function setupNextMatchesControls() {
+    function setupNextMatchesControls(teamMetaMap) {
       document.getElementById("nextToggleBtn").addEventListener("click", function () {
         showAllNextMatches = !showAllNextMatches;
-        updateNextMatchesView();
+        updateNextMatchesView(teamMetaMap);
       });
 
       document.getElementById("filterAllBtn").addEventListener("click", function () {
         nextMatchesFilter = "all";
         showAllNextMatches = false;
-        updateNextMatchesView();
+        updateNextMatchesView(teamMetaMap);
       });
 
       document.getElementById("filterTodayBtn").addEventListener("click", function () {
         nextMatchesFilter = "today";
         showAllNextMatches = false;
-        updateNextMatchesView();
+        updateNextMatchesView(teamMetaMap);
       });
 
       document.getElementById("filterTomorrowBtn").addEventListener("click", function () {
         nextMatchesFilter = "tomorrow";
         showAllNextMatches = false;
-        updateNextMatchesView();
+        updateNextMatchesView(teamMetaMap);
       });
     }
 
-    function setupRecentResultsControls() {
+    function setupRecentResultsControls(teamMetaMap) {
       document.getElementById("recentToggleBtn").addEventListener("click", function () {
         if (allRecentResults.length <= 10) return;
         showAllRecentResults = !showAllRecentResults;
-        updateRecentResultsView();
+        updateRecentResultsView(teamMetaMap);
       });
     }
 
@@ -1606,17 +1628,18 @@ function withFlag(teamName) {
           loadCSV("matches.csv")
         ]);
 
+        const teamMetaMap = buildTeamMetaMap(teams);
         const groupedStandings = buildGroupStandings(matches, teams);
 
         renderSummary(teams, matches);
-        renderNextMatches(matches);
-        renderRecentResults(matches);
-        renderGroupLeadersFromMatches(groupedStandings);
-        renderGroupsFromMatches(groupedStandings);
-        renderBracket(matches);
+        renderNextMatches(matches, teamMetaMap);
+        renderRecentResults(matches, teamMetaMap);
+        renderGroupLeadersFromMatches(groupedStandings, teamMetaMap);
+        renderGroupsFromMatches(groupedStandings, teams, teamMetaMap);
+        renderBracket(matches, teamMetaMap);
 
-        setupNextMatchesControls();
-        setupRecentResultsControls();
+        setupNextMatchesControls(teamMetaMap);
+        setupRecentResultsControls(teamMetaMap);
 
         setStatus("Dashboard loaded successfully.");
       } catch (error) {
