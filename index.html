@@ -792,7 +792,7 @@ function getCountryCode(teamName) {
     "Colombia": "co",
     "Costa Rica": "cr",
     "Croatia": "hr",
-    "Crotia": "hr",              // typo fix
+    "Crotia": "hr",
     "Curacao": "cw",
     "Curaçao": "cw",
     "Czechia": "cz",
@@ -801,7 +801,7 @@ function getCountryCode(teamName) {
     "Congo DR": "cd",
     "Denmark": "dk",
     "Ecuador": "ec",
-    "Equador": "ec",             // typo fix
+    "Equador": "ec",
     "Egypt": "eg",
     "England": "gb",
     "France": "fr",
@@ -820,7 +820,7 @@ function getCountryCode(teamName) {
     "Morocco": "ma",
     "Netherlands": "nl",
     "New Zealand": "nz",
-    "New Zeland": "nz",          // typo fix
+    "New Zeland": "nz",
     "Nigeria": "ng",
     "Norway": "no",
     "Panama": "pa",
@@ -839,14 +839,18 @@ function getCountryCode(teamName) {
     "Sweden": "se",
     "Switzerland": "ch",
     "Tunisia": "tn",
-    "Tunusia": "tn",             // typo fix
+    "Tunusia": "tn",
     "Turkey": "tr",
     "Ukraine": "ua",
     "United States": "us",
     "Uruguay": "uy",
     "Uzbekistan": "uz",
     "Wales": "gb",
-    "Algeria": "dz"              // NEW
+    "Algeria": "dz",
+
+    // ✅ YENİ EKLENEN
+    "Cape Verde": "cv",
+    "Cabo Verde": "cv"
   };
 
   return flags[(teamName || "").trim()] || null;
