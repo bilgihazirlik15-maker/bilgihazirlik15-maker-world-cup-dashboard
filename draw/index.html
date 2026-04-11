@@ -23,6 +23,10 @@
       --radius:18px;
     }
 
+    html, body{
+      height:100%;
+    }
+
     body{
       margin:0;
       font-family: Arial, Helvetica, sans-serif;
@@ -30,13 +34,24 @@
         radial-gradient(circle at top, rgba(58,160,255,.10), transparent 35%),
         linear-gradient(180deg, #08111d 0%, #07111f 100%);
       color:var(--text);
-      min-height:100vh;
+      overflow:hidden;
+    }
+
+    .app{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
     }
 
     .wrap{
-      max-width:1200px;
+      max-width:1300px;
+      width:100%;
       margin:0 auto;
-      padding:24px;
+      padding:18px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
     }
 
     .topbar{
@@ -44,20 +59,21 @@
       justify-content:space-between;
       align-items:center;
       gap:16px;
-      margin-bottom:24px;
+      margin-bottom:16px;
       flex-wrap:wrap;
+      flex:0 0 auto;
     }
 
     .title-box h1{
       margin:0;
-      font-size:32px;
-      letter-spacing:.5px;
+      font-size:30px;
+      letter-spacing:.4px;
     }
 
     .title-box p{
       margin:6px 0 0;
       color:var(--muted);
-      font-size:14px;
+      font-size:13px;
     }
 
     .back-link{
@@ -69,15 +85,26 @@
       font-weight:700;
       box-shadow:var(--shadow);
       white-space:nowrap;
+      flex:0 0 auto;
     }
 
     .grid{
       display:grid;
       grid-template-columns: 360px 1fr;
-      gap:20px;
+      gap:18px;
+      flex:1 1 auto;
+      min-height:0;
     }
 
     @media (max-width: 980px){
+      body{
+        overflow:auto;
+      }
+      .app,
+      .wrap{
+        height:auto;
+        min-height:100vh;
+      }
       .grid{
         grid-template-columns:1fr;
       }
@@ -89,15 +116,19 @@
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
     }
 
     .panel-head{
-      padding:18px 18px 0;
+      padding:16px 16px 0;
+      flex:0 0 auto;
     }
 
     .panel-head h2{
       margin:0 0 6px;
-      font-size:20px;
+      font-size:19px;
     }
 
     .panel-head p{
@@ -107,7 +138,11 @@
     }
 
     .panel-body{
-      padding:18px;
+      padding:16px;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+      flex:1 1 auto;
     }
 
     label{
@@ -119,7 +154,7 @@
 
     textarea{
       width:100%;
-      min-height:220px;
+      min-height:180px;
       resize:vertical;
       border-radius:14px;
       border:1px solid var(--line);
@@ -176,8 +211,9 @@
     .stats{
       display:grid;
       grid-template-columns:repeat(3, 1fr);
-      gap:12px;
-      margin-bottom:18px;
+      gap:10px;
+      margin-bottom:14px;
+      flex:0 0 auto;
     }
 
     @media (max-width:600px){
@@ -190,7 +226,7 @@
       background:var(--panel-2);
       border:1px solid var(--line);
       border-radius:14px;
-      padding:14px;
+      padding:12px;
     }
 
     .stat .k{
@@ -200,7 +236,7 @@
     }
 
     .stat .v{
-      font-size:24px;
+      font-size:22px;
       font-weight:800;
     }
 
@@ -210,9 +246,9 @@
         linear-gradient(180deg, #0b1627 0%, #0a1220 100%);
       border:1px solid var(--line);
       border-radius:18px;
-      padding:24px;
-      margin-bottom:18px;
-      min-height:230px;
+      padding:18px;
+      margin-bottom:14px;
+      min-height:180px;
       display:flex;
       flex-direction:column;
       justify-content:center;
@@ -220,6 +256,7 @@
       text-align:center;
       position:relative;
       overflow:hidden;
+      flex:0 0 auto;
     }
 
     .draw-stage::before{
@@ -239,33 +276,40 @@
     .draw-label{
       position:relative;
       z-index:1;
-      font-size:13px;
+      font-size:12px;
       color:var(--muted);
       text-transform:uppercase;
       letter-spacing:1.5px;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     .current-person{
       position:relative;
       z-index:1;
-      font-size:34px;
+      font-size:30px;
       font-weight:900;
-      margin-bottom:14px;
+      margin-bottom:12px;
       line-height:1.15;
     }
 
     .current-team{
       position:relative;
       z-index:1;
-      min-height:58px;
-      font-size:28px;
+      min-height:52px;
+      font-size:24px;
       font-weight:800;
       color:#7dd3fc;
       display:flex;
       align-items:center;
       justify-content:center;
+      gap:10px;
       padding:0 12px;
+      flex-wrap:wrap;
+    }
+
+    .current-flag{
+      font-size:28px;
+      line-height:1;
     }
 
     .subinfo{
@@ -273,12 +317,43 @@
       z-index:1;
       margin-top:10px;
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
+    }
+
+    .results-shell{
+      min-height:0;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .results-title{
+      color:var(--muted);
+      font-size:12px;
+      margin:0 0 8px;
+      flex:0 0 auto;
+    }
+
+    .results-scroll{
+      min-height:0;
+      flex:1 1 auto;
+      overflow:auto;
+      padding-right:6px;
+      border-radius:14px;
+    }
+
+    .results-scroll::-webkit-scrollbar{
+      width:10px;
+    }
+
+    .results-scroll::-webkit-scrollbar-thumb{
+      background:#254268;
+      border-radius:999px;
     }
 
     .result-list{
       display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
       gap:12px;
     }
 
@@ -292,12 +367,12 @@
     .person{
       font-size:18px;
       font-weight:800;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
 
     .teams{
       display:flex;
-      flex-wrap:wrap;
+      flex-direction:column;
       gap:8px;
     }
 
@@ -305,14 +380,41 @@
       background:#0b1627;
       border:1px solid #284063;
       color:#dcebff;
-      padding:7px 10px;
-      border-radius:999px;
+      padding:9px 10px;
+      border-radius:12px;
       font-size:13px;
       font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .flag{
+      font-size:18px;
+      line-height:1;
+      width:22px;
+      text-align:center;
+      flex:0 0 22px;
+    }
+
+    .team-text{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+
+    .group-badge{
+      font-size:11px;
+      color:#9cc8ff;
+      background:#102338;
+      border:1px solid #294867;
+      border-radius:999px;
+      padding:3px 7px;
     }
 
     .log{
-      margin-top:18px;
+      margin-top:14px;
       background:#091321;
       border:1px solid var(--line);
       border-radius:14px;
@@ -322,12 +424,13 @@
       max-height:180px;
       overflow:auto;
       line-height:1.55;
+      flex:0 0 auto;
     }
 
     .empty{
       border:1px dashed #34507a;
       border-radius:16px;
-      padding:28px;
+      padding:24px;
       text-align:center;
       color:var(--muted);
       background:rgba(10,18,32,.5);
@@ -350,74 +453,84 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="title-box">
-        <h1>World Cup 2026 – Draw</h1>
-        <p>Tüm takımlar katılımcılar arasında dengeli şekilde dağıtılır.</p>
-      </div>
-      <a class="back-link" href="../index.html">← Dashboard’a Dön</a>
-    </div>
-
-    <div class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Katılımcılar</h2>
-          <p>Her satıra bir isim yaz. Boş satırlar yok sayılır.</p>
+  <div class="app">
+    <div class="wrap">
+      <div class="topbar">
+        <div class="title-box">
+          <h1>World Cup 2026 – Draw</h1>
+          <p>Tüm takımlar dağıtılır. Sonuçlar tek ekranda düzenli kalır.</p>
         </div>
-        <div class="panel-body">
-          <label for="names">İsim listesi</label>
-          <textarea id="names" placeholder="Örnek:
+        <a class="back-link" href="../index.html">← Dashboard’a Dön</a>
+      </div>
+
+      <div class="grid">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Katılımcılar</h2>
+            <p>Her satıra bir isim yaz. Boş satırlar yok sayılır.</p>
+          </div>
+          <div class="panel-body">
+            <label for="names">İsim listesi</label>
+            <textarea id="names" placeholder="Örnek:
 Ali
 Ayşe
 Mehmet
 Zeynep"></textarea>
 
-          <div class="btns">
-            <button id="drawBtn" class="primary">Çekilişi Başlat</button>
-            <button id="sampleBtn" class="secondary">Örnek İsimler</button>
-            <button id="clearBtn" class="danger">Temizle</button>
-          </div>
-
-          <div class="log" id="log">
-            Sistem hazır. Katılımcıları girip çekilişi başlatabilirsin.
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Çekiliş Sonuçları</h2>
-          <p>Tüm takımlar eksiksiz dağıtılır. Katılımcı azsa bazı kişilere birden fazla takım düşer.</p>
-        </div>
-        <div class="panel-body">
-          <div class="stats">
-            <div class="stat">
-              <div class="k">Katılımcı</div>
-              <div class="v" id="statPeople">0</div>
+            <div class="btns">
+              <button id="drawBtn" class="primary">Çekilişi Başlat</button>
+              <button id="sampleBtn" class="secondary">Örnek İsimler</button>
+              <button id="clearBtn" class="danger">Temizle</button>
             </div>
-            <div class="stat">
-              <div class="k">Takım</div>
-              <div class="v" id="statTeams">0</div>
-            </div>
-            <div class="stat">
-              <div class="k">Dağıtılan</div>
-              <div class="v" id="statAssigned">0</div>
+
+            <div class="log" id="log">
+              Sistem hazır. Katılımcıları girip çekilişi başlatabilirsin.
             </div>
           </div>
+        </section>
 
-          <div class="draw-stage">
-            <div class="draw-label">Çekiliş Sahnesi</div>
-            <div class="current-person" id="currentPerson">Hazır</div>
-            <div class="current-team" id="currentTeam">Başlamak için soldan isimleri gir</div>
-            <div class="subinfo" id="subInfo">teams.csv yüklendiğinde takımlar otomatik okunur</div>
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Çekiliş Sonuçları</h2>
+            <p>Sonuç alanı sabit kalır, sadece iç kısmı scroll olur.</p>
           </div>
+          <div class="panel-body">
+            <div class="stats">
+              <div class="stat">
+                <div class="k">Katılımcı</div>
+                <div class="v" id="statPeople">0</div>
+              </div>
+              <div class="stat">
+                <div class="k">Takım</div>
+                <div class="v" id="statTeams">0</div>
+              </div>
+              <div class="stat">
+                <div class="k">Dağıtılan</div>
+                <div class="v" id="statAssigned">0</div>
+              </div>
+            </div>
 
-          <div id="resultsArea" class="empty">
-            Henüz sonuç yok.
+            <div class="draw-stage">
+              <div class="draw-label">Çekiliş Sahnesi</div>
+              <div class="current-person" id="currentPerson">Hazır</div>
+              <div class="current-team" id="currentTeam">
+                <span id="currentFlag" class="current-flag"></span>
+                <span id="currentTeamText">Başlamak için soldan isimleri gir</span>
+              </div>
+              <div class="subinfo" id="subInfo">teams.csv yüklendiğinde takımlar otomatik okunur</div>
+            </div>
+
+            <div class="results-shell">
+              <div class="results-title">Atanan takımlar</div>
+              <div class="results-scroll">
+                <div id="resultsArea" class="empty">
+                  Henüz sonuç yok.
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </div>
 
@@ -429,7 +542,8 @@ Zeynep"></textarea>
 
     const logBox = document.getElementById("log");
     const currentPersonEl = document.getElementById("currentPerson");
-    const currentTeamEl = document.getElementById("currentTeam");
+    const currentFlagEl = document.getElementById("currentFlag");
+    const currentTeamTextEl = document.getElementById("currentTeamText");
     const subInfoEl = document.getElementById("subInfo");
     const resultsArea = document.getElementById("resultsArea");
 
@@ -462,11 +576,45 @@ Zeynep"></textarea>
       return arr;
     }
 
+    function toFlagEmoji(code){
+      if(!code) return "";
+      const clean = code.trim().toUpperCase();
+      if(!/^[A-Z]{2}$/.test(clean)) return "";
+      return clean.replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
+    }
+
+    function parseCSVLine(line){
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for(let i = 0; i < line.length; i++){
+        const ch = line[i];
+        const next = line[i + 1];
+
+        if(ch === '"' && inQuotes && next === '"'){
+          current += '"';
+          i++;
+        } else if(ch === '"'){
+          inQuotes = !inQuotes;
+        } else if(ch === ',' && !inQuotes){
+          result.push(current.trim());
+          current = "";
+        } else {
+          current += ch;
+        }
+      }
+
+      result.push(current.trim());
+      return result;
+    }
+
     function parseCSV(text){
       const lines = text.trim().split(/\r?\n/).filter(Boolean);
       if(lines.length < 2) return [];
 
-      const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+      const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+
       const teamIndex =
         headers.indexOf("team_name") !== -1 ? headers.indexOf("team_name") :
         headers.indexOf("team") !== -1 ? headers.indexOf("team") :
@@ -478,16 +626,33 @@ Zeynep"></textarea>
         headers.indexOf("group_name") !== -1 ? headers.indexOf("group_name") :
         -1;
 
+      const flagIndex =
+        headers.indexOf("flag") !== -1 ? headers.indexOf("flag") :
+        headers.indexOf("flag_url") !== -1 ? headers.indexOf("flag_url") :
+        headers.indexOf("emoji_flag") !== -1 ? headers.indexOf("emoji_flag") :
+        -1;
+
+      const codeIndex =
+        headers.indexOf("code") !== -1 ? headers.indexOf("code") :
+        headers.indexOf("country_code") !== -1 ? headers.indexOf("country_code") :
+        headers.indexOf("fifa_code") !== -1 ? headers.indexOf("fifa_code") :
+        -1;
+
       const rows = [];
 
       for(let i = 1; i < lines.length; i++){
-        const cols = lines[i].split(",").map(c => c.trim());
+        const cols = parseCSVLine(lines[i]);
         const teamName = cols[teamIndex];
         if(!teamName) continue;
 
+        const rawFlag = flagIndex >= 0 ? (cols[flagIndex] || "") : "";
+        const rawCode = codeIndex >= 0 ? (cols[codeIndex] || "") : "";
+
         rows.push({
           team: teamName,
-          group: groupIndex >= 0 ? (cols[groupIndex] || "") : ""
+          group: groupIndex >= 0 ? (cols[groupIndex] || "") : "",
+          flag: rawFlag || toFlagEmoji(rawCode),
+          code: rawCode || ""
         });
       }
 
@@ -590,15 +755,31 @@ Zeynep"></textarea>
       currentPersonEl.textContent = person;
       subInfoEl.textContent = `${assignedCount}/${totalCount} dağıtılıyor`;
 
-      const spinList = shuffle(pool.map(t => t.team));
+      const spinList = shuffle(pool);
       const cycles = Math.min(18, Math.max(10, spinList.length));
+
       for(let i = 0; i < cycles; i++){
-        currentTeamEl.textContent = spinList[i % spinList.length] || "Loading...";
+        const t = spinList[i % spinList.length];
+        currentFlagEl.textContent = t.flag || "";
+        currentTeamTextEl.textContent = t.team || "Loading...";
         await sleep(70 + i * 8);
       }
 
-      currentTeamEl.textContent = finalTeam.team + (finalTeam.group ? `  •  Grup ${finalTeam.group}` : "");
+      currentFlagEl.textContent = finalTeam.flag || "";
+      currentTeamTextEl.textContent = finalTeam.team + (finalTeam.group ? ` • Grup ${finalTeam.group}` : "");
       await sleep(550);
+    }
+
+    function teamPillHTML(item){
+      return `
+        <div class="team-pill">
+          <span class="flag">${item.flag || "🏳️"}</span>
+          <span class="team-text">
+            <span>${item.team}</span>
+            ${item.group ? `<span class="group-badge">Grup ${item.group}</span>` : ""}
+          </span>
+        </div>
+      `;
     }
 
     function renderResults(assignmentMap){
@@ -606,14 +787,14 @@ Zeynep"></textarea>
 
       if(people.length === 0){
         resultsArea.className = "empty";
-        resultsArea.textContent = "Henüz sonuç yok.";
+        resultsArea.innerHTML = "Henüz sonuç yok.";
         return;
       }
 
       resultsArea.className = "result-list";
       resultsArea.innerHTML = people.map(person => {
         const teamsHtml = assignmentMap[person]
-          .map(item => `<span class="team-pill">${item.team}${item.group ? ` (${item.group})` : ""}</span>`)
+          .map(item => teamPillHTML(item))
           .join("");
 
         return `
@@ -636,7 +817,8 @@ Zeynep"></textarea>
       if(participants.length === 0){
         log("Önce en az bir katılımcı adı gir.", "warn");
         currentPersonEl.textContent = "Eksik bilgi";
-        currentTeamEl.textContent = "Katılımcı listesi boş";
+        currentFlagEl.textContent = "";
+        currentTeamTextEl.textContent = "Katılımcı listesi boş";
         subInfoEl.textContent = "Soldaki kutuya isim gir";
         return;
       }
@@ -644,7 +826,8 @@ Zeynep"></textarea>
       if(teams.length === 0){
         log("Takım listesi boş. teams.csv yüklenemedi.", "error");
         currentPersonEl.textContent = "Hata";
-        currentTeamEl.textContent = "Takımlar yüklenemedi";
+        currentFlagEl.textContent = "";
+        currentTeamTextEl.textContent = "Takımlar yüklenemedi";
         subInfoEl.textContent = "teams.csv kontrol edilmeli";
         return;
       }
@@ -662,10 +845,6 @@ Zeynep"></textarea>
 
         let assigned = 0;
 
-        renderResults(
-          Object.fromEntries(participants.map(p => [p, []]))
-        );
-
         const progressiveMap = {};
         participants.forEach(p => progressiveMap[p] = []);
         renderResults(progressiveMap);
@@ -681,7 +860,8 @@ Zeynep"></textarea>
         }
 
         currentPersonEl.textContent = "Tamamlandı";
-        currentTeamEl.textContent = "Tüm takımlar dağıtıldı";
+        currentFlagEl.textContent = "🏆";
+        currentTeamTextEl.textContent = "Tüm takımlar dağıtıldı";
         subInfoEl.textContent = `${assigned} / ${teams.length} takım atandı`;
 
         const unused = teams.length - assigned;
@@ -695,7 +875,8 @@ Zeynep"></textarea>
         console.error(err);
         log("Çekiliş sırasında hata oluştu.", "error");
         currentPersonEl.textContent = "Hata";
-        currentTeamEl.textContent = "İşlem tamamlanamadı";
+        currentFlagEl.textContent = "⚠️";
+        currentTeamTextEl.textContent = "İşlem tamamlanamadı";
         subInfoEl.textContent = "Konsolu kontrol et";
       }finally{
         isDrawing = false;
@@ -723,7 +904,8 @@ Selin`;
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
       currentPersonEl.textContent = "Hazır";
-      currentTeamEl.textContent = "Başlamak için soldan isimleri gir";
+      currentFlagEl.textContent = "";
+      currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
       subInfoEl.textContent = teams.length ? `${teams.length} takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
       resultsArea.className = "empty";
       resultsArea.textContent = "Henüz sonuç yok.";
