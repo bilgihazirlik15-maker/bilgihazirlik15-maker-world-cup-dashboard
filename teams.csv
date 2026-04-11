@@ -1,60 +1,60 @@
 team_id,team_name,group_name,short_name,flag,status
-1,Brazil,A,BRA,🇧🇷,active
-2,Argentina,A,ARG,🇦🇷,active
-3,France,A,FRA,🇫🇷,active
-4,Germany,A,GER,🇩🇪,active
+1,Brazil,A,BRA,https://flagcdn.com/w40/br.png,active
+2,Argentina,A,ARG,https://flagcdn.com/w40/ar.png,active
+3,France,A,FRA,https://flagcdn.com/w40/fr.png,active
+4,Germany,A,GER,https://flagcdn.com/w40/de.png,active
 
-5,Spain,B,ESP,🇪🇸,active
-6,England,B,ENG,🇬🇧,active
-7,Italy,B,ITA,🇮🇹,active
-8,Netherlands,B,NED,🇳🇱,active
+5,Spain,B,ESP,https://flagcdn.com/w40/es.png,active
+6,England,B,ENG,https://flagcdn.com/w40/gb.png,active
+7,Italy,B,ITA,https://flagcdn.com/w40/it.png,active
+8,Netherlands,B,NED,https://flagcdn.com/w40/nl.png,active
 
-9,Portugal,C,POR,🇵🇹,active
-10,Belgium,C,BEL,🇧🇪,active
-11,Croatia,C,CRO,🇭🇷,active
-12,Denmark,C,DEN,🇩🇰,active
+9,Portugal,C,POR,https://flagcdn.com/w40/pt.png,active
+10,Belgium,C,BEL,https://flagcdn.com/w40/be.png,active
+11,Croatia,C,CRO,https://flagcdn.com/w40/hr.png,active
+12,Denmark,C,DEN,https://flagcdn.com/w40/dk.png,active
 
-13,Switzerland,D,SUI,🇨🇭,active
-14,Austria,D,AUT,🇦🇹,active
-15,Poland,D,POL,🇵🇱,active
-16,Czech Republic,D,CZE,🇨🇿,active
+13,Switzerland,D,SUI,https://flagcdn.com/w40/ch.png,active
+14,Austria,D,AUT,https://flagcdn.com/w40/at.png,active
+15,Poland,D,POL,https://flagcdn.com/w40/pl.png,active
+16,Czech Republic,D,CZE,https://flagcdn.com/w40/cz.png,active
 
-17,USA,E,USA,🇺🇸,active
-18,Mexico,E,MEX,🇲🇽,active
-19,Canada,E,CAN,🇨🇦,active
-20,Costa Rica,E,CRC,🇨🇷,active
+17,USA,E,USA,https://flagcdn.com/w40/us.png,active
+18,Mexico,E,MEX,https://flagcdn.com/w40/mx.png,active
+19,Canada,E,CAN,https://flagcdn.com/w40/ca.png,active
+20,Costa Rica,E,CRC,https://flagcdn.com/w40/cr.png,active
 
-21,Japan,F,JPN,🇯🇵,active
-22,South Korea,F,KOR,🇰🇷,active
-23,Iran,F,IRN,🇮🇷,active
-24,Saudi Arabia,F,KSA,🇸🇦,active
+21,Japan,F,JPN,https://flagcdn.com/w40/jp.png,active
+22,South Korea,F,KOR,https://flagcdn.com/w40/kr.png,active
+23,Iran,F,IRN,https://flagcdn.com/w40/ir.png,active
+24,Saudi Arabia,F,KSA,https://flagcdn.com/w40/sa.png,active
 
-25,Senegal,G,SEN,🇸🇳,active
-26,Morocco,G,MAR,🇲🇦,active
-27,Nigeria,G,NGA,🇳🇬,active
-28,Egypt,G,EGY,🇪🇬,active
+25,Senegal,G,SEN,https://flagcdn.com/w40/sn.png,active
+26,Morocco,G,MAR,https://flagcdn.com/w40/ma.png,active
+27,Nigeria,G,NGA,https://flagcdn.com/w40/ng.png,active
+28,Egypt,G,EGY,https://flagcdn.com/w40/eg.png,active
 
-29,Cameroon,H,CMR,🇨🇲,active
-30,Ghana,H,GHA,🇬🇭,active
-31,Ivory Coast,H,CIV,🇨🇮,active
-32,Tunisia,H,TUN,🇹🇳,active
+29,Cameroon,H,CMR,https://flagcdn.com/w40/cm.png,active
+30,Ghana,H,GHA,https://flagcdn.com/w40/gh.png,active
+31,Ivory Coast,H,CIV,https://flagcdn.com/w40/ci.png,active
+32,Tunisia,H,TUN,https://flagcdn.com/w40/tn.png,active
 
-33,Australia,I,AUS,🇦🇺,active
-34,New Zealand,I,NZL,🇳🇿,active
-35,Qatar,I,QAT,🇶🇦,active
-36,UAE,I,UAE,🇦🇪,active
+33,Australia,I,AUS,https://flagcdn.com/w40/au.png,active
+34,New Zealand,I,NZL,https://flagcdn.com/w40/nz.png,active
+35,Qatar,I,QAT,https://flagcdn.com/w40/qa.png,active
+36,UAE,I,UAE,https://flagcdn.com/w40/ae.png,active
 
-37,Colombia,J,COL,🇨🇴,active
-38,Chile,J,CHI,🇨🇱,active
-39,Peru,J,PER,🇵🇪,active
-40,Uruguay,J,URU,🇺🇾,active
+37,Colombia,J,COL,https://flagcdn.com/w40/co.png,active
+38,Chile,J,CHI,https://flagcdn.com/w40/cl.png,active
+39,Peru,J,PER,https://flagcdn.com/w40/pe.png,active
+40,Uruguay,J,URU,https://flagcdn.com/w40/uy.png,active
 
-41,Ecuador,K,ECU,🇪🇨,active
-42,Paraguay,K,PAR,🇵🇾,active
-43,Bolivia,K,BOL,🇧🇴,active
-44,Venezuela,K,VEN,🇻🇪,active
+41,Ecuador,K,ECU,https://flagcdn.com/w40/ec.png,active
+42,Paraguay,K,PAR,https://flagcdn.com/w40/py.png,active
+43,Bolivia,K,BOL,https://flagcdn.com/w40/bo.png,active
+44,Venezuela,K,VEN,https://flagcdn.com/w40/ve.png,active
 
-45,Turkey,L,TUR,🇹🇷,active
-46,Greece,L,GRE,🇬🇷,active
-47,Norway,L,NOR,🇳🇴,active
-48,Sweden,L,SWE,🇸🇪,active
+45,Turkey,L,TUR,https://flagcdn.com/w40/tr.png,active
+46,Greece,L,GRE,https://flagcdn.com/w40/gr.png,active
+47,Norway,L,NOR,https://flagcdn.com/w40/no.png,active
+48,Sweden,L,SWE,https://flagcdn.com/w40/se.png,active
