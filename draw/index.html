@@ -16,9 +16,6 @@
       --muted:#95a7c6;
       --accent:#3aa0ff;
       --accent-2:#00d0ff;
-      --good:#22c55e;
-      --warn:#f59e0b;
-      --danger:#ef4444;
       --shadow:0 14px 40px rgba(0,0,0,.35);
       --radius:18px;
     }
@@ -216,12 +213,6 @@
       flex:0 0 auto;
     }
 
-    @media (max-width:600px){
-      .stats{
-        grid-template-columns:1fr;
-      }
-    }
-
     .stat{
       background:var(--panel-2);
       border:1px solid var(--line);
@@ -259,20 +250,6 @@
       flex:0 0 auto;
     }
 
-    .draw-stage::before{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background:radial-gradient(circle, rgba(0,208,255,.05), transparent 35%);
-      animation:pulse 3s linear infinite;
-      pointer-events:none;
-    }
-
-    @keyframes pulse{
-      from{ transform:scale(0.85); opacity:.4; }
-      to{ transform:scale(1.15); opacity:.9; }
-    }
-
     .draw-label{
       position:relative;
       z-index:1;
@@ -308,8 +285,22 @@
     }
 
     .current-flag{
-      font-size:28px;
+      width:34px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      font-size:26px;
       line-height:1;
+    }
+
+    .current-flag img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      border-radius:3px;
     }
 
     .subinfo{
@@ -390,11 +381,23 @@
     }
 
     .flag{
-      font-size:18px;
-      line-height:1;
       width:22px;
-      text-align:center;
+      height:16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       flex:0 0 22px;
+      overflow:hidden;
+      font-size:16px;
+      line-height:1;
+    }
+
+    .flag img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:2px;
+      display:block;
     }
 
     .team-text{
@@ -436,20 +439,9 @@
       background:rgba(10,18,32,.5);
     }
 
-    .ok{
-      color:#86efac;
-      font-weight:700;
-    }
-
-    .warn-text{
-      color:#fcd34d;
-      font-weight:700;
-    }
-
-    .error-text{
-      color:#fca5a5;
-      font-weight:700;
-    }
+    .ok{ color:#86efac; font-weight:700; }
+    .warn-text{ color:#fcd34d; font-weight:700; }
+    .error-text{ color:#fca5a5; font-weight:700; }
   </style>
 </head>
 <body>
@@ -513,7 +505,7 @@ Zeynep"></textarea>
             <div class="draw-stage">
               <div class="draw-label">Çekiliş Sahnesi</div>
               <div class="current-person" id="currentPerson">Hazır</div>
-              <div class="current-team" id="currentTeam">
+              <div class="current-team">
                 <span id="currentFlag" class="current-flag"></span>
                 <span id="currentTeamText">Başlamak için soldan isimleri gir</span>
               </div>
@@ -576,13 +568,6 @@ Zeynep"></textarea>
       return arr;
     }
 
-    function toFlagEmoji(code){
-      if(!code) return "";
-      const clean = code.trim().toUpperCase();
-      if(!/^[A-Z]{2}$/.test(clean)) return "";
-      return clean.replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
-    }
-
     function parseCSVLine(line){
       const result = [];
       let current = "";
@@ -609,6 +594,32 @@ Zeynep"></textarea>
       return result;
     }
 
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getFlagHTML(flagValue){
+      if(!flagValue) return "";
+
+      const value = String(flagValue).trim();
+
+      if(
+        value.startsWith("http://") ||
+        value.startsWith("https://") ||
+        value.startsWith("./") ||
+        value.startsWith("../")
+      ){
+        return `<img src="${escapeHtml(value)}" alt="flag" loading="lazy" referrerpolicy="no-referrer">`;
+      }
+
+      return escapeHtml(value);
+    }
+
     function parseCSV(text){
       const lines = text.trim().split(/\r?\n/).filter(Boolean);
       if(lines.length < 2) return [];
@@ -622,20 +633,13 @@ Zeynep"></textarea>
         0;
 
       const groupIndex =
-  headers.indexOf("group") !== -1 ? headers.indexOf("group") :
-  headers.indexOf("group_name") !== -1 ? headers.indexOf("group_name") :
-  -1;
+        headers.indexOf("group") !== -1 ? headers.indexOf("group") :
+        headers.indexOf("group_name") !== -1 ? headers.indexOf("group_name") :
+        -1;
 
       const flagIndex =
         headers.indexOf("flag") !== -1 ? headers.indexOf("flag") :
         headers.indexOf("flag_url") !== -1 ? headers.indexOf("flag_url") :
-        headers.indexOf("emoji_flag") !== -1 ? headers.indexOf("emoji_flag") :
-        -1;
-
-      const codeIndex =
-        headers.indexOf("code") !== -1 ? headers.indexOf("code") :
-        headers.indexOf("country_code") !== -1 ? headers.indexOf("country_code") :
-        headers.indexOf("fifa_code") !== -1 ? headers.indexOf("fifa_code") :
         -1;
 
       const rows = [];
@@ -643,16 +647,13 @@ Zeynep"></textarea>
       for(let i = 1; i < lines.length; i++){
         const cols = parseCSVLine(lines[i]);
         const teamName = cols[teamIndex];
-        if(!teamName) continue;
 
-        const rawFlag = flagIndex >= 0 ? (cols[flagIndex] || "") : "";
-        const rawCode = codeIndex >= 0 ? (cols[codeIndex] || "") : "";
+        if(!teamName) continue;
 
         rows.push({
           team: teamName,
           group: groupIndex >= 0 ? (cols[groupIndex] || "") : "",
-          flag: rawFlag || toFlagEmoji(rawCode),
-          code: rawCode || ""
+          flag: flagIndex >= 0 ? (cols[flagIndex] || "") : ""
         });
       }
 
@@ -760,27 +761,27 @@ Zeynep"></textarea>
 
       for(let i = 0; i < cycles; i++){
         const t = spinList[i % spinList.length];
-        currentFlagEl.textContent = t.flag || "";
+        currentFlagEl.innerHTML = getFlagHTML(t.flag);
         currentTeamTextEl.textContent = t.team || "Loading...";
         await sleep(70 + i * 8);
       }
 
-      currentFlagEl.textContent = finalTeam.flag || "";
+      currentFlagEl.innerHTML = getFlagHTML(finalTeam.flag);
       currentTeamTextEl.textContent = finalTeam.team + (finalTeam.group ? ` • Grup ${finalTeam.group}` : "");
-      await sleep(550);
+      await sleep(450);
     }
 
     function teamPillHTML(item){
-  return `
-    <div class="team-pill">
-      <span class="flag">${getFlagHTML(item.flag) || "🏳️"}</span>
-      <span class="team-text">
-        <span>${item.team}</span>
-        ${item.group ? `<span class="group-badge">Grup ${item.group}</span>` : ""}
-      </span>
-    </div>
-  `;
-}
+      return `
+        <div class="team-pill">
+          <span class="flag">${getFlagHTML(item.flag) || "🏳️"}</span>
+          <span class="team-text">
+            <span>${escapeHtml(item.team)}</span>
+            ${item.group ? `<span class="group-badge">Grup ${escapeHtml(item.group)}</span>` : ""}
+          </span>
+        </div>
+      `;
+    }
 
     function renderResults(assignmentMap){
       const people = Object.keys(assignmentMap);
@@ -799,7 +800,7 @@ Zeynep"></textarea>
 
         return `
           <div class="card">
-            <div class="person">${person}</div>
+            <div class="person">${escapeHtml(person)}</div>
             <div class="teams">${teamsHtml}</div>
           </div>
         `;
@@ -817,7 +818,7 @@ Zeynep"></textarea>
       if(participants.length === 0){
         log("Önce en az bir katılımcı adı gir.", "warn");
         currentPersonEl.textContent = "Eksik bilgi";
-        currentFlagEl.textContent = "";
+        currentFlagEl.innerHTML = "";
         currentTeamTextEl.textContent = "Katılımcı listesi boş";
         subInfoEl.textContent = "Soldaki kutuya isim gir";
         return;
@@ -826,7 +827,7 @@ Zeynep"></textarea>
       if(teams.length === 0){
         log("Takım listesi boş. teams.csv yüklenemedi.", "error");
         currentPersonEl.textContent = "Hata";
-        currentFlagEl.textContent = "";
+        currentFlagEl.innerHTML = "";
         currentTeamTextEl.textContent = "Takımlar yüklenemedi";
         subInfoEl.textContent = "teams.csv kontrol edilmeli";
         return;
@@ -856,11 +857,11 @@ Zeynep"></textarea>
           statAssigned.textContent = assigned;
           renderResults(progressiveMap);
           log(`${item.person} → ${item.team.team}${item.team.group ? ` (Grup ${item.team.group})` : ""}`);
-          await sleep(220);
+          await sleep(180);
         }
 
         currentPersonEl.textContent = "Tamamlandı";
-        currentFlagEl.textContent = "🏆";
+        currentFlagEl.innerHTML = "🏆";
         currentTeamTextEl.textContent = "Tüm takımlar dağıtıldı";
         subInfoEl.textContent = `${assigned} / ${teams.length} takım atandı`;
 
@@ -873,9 +874,9 @@ Zeynep"></textarea>
 
       }catch(err){
         console.error(err);
-        log("Çekiliş sırasında hata oluştu.", "error");
+        log(`Çekiliş sırasında hata oluştu: ${err.message}`, "error");
         currentPersonEl.textContent = "Hata";
-        currentFlagEl.textContent = "⚠️";
+        currentFlagEl.innerHTML = "⚠️";
         currentTeamTextEl.textContent = "İşlem tamamlanamadı";
         subInfoEl.textContent = "Konsolu kontrol et";
       }finally{
@@ -904,7 +905,7 @@ Selin`;
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
       currentPersonEl.textContent = "Hazır";
-      currentFlagEl.textContent = "";
+      currentFlagEl.innerHTML = "";
       currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
       subInfoEl.textContent = teams.length ? `${teams.length} takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
       resultsArea.className = "empty";
