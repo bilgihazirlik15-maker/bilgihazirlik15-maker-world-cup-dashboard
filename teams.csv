@@ -1,28 +1,28 @@
 team_id,team_name,group_name,short_name,flag,status
 1,Mexico,A,MEX,https://flagcdn.com/w40/mx.png,active
-2,South Korea,A,KOR,https://flagcdn.com/w40/kr.png,active
-3,South Africa,A,RSA,https://flagcdn.com/w40/za.png,active
+2,South Africa,A,RSA,https://flagcdn.com/w40/za.png,active
+3,South Korea,A,KOR,https://flagcdn.com/w40/kr.png,active
 4,Czechia,A,CZE,https://flagcdn.com/w40/cz.png,active
 
 5,Canada,B,CAN,https://flagcdn.com/w40/ca.png,active
-6,Switzerland,B,SUI,https://flagcdn.com/w40/ch.png,active
+6,Bosnia and Herzegovina,B,BIH,https://flagcdn.com/w40/ba.png,active
 7,Qatar,B,QAT,https://flagcdn.com/w40/qa.png,active
-8,Bosnia and Herzegovina,B,BIH,https://flagcdn.com/w40/ba.png,active
+8,Switzerland,B,SUI,https://flagcdn.com/w40/ch.png,active
 
 9,Brazil,C,BRA,https://flagcdn.com/w40/br.png,active
 10,Morocco,C,MAR,https://flagcdn.com/w40/ma.png,active
-11,Scotland,C,SCO,https://flagcdn.com/w40/gb-sct.png,active
-12,Haiti,C,HAI,https://flagcdn.com/w40/ht.png,active
+11,Haiti,C,HAI,https://flagcdn.com/w40/ht.png,active
+12,Scotland,C,SCO,https://flagcdn.com/w40/gb.png,active
 
-13,USA,D,USA,https://flagcdn.com/w40/us.png,active
+13,United States,D,USA,https://flagcdn.com/w40/us.png,active
 14,Paraguay,D,PAR,https://flagcdn.com/w40/py.png,active
 15,Australia,D,AUS,https://flagcdn.com/w40/au.png,active
-16,Turkiye,D,TUR,https://flagcdn.com/w40/tr.png,active
+16,Turkey,D,TUR,https://flagcdn.com/w40/tr.png,active
 
 17,Germany,E,GER,https://flagcdn.com/w40/de.png,active
-18,Ecuador,E,ECU,https://flagcdn.com/w40/ec.png,active
+18,Curacao,E,CUW,https://flagcdn.com/w40/cw.png,active
 19,Ivory Coast,E,CIV,https://flagcdn.com/w40/ci.png,active
-20,Curacao,E,CUW,https://flagcdn.com/w40/cw.png,active
+20,Ecuador,E,ECU,https://flagcdn.com/w40/ec.png,active
 
 21,Netherlands,F,NED,https://flagcdn.com/w40/nl.png,active
 22,Japan,F,JPN,https://flagcdn.com/w40/jp.png,active
