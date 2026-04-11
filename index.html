@@ -773,17 +773,14 @@
     }
 
     function normalizeTeamName(name) {
-      return (name || "")
-        .toString()
-        .trim()
-        .toLowerCase();
+      return (name || "").toString().trim().toLowerCase();
     }
 
     function buildTeamMetaMap(teams) {
       const map = new Map();
 
       teams.forEach(team => {
-        const teamName = team.team_name || team.team || team.name || "";
+        const teamName = (team.team_name || team.team || team.name || "").toString().trim();
         const key = normalizeTeamName(teamName);
         if (!key) return;
 
@@ -799,19 +796,12 @@
       return map;
     }
 
-    function toNumber(value) {
-      if (value === null || value === undefined || value === "") return null;
-      const n = Number(value);
-      return Number.isNaN(n) ? null : n;
-    }
-
     function getCountryCode(teamName) {
       const flags = {
         "Argentina": "ar",
         "Australia": "au",
         "Austria": "at",
         "Belgium": "be",
-        "Bosnia and Herzegovina": "ba",
         "Brazil": "br",
         "Canada": "ca",
         "Chile": "cl",
@@ -829,13 +819,11 @@
         "Ghana": "gh",
         "Greece": "gr",
         "Iran": "ir",
-        "Iraq": "iq",
         "Italy": "it",
         "Ivory Coast": "ci",
         "Cote d'Ivoire": "ci",
         "Côte d'Ivoire": "ci",
         "Japan": "jp",
-        "Jordan": "jo",
         "Mexico": "mx",
         "Morocco": "ma",
         "Netherlands": "nl",
@@ -848,7 +836,6 @@
         "Portugal": "pt",
         "Qatar": "qa",
         "Saudi Arabia": "sa",
-        "Scotland": "gb",
         "Senegal": "sn",
         "South Korea": "kr",
         "Spain": "es",
@@ -856,14 +843,11 @@
         "Switzerland": "ch",
         "Tunisia": "tn",
         "Turkey": "tr",
-        "Ukraine": "ua",
         "UAE": "ae",
         "USA": "us",
         "United States": "us",
         "Uruguay": "uy",
-        "Uzbekistan": "uz",
-        "Venezuela": "ve",
-        "Wales": "gb"
+        "Venezuela": "ve"
       };
 
       return flags[(teamName || "").trim()] || null;
@@ -924,9 +908,7 @@
       const homeRaw = (match.home_score ?? "").toString().trim();
       const awayRaw = (match.away_score ?? "").toString().trim();
 
-      if (homeRaw === "" || awayRaw === "") {
-        return false;
-      }
+      if (homeRaw === "" || awayRaw === "") return false;
 
       const home = Number(homeRaw);
       const away = Number(awayRaw);
@@ -1169,8 +1151,8 @@
       const table = {};
 
       teams.forEach(teamRow => {
-        const teamName = (teamRow.team_name || teamRow.team || teamRow.Team || teamRow.name || "").toString().trim();
-        const groupName = (teamRow.group_name || teamRow.group || teamRow.Group || "").toString().trim();
+        const teamName = (teamRow.team_name || teamRow.team || teamRow.name || "").toString().trim();
+        const groupName = (teamRow.group_name || teamRow.group || "").toString().trim();
 
         if (!teamName || !groupName) return;
 
@@ -1309,19 +1291,29 @@
       const container = document.getElementById("groupsGrid");
       container.innerHTML = "";
 
-      const groupsFromTeams = {};
+      // Grupları SADECE teams.csv'den kur
+      const teamsByGroup = {};
 
       teams.forEach(team => {
-        const groupName = (team.group_name || team.group || "").toString().trim();
         const teamName = (team.team_name || team.team || "").toString().trim();
+        const groupName = (team.group_name || team.group || "").toString().trim();
 
-        if (!groupName || !teamName) return;
+        if (!teamName || !groupName) return;
 
-        if (!groupsFromTeams[groupName]) groupsFromTeams[groupName] = [];
-        groupsFromTeams[groupName].push(teamName);
+        if (!teamsByGroup[groupName]) {
+          teamsByGroup[groupName] = [];
+        }
+
+        const exists = teamsByGroup[groupName].some(
+          t => normalizeTeamName(t.team_name) === normalizeTeamName(teamName)
+        );
+
+        if (!exists) {
+          teamsByGroup[groupName].push({ team_name: teamName });
+        }
       });
 
-      const groupNames = Object.keys(groupsFromTeams).sort();
+      const groupNames = Object.keys(teamsByGroup).sort();
 
       if (groupNames.length === 0) {
         container.innerHTML = '<div class="empty-note">No group standings available.</div>';
@@ -1329,16 +1321,15 @@
       }
 
       groupNames.forEach(groupName => {
-        const rows = groupedStandings[groupName] ? [...groupedStandings[groupName]] : [];
-        const teamNamesInGroup = groupsFromTeams[groupName];
+        const standingsMap = new Map();
 
-        const existing = new Set(rows.map(row => normalizeTeamName(row.team_name)));
+        (groupedStandings[groupName] || []).forEach(row => {
+          standingsMap.set(normalizeTeamName(row.team_name), row);
+        });
 
-        teamNamesInGroup.forEach(teamName => {
-          const key = normalizeTeamName(teamName);
-          if (!existing.has(key)) {
-            rows.push(createBlankStanding(groupName, teamName));
-          }
+        const rows = teamsByGroup[groupName].map(team => {
+          const key = normalizeTeamName(team.team_name);
+          return standingsMap.get(key) || createBlankStanding(groupName, team.team_name);
         });
 
         rows.sort((a, b) => {
