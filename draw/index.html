@@ -700,42 +700,51 @@ Zeynep"></textarea>
     }
 
     function buildBalancedAssignments(participants, teamList){
-      const shuffledTeams = shuffle(teamList);
-      const shuffledPeople = shuffle(participants);
+  const shuffledTeams = shuffle(teamList);
+  const shuffledPeople = shuffle(participants);
 
-      const assignmentMap = {};
-      shuffledPeople.forEach(name => assignmentMap[name] = []);
+  const assignmentMap = {};
+  shuffledPeople.forEach(name => assignmentMap[name] = []);
 
-      if(shuffledPeople.length === 0 || shuffledTeams.length === 0){
-        return assignmentMap;
-      }
+  if(shuffledPeople.length === 0 || shuffledTeams.length === 0){
+    return assignmentMap;
+  }
 
-      let personIndex = 0;
+  for(const team of shuffledTeams){
 
-      for(const team of shuffledTeams){
-        const counts = shuffledPeople.map(name => ({
-          name,
-          count: assignmentMap[name].length
-        }));
+    // 1. Herkesin mevcut takım sayısını bul
+    const counts = shuffledPeople.map(name => ({
+      name,
+      count: assignmentMap[name].length
+    }));
 
-        const minCount = Math.min(...counts.map(x => x.count));
-        const leastLoaded = counts
-          .filter(x => x.count === minCount)
-          .map(x => x.name);
+    const minCount = Math.min(...counts.map(x => x.count));
 
-        const rotated = [
-          ...leastLoaded.slice(personIndex % leastLoaded.length),
-          ...leastLoaded.slice(0, personIndex % leastLoaded.length)
-        ];
+    // 2. En az takımı olanlar
+    const leastLoaded = counts
+      .filter(x => x.count === minCount)
+      .map(x => x.name);
 
-        const chosen = rotated[0];
-        assignmentMap[chosen].push(team);
-        personIndex++;
-      }
+    // 3. Grup kontrolü yap
+    const eligible = leastLoaded.filter(name => {
+      return !assignmentMap[name].some(t => t.group === team.group);
+    });
 
-      return assignmentMap;
+    let chosen;
+
+    if(eligible.length > 0){
+      // Grup çakışması yoksa buradan seç
+      chosen = eligible[Math.floor(Math.random() * eligible.length)];
+    } else {
+      // fallback → kuralı esnet (çok önemli!)
+      chosen = leastLoaded[Math.floor(Math.random() * leastLoaded.length)];
     }
 
+    assignmentMap[chosen].push(team);
+  }
+
+  return assignmentMap;
+}
     function buildSequence(assignmentMap){
       const people = Object.keys(assignmentMap);
       const maxTeams = Math.max(...people.map(p => assignmentMap[p].length), 0);
