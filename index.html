@@ -1274,18 +1274,39 @@ function withFlag(teamName) {
     }
 
     function renderGroupsFromMatches(groupedStandings) {
-      const container = document.getElementById("groupsGrid");
-      container.innerHTML = "";
 
-      const groupNames = Object.keys(groupedStandings).sort();
+  const container = document.getElementById("groupsGrid");
+  container.innerHTML = "";
 
-      if (groupNames.length === 0) {
-        container.innerHTML = '<div class="empty-note">No group standings available.</div>';
-        return;
-      }
+  // 👉 TEAMS.CSV'DEN GRUPLARI AL
+  fetch("teams.csv")
+    .then(res => res.text())
+    .then(text => {
+
+      const rows = text.trim().split("\n").slice(1);
+
+      const groups = {};
+
+      rows.forEach(row => {
+        const cols = row.split(",");
+
+        const teamName = cols[1];
+        const groupName = cols[2];
+        const flag = cols[4];
+
+        if (!groups[groupName]) {
+          groups[groupName] = [];
+        }
+
+        groups[groupName].push({
+          team_name: teamName,
+          flag: flag
+        });
+      });
+
+      const groupNames = Object.keys(groups).sort();
 
       groupNames.forEach(groupName => {
-        const rows = groupedStandings[groupName];
 
         const card = document.createElement("div");
         card.className = "group-card";
@@ -1318,31 +1339,53 @@ function withFlag(teamName) {
 
         const tbody = table.querySelector("tbody");
 
-        rows.forEach(row => {
+        const standings = groupedStandings[groupName] || [];
+
+        // 👉 TEAMS.CSV SIRASINA GÖRE GÖSTER
+        groups[groupName].forEach((team, index) => {
+
+          const rowData = standings.find(s => s.team_name === team.team_name) || {
+            rank: index + 1,
+            played: 0,
+            won: 0,
+            draw: 0,
+            lost: 0,
+            gf: 0,
+            ga: 0,
+            gd: 0,
+            points: 0
+          };
+
           const tr = document.createElement("tr");
 
-          if (row.rank === 1) {
+          if (rowData.rank === 1) {
             tr.classList.add("group-winner");
-          } else if (row.rank === 2) {
+          } else if (rowData.rank === 2) {
             tr.classList.add("group-qualified");
           }
 
           tr.innerHTML = `
-            <td>${row.rank}</td>
-            <td>${row.rank === 1 ? "🥇 " : ""}${withFlag(row.team_name)}</td>
-            <td>${row.played}</td>
-            <td>${row.won}</td>
-            <td>${row.draw}</td>
-            <td>${row.lost}</td>
-            <td>${row.gf}</td>
-            <td>${row.ga}</td>
-            <td>${row.gd}</td>
-            <td>${row.points}</td>
+            <td>${rowData.rank}</td>
+            <td>${withFlag(team.team_name)}</td>
+            <td>${rowData.played}</td>
+            <td>${rowData.won}</td>
+            <td>${rowData.draw}</td>
+            <td>${rowData.lost}</td>
+            <td>${rowData.gf}</td>
+            <td>${rowData.ga}</td>
+            <td>${rowData.gd}</td>
+            <td>${rowData.points}</td>
           `;
 
           tbody.appendChild(tr);
         });
 
+        card.appendChild(table);
+        container.appendChild(card);
+      });
+
+    });
+}
         card.appendChild(table);
         container.appendChild(card);
       });
