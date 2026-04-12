@@ -155,11 +155,11 @@
     }
 
     #slotBox{
-      height:96px;
+      height:124px;
       background:
         linear-gradient(180deg, #091321 0%, #10203a 100%);
       border:2px solid #2f6fc0;
-      border-radius:14px;
+      border-radius:16px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -181,9 +181,9 @@
       position:absolute;
       left:0;
       right:0;
-      height:18px;
+      height:26px;
       pointer-events:none;
-      z-index:2;
+      z-index:3;
     }
 
     #slotBox::before{
@@ -213,6 +213,7 @@
         inset 0 0 22px rgba(0,0,0,.22),
         0 0 18px rgba(58,160,255,.28),
         0 0 38px rgba(0,208,255,.16);
+      animation: slotShake .18s linear infinite;
     }
 
     #slotBox.spinning .slot-beam{
@@ -233,31 +234,86 @@
       100% { transform:translateX(420px); }
     }
 
-    #slotName{
+    @keyframes slotShake{
+      0% { transform:translateX(0); }
+      25% { transform:translateX(-1px); }
+      50% { transform:translateX(1px); }
+      75% { transform:translateX(-1px); }
+      100% { transform:translateX(0); }
+    }
+
+    .slot-window{
       position:relative;
-      z-index:3;
+      z-index:2;
+      width:100%;
+      max-width:300px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+    }
+
+    .slot-row{
+      width:100%;
+      text-align:center;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      transition:transform .12s ease, color .18s ease, opacity .18s ease, text-shadow .18s ease;
+    }
+
+    .slot-row.top,
+    .slot-row.bottom{
+      font-size:18px;
+      font-weight:700;
+      color:#92abd2;
+      opacity:.42;
+      filter:blur(.2px);
+    }
+
+    .slot-row.middle{
       font-size:30px;
       font-weight:900;
       color:#ffffff;
       letter-spacing:.3px;
       text-shadow:0 0 14px rgba(58,160,255,.22);
-      transform:translateY(0) scale(1);
-      transition:transform .14s ease, color .18s ease, text-shadow .18s ease;
     }
 
-    #slotBox.spinning #slotName{
+    #slotBox.spinning .slot-row.middle{
       color:#dff3ff;
       text-shadow:
         0 0 10px rgba(58,160,255,.26),
         0 0 24px rgba(0,208,255,.12);
     }
 
-    #slotBox.reveal #slotName{
+    #slotBox.reveal .slot-row.middle{
       color:#fff4c2;
       text-shadow:
         0 0 10px rgba(250,204,21,.24),
         0 0 26px rgba(245,158,11,.18);
       transform:scale(1.08);
+    }
+
+    .slot-center-line{
+      position:absolute;
+      left:12px;
+      right:12px;
+      top:50%;
+      height:42px;
+      transform:translateY(-50%);
+      border-top:1px solid rgba(96,165,250,.18);
+      border-bottom:1px solid rgba(96,165,250,.18);
+      border-radius:10px;
+      z-index:2;
+      pointer-events:none;
+    }
+
+    #slotBox.reveal .slot-center-line{
+      border-top-color:rgba(250,204,21,.28);
+      border-bottom-color:rgba(250,204,21,.28);
+      box-shadow:0 0 10px rgba(250,204,21,.1);
     }
 
     .btns{
@@ -563,7 +619,12 @@ Zeynep"></textarea>
 
             <div id="slotBox">
               <div class="slot-beam"></div>
-              <div id="slotName">Ready</div>
+              <div class="slot-center-line"></div>
+              <div class="slot-window">
+                <div id="slotPrev" class="slot-row top">Ready</div>
+                <div id="slotName" class="slot-row middle">Ready</div>
+                <div id="slotNext" class="slot-row bottom">Ready</div>
+              </div>
             </div>
 
             <div class="btns">
@@ -627,7 +688,9 @@ Zeynep"></textarea>
 
     const logBox = document.getElementById("log");
     const slotBoxEl = document.getElementById("slotBox");
+    const slotPrevEl = document.getElementById("slotPrev");
     const slotNameEl = document.getElementById("slotName");
+    const slotNextEl = document.getElementById("slotNext");
     const drawStageEl = document.getElementById("drawStage");
     const currentPersonEl = document.getElementById("currentPerson");
     const currentFlagEl = document.getElementById("currentFlag");
@@ -854,44 +917,51 @@ Zeynep"></textarea>
     function setSlotState(state){
       slotBoxEl.classList.remove("spinning", "reveal");
 
-      if(state === "spinning"){
-        slotBoxEl.classList.add("spinning");
-      }
-      if(state === "reveal"){
-        slotBoxEl.classList.add("reveal");
-      }
+      if(state === "spinning") slotBoxEl.classList.add("spinning");
+      if(state === "reveal") slotBoxEl.classList.add("reveal");
     }
 
     function setStageState(state){
       drawStageEl.classList.remove("reveal", "final");
 
-      if(state === "reveal"){
-        drawStageEl.classList.add("reveal");
-      }
-      if(state === "final"){
-        drawStageEl.classList.add("final");
-      }
+      if(state === "reveal") drawStageEl.classList.add("reveal");
+      if(state === "final") drawStageEl.classList.add("final");
+    }
+
+    function setSlotRows(prev, current, next){
+      slotPrevEl.textContent = prev || " ";
+      slotNameEl.textContent = current || " ";
+      slotNextEl.textContent = next || " ";
     }
 
     async function spinSlot(finalName, participants){
       setSlotState("spinning");
 
       const pool = shuffle([...participants]);
-      const totalSteps = 24;
+      const totalSteps = 26;
 
       for(let i = 0; i < totalSteps; i++){
-        const name = pool[i % pool.length] || finalName;
-        slotNameEl.textContent = name;
+        const prev = pool[(i - 1 + pool.length) % pool.length] || finalName;
+        const current = pool[i % pool.length] || finalName;
+        const next = pool[(i + 1) % pool.length] || finalName;
+
+        setSlotRows(prev, current, next);
+
+        slotPrevEl.style.transform = `translateY(${i % 2 === 0 ? "-1px" : "1px"})`;
         slotNameEl.style.transform = `translateY(${i % 2 === 0 ? "-2px" : "2px"}) scale(${1 + (i / totalSteps) * 0.03})`;
-        const delay = 42 + (i * 8);
+        slotNextEl.style.transform = `translateY(${i % 2 === 0 ? "-1px" : "1px"})`;
+
+        const delay = 40 + (i * 8);
         await sleep(delay);
       }
 
       setSlotState("reveal");
-      slotNameEl.textContent = finalName;
+      setSlotRows(finalName, finalName, finalName);
       slotNameEl.style.transform = "scale(1.08)";
-      await sleep(350);
+      await sleep(360);
       slotNameEl.style.transform = "scale(1)";
+      slotPrevEl.style.transform = "translateY(0)";
+      slotNextEl.style.transform = "translateY(0)";
     }
 
     async function animateTeamDraw(person, finalTeam, pool, assignedCount, totalCount){
@@ -1011,7 +1081,7 @@ Zeynep"></textarea>
 
         setStageState("final");
         setSlotState("reveal");
-        slotNameEl.textContent = "Completed";
+        setSlotRows("Completed", "Completed", "Completed");
         currentPersonEl.textContent = "Tamamlandı";
         currentFlagEl.innerHTML = "🏆";
         currentTeamTextEl.textContent = "Tüm takımlar dağıtıldı";
@@ -1027,7 +1097,7 @@ Zeynep"></textarea>
       }catch(err){
         console.error(err);
         log(`Çekiliş sırasında hata oluştu: ${err.message}`, "error");
-        slotNameEl.textContent = "Error";
+        setSlotRows("Error", "Error", "Error");
         currentPersonEl.textContent = "Hata";
         currentFlagEl.innerHTML = "⚠️";
         currentTeamTextEl.textContent = "İşlem tamamlanamadı";
@@ -1059,7 +1129,7 @@ Selin`;
       namesInput.value = "";
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
-      slotNameEl.textContent = "Ready";
+      setSlotRows("Ready", "Ready", "Ready");
       slotNameEl.style.transform = "scale(1)";
       setSlotState("");
       setStageState("");
