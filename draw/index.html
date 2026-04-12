@@ -346,7 +346,7 @@
 
     .stats{
       display:grid;
-      grid-template-columns:repeat(3, 1fr);
+      grid-template-columns:repeat(4, 1fr);
       gap:10px;
       margin-bottom:14px;
     }
@@ -729,7 +729,7 @@ Zeynep"></textarea>
         <section class="panel">
           <div class="panel-head">
             <h2>Çekiliş Sonuçları</h2>
-            <p>Slot kutusu isim seçimini yapar, sahne takım reveal gösterir.</p>
+            <p>Katılımcı sayısı 48’i aşsa da herkes en az 1 takım alır.</p>
           </div>
           <div class="panel-body">
             <div class="stats">
@@ -738,12 +738,16 @@ Zeynep"></textarea>
                 <div class="v" id="statPeople">0</div>
               </div>
               <div class="stat">
-                <div class="k">Takım</div>
+                <div class="k">Benzersiz Takım</div>
                 <div class="v" id="statTeams">0</div>
               </div>
               <div class="stat">
                 <div class="k">Dağıtılan</div>
                 <div class="v" id="statAssigned">0</div>
+              </div>
+              <div class="stat">
+                <div class="k">Tur</div>
+                <div class="v" id="statRounds">0</div>
               </div>
             </div>
 
@@ -812,11 +816,13 @@ Zeynep"></textarea>
     const statPeople = document.getElementById("statPeople");
     const statTeams = document.getElementById("statTeams");
     const statAssigned = document.getElementById("statAssigned");
+    const statRounds = document.getElementById("statRounds");
 
     let teams = [];
     let isDrawing = false;
     let latestResultKey = "";
     let exportRows = [];
+    let lastRoundCount = 0;
 
     function log(msg, type="normal"){
       const time = new Date().toLocaleTimeString("tr-TR");
@@ -939,7 +945,7 @@ Zeynep"></textarea>
         teams = parseCSV(text);
 
         statTeams.textContent = teams.length;
-        subInfoEl.textContent = `${teams.length} takım yüklendi`;
+        subInfoEl.textContent = `${teams.length} benzersiz takım yüklendi`;
         log(`${teams.length} takım teams.csv içinden yüklendi.`, "ok");
       }catch(err){
         console.error(err);
@@ -968,63 +974,6 @@ Zeynep"></textarea>
       }
 
       return unique;
-    }
-
-    function buildBalancedAssignments(participants, teamList){
-      const shuffledTeams = shuffle(teamList);
-      const shuffledPeople = shuffle(participants);
-
-      const assignmentMap = {};
-      shuffledPeople.forEach(name => assignmentMap[name] = []);
-
-      if(shuffledPeople.length === 0 || shuffledTeams.length === 0){
-        return assignmentMap;
-      }
-
-      for(const team of shuffledTeams){
-        const counts = shuffledPeople.map(name => ({
-          name,
-          count: assignmentMap[name].length
-        }));
-
-        const minCount = Math.min(...counts.map(x => x.count));
-
-        const leastLoaded = counts
-          .filter(x => x.count === minCount)
-          .map(x => x.name);
-
-        const eligible = leastLoaded.filter(name => {
-          return !assignmentMap[name].some(t => t.group === team.group);
-        });
-
-        let chosen;
-
-        if(eligible.length > 0){
-          chosen = eligible[Math.floor(Math.random() * eligible.length)];
-        } else {
-          chosen = leastLoaded[Math.floor(Math.random() * leastLoaded.length)];
-        }
-
-        assignmentMap[chosen].push(team);
-      }
-
-      return assignmentMap;
-    }
-
-    function buildSequence(assignmentMap){
-      const people = Object.keys(assignmentMap);
-      const maxTeams = Math.max(...people.map(p => assignmentMap[p].length), 0);
-
-      const sequence = [];
-      for(let round = 0; round < maxTeams; round++){
-        for(const person of people){
-          const team = assignmentMap[person][round];
-          if(team){
-            sequence.push({ person, team });
-          }
-        }
-      }
-      return sequence;
     }
 
     function setSlotState(state){
@@ -1083,17 +1032,17 @@ Zeynep"></textarea>
       slotNextEl.style.transform = "translateY(0)";
     }
 
-    async function animateTeamDraw(person, finalTeam, pool, assignedCount, totalCount){
+    async function animateTeamDraw(person, finalTeam, assignedCount, totalCount, roundNo){
       currentPersonEl.textContent = person;
-      subInfoEl.textContent = `${assignedCount}/${totalCount} dağıtılıyor`;
+      subInfoEl.textContent = `Tur ${roundNo} • ${assignedCount}/${totalCount} dağıtılıyor`;
 
       setStageState("reveal");
 
-      const spinList = shuffle(pool);
-      const cycles = Math.min(20, Math.max(12, spinList.length));
+      const previewPool = shuffle([...teams]);
+      const cycles = Math.min(20, Math.max(12, previewPool.length));
 
       for(let i = 0; i < cycles; i++){
-        const t = spinList[i % spinList.length];
+        const t = previewPool[i % previewPool.length];
         currentFlagEl.innerHTML = getFlagHTML(t.flag);
         currentTeamTextEl.textContent = t.team || "Loading...";
         await sleep(60 + i * 7);
@@ -1106,6 +1055,74 @@ Zeynep"></textarea>
 
       setStageState("");
       setSlotState("");
+    }
+
+    function pickTeamForPerson(person, usedTeamsByPerson, usedGroupsByPerson, pool){
+      const usedTeams = usedTeamsByPerson[person];
+      const usedGroups = usedGroupsByPerson[person];
+
+      let candidates = pool.filter(team => !usedTeams.has(team.team) && !usedGroups.has(team.group));
+      if(candidates.length === 0){
+        candidates = pool.filter(team => !usedTeams.has(team.team));
+      }
+      if(candidates.length === 0){
+        return null;
+      }
+
+      return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+
+    function buildExpandedAssignments(participants, teamList){
+      const shuffledPeople = shuffle([...participants]);
+      const assignmentMap = {};
+      const usedTeamsByPerson = {};
+      const usedGroupsByPerson = {};
+      const sequence = [];
+
+      shuffledPeople.forEach(name => {
+        assignmentMap[name] = [];
+        usedTeamsByPerson[name] = new Set();
+        usedGroupsByPerson[name] = new Set();
+      });
+
+      const totalPeople = shuffledPeople.length;
+      const teamCount = teamList.length;
+      const totalRounds = Math.ceil(totalPeople / teamCount);
+
+      let assigned = 0;
+
+      for(let round = 1; round <= totalRounds; round++){
+        const start = (round - 1) * teamCount;
+        const end = Math.min(start + teamCount, totalPeople);
+        const roundPeople = shuffledPeople.slice(start, end);
+        const roundPool = shuffle([...teamList]);
+
+        roundPeople.forEach(person => {
+          const selected = pickTeamForPerson(person, usedTeamsByPerson, usedGroupsByPerson, roundPool);
+          if(!selected){
+            return;
+          }
+
+          assignmentMap[person].push(selected);
+          usedTeamsByPerson[person].add(selected.team);
+          if(selected.group) usedGroupsByPerson[person].add(selected.group);
+
+          assigned += 1;
+          sequence.push({
+            person,
+            team: selected,
+            assignedCount: assigned,
+            totalCount: totalPeople,
+            roundNo: round
+          });
+        });
+      }
+
+      return {
+        assignmentMap,
+        sequence,
+        totalRounds
+      };
     }
 
     function teamPillHTML(item, isLatest){
@@ -1147,9 +1164,9 @@ Zeynep"></textarea>
 
     function buildExportText(){
       if(exportRows.length === 0) return "";
-      const lines = ["Person,Team,Group"];
+      const lines = ["Person,Team,Group,Round"];
       exportRows.forEach(row => {
-        lines.push(`"${row.person}","${row.team}","${row.group}"`);
+        lines.push(`"${row.person}","${row.team}","${row.group}","${row.round}"`);
       });
       return lines.join("\n");
     }
@@ -1211,7 +1228,7 @@ Zeynep"></textarea>
       const subtitle = document.createElement("div");
       subtitle.style.fontSize = "12px";
       subtitle.style.color = "#4b5563";
-      subtitle.textContent = `${formatTodayTR()} • Toplam kişi: ${Object.keys(grouped).length} • Toplam takım: ${exportRows.length}`;
+      subtitle.textContent = `${formatTodayTR()} • Toplam kişi: ${Object.keys(grouped).length} • Toplam atama: ${exportRows.length} • Tur: ${lastRoundCount}`;
       header.appendChild(subtitle);
 
       wrapper.appendChild(header);
@@ -1250,25 +1267,39 @@ Zeynep"></textarea>
           left.style.alignItems = "center";
           left.style.gap = "10px";
 
-          const flag = document.createElement("img");
-          flag.src = item.flag || "";
-          flag.alt = item.team;
-          flag.style.width = "22px";
-          flag.style.height = "16px";
-          flag.style.objectFit = "cover";
-          flag.style.borderRadius = "2px";
-          flag.style.border = "1px solid #d1d5db";
+          if(item.flag){
+            const flag = document.createElement("img");
+            flag.src = item.flag;
+            flag.alt = item.team;
+            flag.style.width = "22px";
+            flag.style.height = "16px";
+            flag.style.objectFit = "cover";
+            flag.style.borderRadius = "2px";
+            flag.style.border = "1px solid #d1d5db";
+            left.appendChild(flag);
+          }
 
           const team = document.createElement("div");
           team.style.fontSize = "14px";
           team.style.fontWeight = "600";
           team.style.color = "#111827";
           team.textContent = item.team;
-
-          if(item.flag){
-            left.appendChild(flag);
-          }
           left.appendChild(team);
+
+          const right = document.createElement("div");
+          right.style.display = "flex";
+          right.style.alignItems = "center";
+          right.style.gap = "6px";
+
+          const roundBadge = document.createElement("div");
+          roundBadge.style.fontSize = "11px";
+          roundBadge.style.fontWeight = "700";
+          roundBadge.style.color = "#065f46";
+          roundBadge.style.background = "#d1fae5";
+          roundBadge.style.border = "1px solid #a7f3d0";
+          roundBadge.style.padding = "4px 8px";
+          roundBadge.style.borderRadius = "999px";
+          roundBadge.textContent = `Round ${item.round}`;
 
           const badge = document.createElement("div");
           badge.style.fontSize = "11px";
@@ -1280,8 +1311,11 @@ Zeynep"></textarea>
           badge.style.borderRadius = "999px";
           badge.textContent = item.group ? `Group ${item.group}` : "-";
 
+          right.appendChild(roundBadge);
+          right.appendChild(badge);
+
           row.appendChild(left);
-          row.appendChild(badge);
+          row.appendChild(right);
           block.appendChild(row);
         });
 
@@ -1320,6 +1354,7 @@ Zeynep"></textarea>
 
       statPeople.textContent = participants.length;
       statAssigned.textContent = 0;
+      statRounds.textContent = 0;
 
       if(participants.length === 0){
         log("Önce en az bir katılımcı adı gir.", "warn");
@@ -1344,15 +1379,18 @@ Zeynep"></textarea>
       drawBtn.textContent = "Çekiliş Yapılıyor...";
       exportRows = [];
       latestResultKey = "";
+      lastRoundCount = 0;
 
       try{
-        log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} takım.`, "ok");
+        const expanded = buildExpandedAssignments(participants, teams);
+        const assignmentMap = expanded.assignmentMap;
+        const sequence = expanded.sequence;
+        const totalRounds = expanded.totalRounds;
+        lastRoundCount = totalRounds;
 
-        const assignmentMap = buildBalancedAssignments(participants, teams);
-        const sequence = buildSequence(assignmentMap);
-        const flatPool = shuffle([...teams]);
+        statRounds.textContent = totalRounds;
 
-        let assigned = 0;
+        log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} benzersiz takım, ${totalRounds} tur.`, "ok");
 
         const progressiveMap = {};
         participants.forEach(p => progressiveMap[p] = []);
@@ -1360,7 +1398,7 @@ Zeynep"></textarea>
 
         for(const item of sequence){
           await spinSlot(item.person, participants);
-          await animateTeamDraw(item.person, item.team, flatPool, assigned + 1, sequence.length);
+          await animateTeamDraw(item.person, item.team, item.assignedCount, item.totalCount, item.roundNo);
 
           progressiveMap[item.person].push(item.team);
           latestResultKey = `${item.person}__${item.team.team}`;
@@ -1368,13 +1406,13 @@ Zeynep"></textarea>
             person: item.person,
             team: item.team.team,
             group: item.team.group || "",
-            flag: item.team.flag || ""
+            flag: item.team.flag || "",
+            round: item.roundNo
           });
 
-          assigned++;
-          statAssigned.textContent = assigned;
+          statAssigned.textContent = item.assignedCount;
           renderResults(progressiveMap);
-          log(`${item.person} → ${item.team.team}${item.team.group ? ` (Grup ${item.team.group})` : ""}`);
+          log(`${item.person} → ${item.team.team}${item.team.group ? ` (Grup ${item.team.group})` : ""} • Tur ${item.roundNo}`);
           await sleep(180);
         }
 
@@ -1383,15 +1421,10 @@ Zeynep"></textarea>
         setSlotRows("Completed", "Completed", "Completed");
         currentPersonEl.textContent = "Tamamlandı";
         currentFlagEl.innerHTML = "🏆";
-        currentTeamTextEl.textContent = "Tüm takımlar dağıtıldı";
-        subInfoEl.textContent = `${assigned} / ${teams.length} takım atandı`;
+        currentTeamTextEl.textContent = "Herkes en az 1 takım aldı";
+        subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
 
-        const unused = teams.length - assigned;
-        if(unused === 0){
-          log("Çekiliş başarıyla tamamlandı. Unused team yok.", "ok");
-        }else{
-          log(`Çekiliş bitti ama ${unused} takım dağıtılmadı.`, "warn");
-        }
+        log("Çekiliş başarıyla tamamlandı. Katılımcı sayısı 48’i aşsa da herkes en az bir takım aldı.", "ok");
 
       }catch(err){
         console.error(err);
@@ -1418,7 +1451,11 @@ Zeynep
 Can
 Elif
 Mert
-Selin`;
+Selin
+Bora
+Derya
+Ece
+Kemal`;
       statPeople.textContent = getParticipants().length;
       log("Örnek isimler eklendi.");
     });
@@ -1428,8 +1465,10 @@ Selin`;
       namesInput.value = "";
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
+      statRounds.textContent = 0;
       exportRows = [];
       latestResultKey = "";
+      lastRoundCount = 0;
       setSlotRows("Ready", "Ready", "Ready");
       slotNameEl.style.transform = "scale(1)";
       setSlotState("");
@@ -1437,7 +1476,7 @@ Selin`;
       currentPersonEl.textContent = "Hazır";
       currentFlagEl.innerHTML = "";
       currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
-      subInfoEl.textContent = teams.length ? `${teams.length} takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
+      subInfoEl.textContent = teams.length ? `${teams.length} benzersiz takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
       resultsArea.className = "empty";
       resultsArea.textContent = "Henüz sonuç yok.";
       revealCardEl.classList.remove("show");
