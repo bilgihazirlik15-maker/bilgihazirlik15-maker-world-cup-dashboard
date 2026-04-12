@@ -17,7 +17,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World Cup 2026 Draw</title>
   <style>
-    * { box-sizing: border-box; }
+  
+   #slotBox {
+  height: 90px;
+  background: #0b1627;
+  border: 2px solid #3aa0ff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 14px 0;
+}
+
+#slotName {
+  font-size: 28px;
+  font-weight: 900;
+  color: white;
+}
+   * { box-sizing: border-box; }
 
     :root{
       --bg:#07111f;
@@ -463,7 +480,17 @@
           <div class="panel-body">
             <label for="names">İsim listesi</label>
             <textarea id="names" placeholder="Örnek:
-Ali
+
+             <textarea id="names" placeholder="..."></textarea>
+
+<!-- 🎰 SLOT BOX BURAYA -->
+<div id="slotBox">
+  <div id="slotName">Ready</div>
+</div>
+
+<div class="btns">
+             
+             Ali
 Ayşe
 Mehmet
 Zeynep"></textarea>
