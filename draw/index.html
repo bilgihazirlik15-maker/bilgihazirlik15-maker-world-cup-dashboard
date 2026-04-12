@@ -1169,6 +1169,14 @@ Zeynep"></textarea>
       }
     }
 
+    function formatTodayTR(){
+      return new Date().toLocaleDateString("tr-TR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+
     function downloadResultsPDF(){
       if(exportRows.length === 0){
         log("PDF için sonuç yok.", "warn");
@@ -1183,52 +1191,100 @@ Zeynep"></textarea>
 
       const wrapper = document.createElement("div");
       wrapper.style.width = "800px";
-      wrapper.style.padding = "24px";
+      wrapper.style.padding = "28px";
       wrapper.style.background = "#ffffff";
       wrapper.style.color = "#111827";
       wrapper.style.fontFamily = "Arial, Helvetica, sans-serif";
 
+      const header = document.createElement("div");
+      header.style.marginBottom = "24px";
+      header.style.paddingBottom = "14px";
+      header.style.borderBottom = "2px solid #e5e7eb";
+
       const title = document.createElement("div");
-      title.style.fontSize = "24px";
+      title.style.fontSize = "26px";
       title.style.fontWeight = "700";
-      title.style.marginBottom = "8px";
+      title.style.marginBottom = "6px";
       title.textContent = "World Cup 2026 Draw Results";
-      wrapper.appendChild(title);
+      header.appendChild(title);
 
       const subtitle = document.createElement("div");
       subtitle.style.fontSize = "12px";
       subtitle.style.color = "#4b5563";
-      subtitle.style.marginBottom = "20px";
-      subtitle.textContent = `Toplam kişi: ${Object.keys(grouped).length} • Toplam takım: ${exportRows.length}`;
-      wrapper.appendChild(subtitle);
+      subtitle.textContent = `${formatTodayTR()} • Toplam kişi: ${Object.keys(grouped).length} • Toplam takım: ${exportRows.length}`;
+      header.appendChild(subtitle);
+
+      wrapper.appendChild(header);
 
       Object.keys(grouped).forEach(person => {
         const block = document.createElement("div");
         block.style.marginBottom = "16px";
-        block.style.padding = "12px 14px";
-        block.style.border = "1px solid #d1d5db";
-        block.style.borderRadius = "10px";
+        block.style.padding = "14px 16px";
+        block.style.border = "1px solid #dbe3f0";
+        block.style.borderRadius = "12px";
+        block.style.background = "#f8fbff";
         block.style.pageBreakInside = "avoid";
 
         const name = document.createElement("div");
         name.style.fontSize = "18px";
         name.style.fontWeight = "700";
-        name.style.marginBottom = "8px";
+        name.style.marginBottom = "10px";
+        name.style.color = "#0f172a";
         name.textContent = person;
         block.appendChild(name);
 
-        const list = document.createElement("ul");
-        list.style.margin = "0";
-        list.style.paddingLeft = "20px";
-
         grouped[person].forEach(item => {
-          const li = document.createElement("li");
-          li.style.marginBottom = "4px";
-          li.textContent = item.group ? `${item.team} (Group ${item.group})` : item.team;
-          list.appendChild(li);
+          const row = document.createElement("div");
+          row.style.display = "flex";
+          row.style.alignItems = "center";
+          row.style.justifyContent = "space-between";
+          row.style.gap = "10px";
+          row.style.padding = "8px 10px";
+          row.style.marginBottom = "8px";
+          row.style.background = "#ffffff";
+          row.style.border = "1px solid #e5e7eb";
+          row.style.borderRadius = "10px";
+
+          const left = document.createElement("div");
+          left.style.display = "flex";
+          left.style.alignItems = "center";
+          left.style.gap = "10px";
+
+          const flag = document.createElement("img");
+          flag.src = item.flag || "";
+          flag.alt = item.team;
+          flag.style.width = "22px";
+          flag.style.height = "16px";
+          flag.style.objectFit = "cover";
+          flag.style.borderRadius = "2px";
+          flag.style.border = "1px solid #d1d5db";
+
+          const team = document.createElement("div");
+          team.style.fontSize = "14px";
+          team.style.fontWeight = "600";
+          team.style.color = "#111827";
+          team.textContent = item.team;
+
+          if(item.flag){
+            left.appendChild(flag);
+          }
+          left.appendChild(team);
+
+          const badge = document.createElement("div");
+          badge.style.fontSize = "11px";
+          badge.style.fontWeight = "700";
+          badge.style.color = "#1d4ed8";
+          badge.style.background = "#dbeafe";
+          badge.style.border = "1px solid #bfdbfe";
+          badge.style.padding = "4px 8px";
+          badge.style.borderRadius = "999px";
+          badge.textContent = item.group ? `Group ${item.group}` : "-";
+
+          row.appendChild(left);
+          row.appendChild(badge);
+          block.appendChild(row);
         });
 
-        block.appendChild(list);
         wrapper.appendChild(block);
       });
 
@@ -1311,7 +1367,8 @@ Zeynep"></textarea>
           exportRows.push({
             person: item.person,
             team: item.team.team,
-            group: item.team.group || ""
+            group: item.team.group || "",
+            flag: item.team.flag || ""
           });
 
           assigned++;
