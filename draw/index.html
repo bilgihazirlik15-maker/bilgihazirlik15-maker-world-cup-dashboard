@@ -16,6 +16,8 @@
       --muted:#95a7c6;
       --accent:#3aa0ff;
       --accent-2:#00d0ff;
+      --gold:#facc15;
+      --gold-2:#f59e0b;
       --shadow:0 14px 40px rgba(0,0,0,.35);
       --radius:18px;
     }
@@ -153,9 +155,9 @@
     }
 
     #slotBox{
-      height:90px;
+      height:96px;
       background:
-        linear-gradient(180deg, #0a1424 0%, #0d1b31 100%);
+        linear-gradient(180deg, #091321 0%, #10203a 100%);
       border:2px solid #2f6fc0;
       border-radius:14px;
       display:flex;
@@ -164,7 +166,13 @@
       margin:14px 0 0;
       overflow:hidden;
       position:relative;
-      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
+      box-shadow:
+        inset 0 0 20px rgba(0,0,0,.25),
+        0 0 0 rgba(58,160,255,0);
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
     }
 
     #slotBox::before,
@@ -175,25 +183,81 @@
       right:0;
       height:18px;
       pointer-events:none;
+      z-index:2;
     }
 
     #slotBox::before{
       top:0;
-      background:linear-gradient(180deg, rgba(7,17,31,.95), rgba(7,17,31,0));
+      background:linear-gradient(180deg, rgba(7,17,31,.98), rgba(7,17,31,0));
     }
 
     #slotBox::after{
       bottom:0;
-      background:linear-gradient(0deg, rgba(7,17,31,.95), rgba(7,17,31,0));
+      background:linear-gradient(0deg, rgba(7,17,31,.98), rgba(7,17,31,0));
+    }
+
+    #slotBox .slot-beam{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:120px;
+      background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.12), rgba(255,255,255,0));
+      transform:translateX(-220px);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    #slotBox.spinning{
+      border-color:#4fb6ff;
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,.22),
+        0 0 18px rgba(58,160,255,.28),
+        0 0 38px rgba(0,208,255,.16);
+    }
+
+    #slotBox.spinning .slot-beam{
+      animation: slotSweep .9s linear infinite;
+    }
+
+    #slotBox.reveal{
+      border-color:var(--gold);
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,.2),
+        0 0 18px rgba(250,204,21,.26),
+        0 0 42px rgba(245,158,11,.18);
+      transform:scale(1.015);
+    }
+
+    @keyframes slotSweep{
+      0% { transform:translateX(-220px); }
+      100% { transform:translateX(420px); }
     }
 
     #slotName{
+      position:relative;
+      z-index:3;
       font-size:30px;
       font-weight:900;
       color:#ffffff;
       letter-spacing:.3px;
       text-shadow:0 0 14px rgba(58,160,255,.22);
-      transform:translateY(0);
+      transform:translateY(0) scale(1);
+      transition:transform .14s ease, color .18s ease, text-shadow .18s ease;
+    }
+
+    #slotBox.spinning #slotName{
+      color:#dff3ff;
+      text-shadow:
+        0 0 10px rgba(58,160,255,.26),
+        0 0 24px rgba(0,208,255,.12);
+    }
+
+    #slotBox.reveal #slotName{
+      color:#fff4c2;
+      text-shadow:
+        0 0 10px rgba(250,204,21,.24),
+        0 0 26px rgba(245,158,11,.18);
+      transform:scale(1.08);
     }
 
     .btns{
@@ -275,6 +339,22 @@
       text-align:center;
       position:relative;
       overflow:hidden;
+      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    }
+
+    .draw-stage.reveal{
+      border-color:#4fb6ff;
+      box-shadow:
+        0 0 20px rgba(58,160,255,.16),
+        0 0 40px rgba(0,208,255,.10);
+      transform:scale(1.01);
+    }
+
+    .draw-stage.final{
+      border-color:var(--gold);
+      box-shadow:
+        0 0 20px rgba(250,204,21,.18),
+        0 0 42px rgba(245,158,11,.12);
     }
 
     .draw-label{
@@ -309,6 +389,11 @@
       gap:10px;
       padding:0 12px;
       flex-wrap:wrap;
+      transition:transform .18s ease;
+    }
+
+    .draw-stage.reveal .current-team{
+      transform:scale(1.06);
     }
 
     .current-flag{
@@ -355,6 +440,12 @@
       border:1px solid var(--line);
       border-radius:16px;
       padding:14px;
+      animation: cardPop .25s ease;
+    }
+
+    @keyframes cardPop{
+      0% { transform:scale(.96); opacity:.6; }
+      100% { transform:scale(1); opacity:1; }
     }
 
     .person{
@@ -471,6 +562,7 @@ Mehmet
 Zeynep"></textarea>
 
             <div id="slotBox">
+              <div class="slot-beam"></div>
               <div id="slotName">Ready</div>
             </div>
 
@@ -507,7 +599,7 @@ Zeynep"></textarea>
               </div>
             </div>
 
-            <div class="draw-stage">
+            <div class="draw-stage" id="drawStage">
               <div class="draw-label">Çekiliş Sahnesi</div>
               <div class="current-person" id="currentPerson">Hazır</div>
               <div class="current-team">
@@ -534,7 +626,9 @@ Zeynep"></textarea>
     const clearBtn = document.getElementById("clearBtn");
 
     const logBox = document.getElementById("log");
+    const slotBoxEl = document.getElementById("slotBox");
     const slotNameEl = document.getElementById("slotName");
+    const drawStageEl = document.getElementById("drawStage");
     const currentPersonEl = document.getElementById("currentPerson");
     const currentFlagEl = document.getElementById("currentFlag");
     const currentTeamTextEl = document.getElementById("currentTeamText");
@@ -757,38 +851,71 @@ Zeynep"></textarea>
       return sequence;
     }
 
+    function setSlotState(state){
+      slotBoxEl.classList.remove("spinning", "reveal");
+
+      if(state === "spinning"){
+        slotBoxEl.classList.add("spinning");
+      }
+      if(state === "reveal"){
+        slotBoxEl.classList.add("reveal");
+      }
+    }
+
+    function setStageState(state){
+      drawStageEl.classList.remove("reveal", "final");
+
+      if(state === "reveal"){
+        drawStageEl.classList.add("reveal");
+      }
+      if(state === "final"){
+        drawStageEl.classList.add("final");
+      }
+    }
+
     async function spinSlot(finalName, participants){
+      setSlotState("spinning");
+
       const pool = shuffle([...participants]);
-      const totalSteps = 22;
+      const totalSteps = 24;
 
       for(let i = 0; i < totalSteps; i++){
         const name = pool[i % pool.length] || finalName;
         slotNameEl.textContent = name;
-        const delay = 45 + (i * 9);
+        slotNameEl.style.transform = `translateY(${i % 2 === 0 ? "-2px" : "2px"}) scale(${1 + (i / totalSteps) * 0.03})`;
+        const delay = 42 + (i * 8);
         await sleep(delay);
       }
 
+      setSlotState("reveal");
       slotNameEl.textContent = finalName;
-      await sleep(220);
+      slotNameEl.style.transform = "scale(1.08)";
+      await sleep(350);
+      slotNameEl.style.transform = "scale(1)";
     }
 
     async function animateTeamDraw(person, finalTeam, pool, assignedCount, totalCount){
       currentPersonEl.textContent = person;
       subInfoEl.textContent = `${assignedCount}/${totalCount} dağıtılıyor`;
 
+      setStageState("reveal");
+
       const spinList = shuffle(pool);
-      const cycles = Math.min(18, Math.max(10, spinList.length));
+      const cycles = Math.min(20, Math.max(12, spinList.length));
 
       for(let i = 0; i < cycles; i++){
         const t = spinList[i % spinList.length];
         currentFlagEl.innerHTML = getFlagHTML(t.flag);
         currentTeamTextEl.textContent = t.team || "Loading...";
-        await sleep(70 + i * 8);
+        await sleep(60 + i * 7);
       }
 
       currentFlagEl.innerHTML = getFlagHTML(finalTeam.flag);
       currentTeamTextEl.textContent = finalTeam.team + (finalTeam.group ? ` • Grup ${finalTeam.group}` : "");
-      await sleep(450);
+      await sleep(520);
+
+      setStageState("");
+      setSlotState("");
     }
 
     function teamPillHTML(item){
@@ -882,6 +1009,8 @@ Zeynep"></textarea>
           await sleep(180);
         }
 
+        setStageState("final");
+        setSlotState("reveal");
         slotNameEl.textContent = "Completed";
         currentPersonEl.textContent = "Tamamlandı";
         currentFlagEl.innerHTML = "🏆";
@@ -903,6 +1032,8 @@ Zeynep"></textarea>
         currentFlagEl.innerHTML = "⚠️";
         currentTeamTextEl.textContent = "İşlem tamamlanamadı";
         subInfoEl.textContent = "Konsolu kontrol et";
+        setSlotState("");
+        setStageState("");
       }finally{
         isDrawing = false;
         drawBtn.disabled = false;
@@ -929,6 +1060,9 @@ Selin`;
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
       slotNameEl.textContent = "Ready";
+      slotNameEl.style.transform = "scale(1)";
+      setSlotState("");
+      setStageState("");
       currentPersonEl.textContent = "Hazır";
       currentFlagEl.innerHTML = "";
       currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
