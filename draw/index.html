@@ -1252,21 +1252,24 @@ Zeynep"></textarea>
 
         grouped[person].forEach(item => {
           const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.alignItems = "center";
-          row.style.justifyContent = "space-between";
-          row.style.gap = "10px";
-          row.style.padding = "8px 10px";
-          row.style.marginBottom = "8px";
-          row.style.background = "#ffffff";
-          row.style.border = "1px solid #e5e7eb";
-          row.style.borderRadius = "10px";
+row.style.display = "flex";
+row.style.alignItems = "flex-start";
+row.style.justifyContent = "space-between";
+row.style.gap = "10px";
+row.style.padding = "8px 10px";
+row.style.marginBottom = "8px";
+row.style.background = "#ffffff";
+row.style.border = "1px solid #e5e7eb";
+row.style.borderRadius = "10px";
+row.style.flexWrap = "wrap";
+row.style.overflow = "hidden";
 
-          const left = document.createElement("div");
-          left.style.display = "flex";
-          left.style.alignItems = "center";
-          left.style.gap = "10px";
-
+const left = document.createElement("div");
+left.style.display = "flex";
+left.style.alignItems = "center";
+left.style.gap = "10px";
+left.style.flex = "1 1 320px";
+left.style.minWidth = "0";
           if(item.flag){
             const flag = document.createElement("img");
             flag.src = item.flag;
@@ -1280,16 +1283,24 @@ Zeynep"></textarea>
           }
 
           const team = document.createElement("div");
-          team.style.fontSize = "14px";
-          team.style.fontWeight = "600";
-          team.style.color = "#111827";
-          team.textContent = item.team;
+team.style.fontSize = "14px";
+team.style.fontWeight = "600";
+team.style.color = "#111827";
+team.style.wordBreak = "break-word";
+team.style.overflowWrap = "anywhere";
+team.style.lineHeight = "1.35";
+team.style.maxWidth = "100%";
+team.textContent = item.team;
           left.appendChild(team);
 
           const right = document.createElement("div");
-          right.style.display = "flex";
-          right.style.alignItems = "center";
-          right.style.gap = "6px";
+right.style.display = "flex";
+right.style.alignItems = "center";
+right.style.gap = "6px";
+right.style.flex = "0 0 auto";
+right.style.flexWrap = "wrap";
+right.style.justifyContent = "flex-end";
+right.style.maxWidth = "100%";
 
           const roundBadge = document.createElement("div");
           roundBadge.style.fontSize = "11px";
