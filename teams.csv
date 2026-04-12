@@ -12,7 +12,7 @@ team_id,team_name,group_name,short_name,flag,status
 9,Brazil,C,BRA,https://flagcdn.com/w40/br.png,active
 10,Morocco,C,MAR,https://flagcdn.com/w40/ma.png,active
 11,Haiti,C,HAI,https://flagcdn.com/w40/ht.png,active
-12,Scotland,C,SCO,https://flagcdn.com/w40/gb.png,active
+12,Scotland,C,SCO,https://flagcdn.com/w40/gb-sct.png,active
 
 13,United States,D,USA,https://flagcdn.com/w40/us.png,active
 14,Paraguay,D,PAR,https://flagcdn.com/w40/py.png,active
@@ -54,7 +54,7 @@ team_id,team_name,group_name,short_name,flag,status
 43,Uzbekistan,K,UZB,https://flagcdn.com/w40/uz.png,active
 44,Colombia,K,COL,https://flagcdn.com/w40/co.png,active
 
-45,England,L,ENG,https://flagcdn.com/w40/gb.png,active
+45,England,L,ENG,https://flagcdn.com/w40/gb-eng.png,active
 46,Croatia,L,CRO,https://flagcdn.com/w40/hr.png,active
 47,Panama,L,PAN,https://flagcdn.com/w40/pa.png,active
 48,Ghana,L,GHA,https://flagcdn.com/w40/gh.png,active
