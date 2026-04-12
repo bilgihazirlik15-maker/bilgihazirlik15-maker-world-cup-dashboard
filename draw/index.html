@@ -111,7 +111,7 @@
     }
 
     .panel-head h2{
-      margin:0 0 6px;
+      margin:0 0 6px 0;
       font-size:19px;
     }
 
@@ -156,8 +156,7 @@
 
     #slotBox{
       height:124px;
-      background:
-        linear-gradient(180deg, #091321 0%, #10203a 100%);
+      background:linear-gradient(180deg, #091321 0%, #10203a 100%);
       border:2px solid #2f6fc0;
       border-radius:16px;
       display:flex;
@@ -166,13 +165,8 @@
       margin:14px 0 0;
       overflow:hidden;
       position:relative;
-      box-shadow:
-        inset 0 0 20px rgba(0,0,0,.25),
-        0 0 0 rgba(58,160,255,0);
-      transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        transform .2s ease;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
+      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
     }
 
     #slotBox::before,
@@ -283,16 +277,12 @@
 
     #slotBox.spinning .slot-row.middle{
       color:#dff3ff;
-      text-shadow:
-        0 0 10px rgba(58,160,255,.26),
-        0 0 24px rgba(0,208,255,.12);
+      text-shadow:0 0 10px rgba(58,160,255,.26), 0 0 24px rgba(0,208,255,.12);
     }
 
     #slotBox.reveal .slot-row.middle{
       color:#fff4c2;
-      text-shadow:
-        0 0 10px rgba(250,204,21,.24),
-        0 0 26px rgba(245,158,11,.18);
+      text-shadow:0 0 10px rgba(250,204,21,.24), 0 0 26px rgba(245,158,11,.18);
       transform:scale(1.08);
     }
 
@@ -400,17 +390,13 @@
 
     .draw-stage.reveal{
       border-color:#4fb6ff;
-      box-shadow:
-        0 0 20px rgba(58,160,255,.16),
-        0 0 40px rgba(0,208,255,.10);
+      box-shadow:0 0 20px rgba(58,160,255,.16), 0 0 40px rgba(0,208,255,.10);
       transform:scale(1.01);
     }
 
     .draw-stage.final{
       border-color:var(--gold);
-      box-shadow:
-        0 0 20px rgba(250,204,21,.18),
-        0 0 42px rgba(245,158,11,.12);
+      box-shadow:0 0 20px rgba(250,204,21,.18), 0 0 42px rgba(245,158,11,.12);
     }
 
     .draw-label{
@@ -479,10 +465,98 @@
       font-size:12px;
     }
 
+    .reveal-card{
+      margin-bottom:14px;
+      background:linear-gradient(135deg, rgba(250,204,21,.14), rgba(58,160,255,.08));
+      border:1px solid rgba(250,204,21,.35);
+      border-radius:16px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow:0 0 18px rgba(250,204,21,.08);
+      opacity:0;
+      transform:translateY(-10px) scale(.98);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+
+    .reveal-card.show{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .reveal-flag{
+      width:42px;
+      height:30px;
+      border-radius:4px;
+      overflow:hidden;
+      flex:0 0 42px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0b1627;
+      border:1px solid #35557f;
+    }
+
+    .reveal-flag img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .reveal-text{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .reveal-person{
+      font-size:13px;
+      color:#b9cbed;
+      font-weight:700;
+    }
+
+    .reveal-team{
+      font-size:20px;
+      font-weight:900;
+      color:#fff6cf;
+    }
+
+    .results-toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 8px;
+    }
+
     .results-title{
       color:var(--muted);
       font-size:12px;
-      margin:0 0 8px;
+      margin:0;
+    }
+
+    .mini-btns{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      background:#13253f;
+      color:#eaf2ff;
+      border:1px solid #294867;
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .mini-btn:hover{
+      transform:translateY(-1px);
     }
 
     .result-list{
@@ -497,6 +571,13 @@
       border-radius:16px;
       padding:14px;
       animation: cardPop .25s ease;
+      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .card.highlight{
+      border-color:rgba(250,204,21,.55);
+      box-shadow:0 0 18px rgba(250,204,21,.12);
+      transform:translateY(-2px);
     }
 
     @keyframes cardPop{
@@ -527,6 +608,12 @@
       display:flex;
       align-items:center;
       gap:8px;
+    }
+
+    .team-pill.latest{
+      border-color:rgba(250,204,21,.55);
+      background:linear-gradient(135deg, rgba(250,204,21,.10), rgba(16,28,47,1));
+      box-shadow:0 0 10px rgba(250,204,21,.08);
     }
 
     .flag{
@@ -670,7 +757,22 @@ Zeynep"></textarea>
               <div class="subinfo" id="subInfo">teams.csv yüklendiğinde takımlar otomatik okunur</div>
             </div>
 
-            <div class="results-title">Atanan takımlar</div>
+            <div id="revealCard" class="reveal-card">
+              <div class="reveal-flag" id="revealFlag"></div>
+              <div class="reveal-text">
+                <div class="reveal-person" id="revealPerson">-</div>
+                <div class="reveal-team" id="revealTeam">-</div>
+              </div>
+            </div>
+
+            <div class="results-toolbar">
+              <div class="results-title">Atanan takımlar</div>
+              <div class="mini-btns">
+                <button id="copyBtn" class="mini-btn" type="button">Kopyala</button>
+                <button id="downloadBtn" class="mini-btn" type="button">CSV İndir</button>
+              </div>
+            </div>
+
             <div id="resultsArea" class="empty">
               Henüz sonuç yok.
             </div>
@@ -685,6 +787,8 @@ Zeynep"></textarea>
     const drawBtn = document.getElementById("drawBtn");
     const sampleBtn = document.getElementById("sampleBtn");
     const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
 
     const logBox = document.getElementById("log");
     const slotBoxEl = document.getElementById("slotBox");
@@ -698,12 +802,19 @@ Zeynep"></textarea>
     const subInfoEl = document.getElementById("subInfo");
     const resultsArea = document.getElementById("resultsArea");
 
+    const revealCardEl = document.getElementById("revealCard");
+    const revealFlagEl = document.getElementById("revealFlag");
+    const revealPersonEl = document.getElementById("revealPerson");
+    const revealTeamEl = document.getElementById("revealTeam");
+
     const statPeople = document.getElementById("statPeople");
     const statTeams = document.getElementById("statTeams");
     const statAssigned = document.getElementById("statAssigned");
 
     let teams = [];
     let isDrawing = false;
+    let latestResultKey = "";
+    let exportRows = [];
 
     function log(msg, type="normal"){
       const time = new Date().toLocaleTimeString("tr-TR");
@@ -916,14 +1027,12 @@ Zeynep"></textarea>
 
     function setSlotState(state){
       slotBoxEl.classList.remove("spinning", "reveal");
-
       if(state === "spinning") slotBoxEl.classList.add("spinning");
       if(state === "reveal") slotBoxEl.classList.add("reveal");
     }
 
     function setStageState(state){
       drawStageEl.classList.remove("reveal", "final");
-
       if(state === "reveal") drawStageEl.classList.add("reveal");
       if(state === "final") drawStageEl.classList.add("final");
     }
@@ -932,6 +1041,14 @@ Zeynep"></textarea>
       slotPrevEl.textContent = prev || " ";
       slotNameEl.textContent = current || " ";
       slotNextEl.textContent = next || " ";
+    }
+
+    function showRevealCard(person, team){
+      revealPersonEl.textContent = person;
+      revealTeamEl.textContent = `${team.team}${team.group ? ` • Grup ${team.group}` : ""}`;
+      revealFlagEl.innerHTML = getFlagHTML(team.flag) || "🏳️";
+      revealCardEl.classList.remove("show");
+      requestAnimationFrame(() => revealCardEl.classList.add("show"));
     }
 
     async function spinSlot(finalName, participants){
@@ -982,15 +1099,16 @@ Zeynep"></textarea>
 
       currentFlagEl.innerHTML = getFlagHTML(finalTeam.flag);
       currentTeamTextEl.textContent = finalTeam.team + (finalTeam.group ? ` • Grup ${finalTeam.group}` : "");
+      showRevealCard(person, finalTeam);
       await sleep(520);
 
       setStageState("");
       setSlotState("");
     }
 
-    function teamPillHTML(item){
+    function teamPillHTML(item, isLatest){
       return `
-        <div class="team-pill">
+        <div class="team-pill ${isLatest ? "latest" : ""}">
           <span class="flag">${getFlagHTML(item.flag) || "🏳️"}</span>
           <span class="team-text">
             <span>${escapeHtml(item.team)}</span>
@@ -1011,17 +1129,61 @@ Zeynep"></textarea>
 
       resultsArea.className = "result-list";
       resultsArea.innerHTML = people.map(person => {
+        const highlightCard = latestResultKey.startsWith(`${person}__`);
         const teamsHtml = assignmentMap[person]
-          .map(item => teamPillHTML(item))
+          .map(item => teamPillHTML(item, latestResultKey === `${person}__${item.team}`))
           .join("");
 
         return `
-          <div class="card">
+          <div class="card ${highlightCard ? "highlight" : ""}">
             <div class="person">${escapeHtml(person)}</div>
             <div class="teams">${teamsHtml}</div>
           </div>
         `;
       }).join("");
+    }
+
+    function buildExportText(){
+      if(exportRows.length === 0) return "";
+      const lines = ["Person,Team,Group"];
+      exportRows.forEach(row => {
+        lines.push(`"${row.person}","${row.team}","${row.group}"`);
+      });
+      return lines.join("\n");
+    }
+
+    async function copyResults(){
+      const text = buildExportText();
+      if(!text){
+        log("Kopyalanacak sonuç yok.", "warn");
+        return;
+      }
+
+      try{
+        await navigator.clipboard.writeText(text);
+        log("Sonuçlar panoya kopyalandı.", "ok");
+      }catch{
+        log("Panoya kopyalama başarısız oldu.", "error");
+      }
+    }
+
+    function downloadResults(){
+      const text = buildExportText();
+      if(!text){
+        log("İndirilecek sonuç yok.", "warn");
+        return;
+      }
+
+      const blob = new Blob([text], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "draw-results.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      log("CSV dosyası indirildi.", "ok");
     }
 
     async function startDraw(){
@@ -1053,6 +1215,8 @@ Zeynep"></textarea>
       isDrawing = true;
       drawBtn.disabled = true;
       drawBtn.textContent = "Çekiliş Yapılıyor...";
+      exportRows = [];
+      latestResultKey = "";
 
       try{
         log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} takım.`, "ok");
@@ -1072,6 +1236,13 @@ Zeynep"></textarea>
           await animateTeamDraw(item.person, item.team, flatPool, assigned + 1, sequence.length);
 
           progressiveMap[item.person].push(item.team);
+          latestResultKey = `${item.person}__${item.team.team}`;
+          exportRows.push({
+            person: item.person,
+            team: item.team.team,
+            group: item.team.group || ""
+          });
+
           assigned++;
           statAssigned.textContent = assigned;
           renderResults(progressiveMap);
@@ -1129,6 +1300,8 @@ Selin`;
       namesInput.value = "";
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
+      exportRows = [];
+      latestResultKey = "";
       setSlotRows("Ready", "Ready", "Ready");
       slotNameEl.style.transform = "scale(1)";
       setSlotState("");
@@ -1139,9 +1312,15 @@ Selin`;
       subInfoEl.textContent = teams.length ? `${teams.length} takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
       resultsArea.className = "empty";
       resultsArea.textContent = "Henüz sonuç yok.";
+      revealCardEl.classList.remove("show");
+      revealFlagEl.innerHTML = "";
+      revealPersonEl.textContent = "-";
+      revealTeamEl.textContent = "-";
       log("Form temizlendi.");
     });
 
+    copyBtn.addEventListener("click", copyResults);
+    downloadBtn.addEventListener("click", downloadResults);
     drawBtn.addEventListener("click", startDraw);
 
     namesInput.addEventListener("input", () => {
