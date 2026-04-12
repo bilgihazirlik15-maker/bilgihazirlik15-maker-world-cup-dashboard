@@ -881,6 +881,18 @@ Zeynep"></textarea>
         .replace(/'/g, "&#39;");
     }
 
+    function normalizeFlagUrl(teamName, flagValue){
+      const name = String(teamName || "").trim().toLowerCase();
+
+      if(name === "england"){
+        return "https://flagcdn.com/w40/gb-eng.png";
+      }
+      if(name === "scotland"){
+        return "https://flagcdn.com/w40/gb-sct.png";
+      }
+      return flagValue || "";
+    }
+
     function getFlagHTML(flagValue){
       if(!flagValue) return "";
 
@@ -927,10 +939,11 @@ Zeynep"></textarea>
         const teamName = cols[teamIndex];
         if(!teamName) continue;
 
+        const rawFlag = flagIndex >= 0 ? (cols[flagIndex] || "") : "";
         rows.push({
           team: teamName,
           group: groupIndex >= 0 ? (cols[groupIndex] || "") : "",
-          flag: flagIndex >= 0 ? (cols[flagIndex] || "") : ""
+          flag: normalizeFlagUrl(teamName, rawFlag)
         });
       }
 
@@ -1200,6 +1213,12 @@ Zeynep"></textarea>
         return;
       }
 
+      if(typeof html2pdf !== "function"){
+        log("PDF kütüphanesi yüklenemedi. Sayfayı Live Server veya GitHub Pages üzerinden aç.", "error");
+        alert("PDF oluşturmak için sayfayı file:/// yerine Live Server veya GitHub Pages üzerinden aç.");
+        return;
+      }
+
       const grouped = {};
       exportRows.forEach(row => {
         if(!grouped[row.person]) grouped[row.person] = [];
@@ -1207,7 +1226,7 @@ Zeynep"></textarea>
       });
 
       const wrapper = document.createElement("div");
-      wrapper.style.width = "800px";
+      wrapper.style.width = "760px";
       wrapper.style.padding = "28px";
       wrapper.style.background = "#ffffff";
       wrapper.style.color = "#111827";
@@ -1252,24 +1271,25 @@ Zeynep"></textarea>
 
         grouped[person].forEach(item => {
           const row = document.createElement("div");
-row.style.display = "flex";
-row.style.alignItems = "flex-start";
-row.style.justifyContent = "space-between";
-row.style.gap = "10px";
-row.style.padding = "8px 10px";
-row.style.marginBottom = "8px";
-row.style.background = "#ffffff";
-row.style.border = "1px solid #e5e7eb";
-row.style.borderRadius = "10px";
-row.style.flexWrap = "wrap";
-row.style.overflow = "hidden";
+          row.style.display = "flex";
+          row.style.alignItems = "flex-start";
+          row.style.justifyContent = "space-between";
+          row.style.gap = "10px";
+          row.style.padding = "8px 10px";
+          row.style.marginBottom = "8px";
+          row.style.background = "#ffffff";
+          row.style.border = "1px solid #e5e7eb";
+          row.style.borderRadius = "10px";
+          row.style.flexWrap = "wrap";
+          row.style.overflow = "hidden";
 
-const left = document.createElement("div");
-left.style.display = "flex";
-left.style.alignItems = "center";
-left.style.gap = "10px";
-left.style.flex = "1 1 320px";
-left.style.minWidth = "0";
+          const left = document.createElement("div");
+          left.style.display = "flex";
+          left.style.alignItems = "center";
+          left.style.gap = "10px";
+          left.style.flex = "1 1 320px";
+          left.style.minWidth = "0";
+
           if(item.flag){
             const flag = document.createElement("img");
             flag.src = item.flag;
@@ -1283,24 +1303,24 @@ left.style.minWidth = "0";
           }
 
           const team = document.createElement("div");
-team.style.fontSize = "14px";
-team.style.fontWeight = "600";
-team.style.color = "#111827";
-team.style.wordBreak = "break-word";
-team.style.overflowWrap = "anywhere";
-team.style.lineHeight = "1.35";
-team.style.maxWidth = "100%";
-team.textContent = item.team;
+          team.style.fontSize = "14px";
+          team.style.fontWeight = "600";
+          team.style.color = "#111827";
+          team.style.wordBreak = "break-word";
+          team.style.overflowWrap = "anywhere";
+          team.style.lineHeight = "1.35";
+          team.style.maxWidth = "100%";
+          team.textContent = item.team;
           left.appendChild(team);
 
           const right = document.createElement("div");
-right.style.display = "flex";
-right.style.alignItems = "center";
-right.style.gap = "6px";
-right.style.flex = "0 0 auto";
-right.style.flexWrap = "wrap";
-right.style.justifyContent = "flex-end";
-right.style.maxWidth = "100%";
+          right.style.display = "flex";
+          right.style.alignItems = "center";
+          right.style.gap = "6px";
+          right.style.flex = "0 0 auto";
+          right.style.flexWrap = "wrap";
+          right.style.justifyContent = "flex-end";
+          right.style.maxWidth = "100%";
 
           const roundBadge = document.createElement("div");
           roundBadge.style.fontSize = "11px";
@@ -1339,7 +1359,11 @@ right.style.maxWidth = "100%";
         margin: [10, 10, 10, 10],
         filename: "draw-results.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false
+        },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["css", "legacy"] }
       };
