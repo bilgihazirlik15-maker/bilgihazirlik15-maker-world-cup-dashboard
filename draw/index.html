@@ -729,7 +729,10 @@ Zeynep"></textarea>
         <section class="panel">
           <div class="panel-head">
             <h2>Çekiliş Sonuçları</h2>
-            <p>Katılımcı sayısı 48’i aşsa da herkes en az 1 takım alır.</p>
+            <p>
+              Katılımcı sayısı 48’den fazlaysa herkes en az 1 takım alır.<br>
+              Katılımcı sayısı 48’den azsa tüm 48 takım dağıtılana kadar devam eder.
+            </p>
           </div>
           <div class="panel-body">
             <div class="stats">
@@ -1100,21 +1103,40 @@ Zeynep"></textarea>
 
       const totalPeople = shuffledPeople.length;
       const teamCount = teamList.length;
-      const totalRounds = Math.ceil(totalPeople / teamCount);
+
+      let totalAssignmentsTarget;
+      let totalRounds;
+
+      if(totalPeople <= teamCount){
+        totalAssignmentsTarget = teamCount; // tüm 48 takım dağıtılsın
+        totalRounds = Math.ceil(teamCount / totalPeople);
+      } else {
+        totalAssignmentsTarget = totalPeople; // herkes en az 1 takım alsın
+        totalRounds = Math.ceil(totalPeople / teamCount);
+      }
 
       let assigned = 0;
+      let round = 1;
+      let cursor = 0;
 
-      for(let round = 1; round <= totalRounds; round++){
-        const start = (round - 1) * teamCount;
-        const end = Math.min(start + teamCount, totalPeople);
-        const roundPeople = shuffledPeople.slice(start, end);
+      while(assigned < totalAssignmentsTarget){
+        const remaining = totalAssignmentsTarget - assigned;
+        const peopleThisRound = Math.min(totalPeople, remaining);
+        const roundPeople = [];
+
+        for(let i = 0; i < peopleThisRound; i++){
+          roundPeople.push(shuffledPeople[(cursor + i) % totalPeople]);
+        }
+
+        cursor = (cursor + peopleThisRound) % totalPeople;
+
         const roundPool = shuffle([...teamList]);
 
-        roundPeople.forEach(person => {
+        for(const person of roundPeople){
+          if(assigned >= totalAssignmentsTarget) break;
+
           const selected = pickTeamForPerson(person, usedTeamsByPerson, usedGroupsByPerson, roundPool);
-          if(!selected){
-            return;
-          }
+          if(!selected) continue;
 
           assignmentMap[person].push(selected);
           usedTeamsByPerson[person].add(selected.team);
@@ -1125,16 +1147,19 @@ Zeynep"></textarea>
             person,
             team: selected,
             assignedCount: assigned,
-            totalCount: totalPeople,
+            totalCount: totalAssignmentsTarget,
             roundNo: round
           });
-        });
+        }
+
+        round += 1;
       }
 
       return {
         assignmentMap,
         sequence,
-        totalRounds
+        totalRounds: round - 1,
+        totalAssignmentsTarget
       };
     }
 
@@ -1421,11 +1446,12 @@ Zeynep"></textarea>
         const assignmentMap = expanded.assignmentMap;
         const sequence = expanded.sequence;
         const totalRounds = expanded.totalRounds;
+        const totalAssignmentsTarget = expanded.totalAssignmentsTarget;
         lastRoundCount = totalRounds;
 
         statRounds.textContent = totalRounds;
 
-        log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} benzersiz takım, ${totalRounds} tur.`, "ok");
+        log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} benzersiz takım, ${totalRounds} tur, ${totalAssignmentsTarget} toplam atama.`, "ok");
 
         const progressiveMap = {};
         participants.forEach(p => progressiveMap[p] = []);
@@ -1456,10 +1482,16 @@ Zeynep"></textarea>
         setSlotRows("Completed", "Completed", "Completed");
         currentPersonEl.textContent = "Tamamlandı";
         currentFlagEl.innerHTML = "🏆";
-        currentTeamTextEl.textContent = "Herkes en az 1 takım aldı";
-        subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
 
-        log("Çekiliş başarıyla tamamlandı. Katılımcı sayısı 48’i aşsa da herkes en az bir takım aldı.", "ok");
+        if(participants.length <= teams.length){
+          currentTeamTextEl.textContent = "Tüm 48 takım dağıtıldı";
+          subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
+          log("Katılımcı sayısı 48’den az olduğu için tüm takımlar dağıtıldı.", "ok");
+        } else {
+          currentTeamTextEl.textContent = "Herkes en az 1 takım aldı";
+          subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
+          log("Katılımcı sayısı 48’i aştığı için herkes en az 1 takım aldı.", "ok");
+        }
 
       }catch(err){
         console.error(err);
