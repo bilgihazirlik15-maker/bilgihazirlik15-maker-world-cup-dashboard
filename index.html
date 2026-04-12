@@ -352,9 +352,9 @@
     }
 
     .group-winner {
-  background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(250, 204, 21, 0.1));
-  border-left: 4px solid #facc15;
-}
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(250, 204, 21, 0.1));
+      border-left: 4px solid #facc15;
+    }
 
     .group-winner td {
       color: #fde68a;
@@ -624,18 +624,19 @@
 <body>
   <div class="page">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-  <h1>World Cup 2026 Dashboard</h1>
-  <a href="./draw/index.html" style="
-    background:linear-gradient(135deg,#facc15,#f59e0b);
-    color:#111;
-    font-weight:800;
-    padding:10px 16px;
-    border-radius:10px;
-    text-decoration:none;
-  ">
-    🎰 Go to Draw
-  </a>
-</div>
+      <h1>World Cup 2026 Dashboard</h1>
+      <a href="./draw/index.html" style="
+        background:linear-gradient(135deg,#facc15,#f59e0b);
+        color:#111;
+        font-weight:800;
+        padding:10px 16px;
+        border-radius:10px;
+        text-decoration:none;
+      ">
+        🎰 Go to Draw
+      </a>
+    </div>
+
     <p class="subtitle">Groups, Next Matches, Recent Results, Group Leaders, and Knockout Bracket</p>
 
     <div id="status" class="status">Loading CSV files...</div>
@@ -720,6 +721,22 @@
       "Final"
     ];
 
+    const TEAM_NAME_ALIASES = {
+      "morroco": "Morocco",
+      "morrocco": "Morocco",
+      "marocco": "Morocco",
+      "brasil": "Brazil",
+      "brazil ": "Brazil",
+      "quatar": "Qatar",
+      "qatar ": "Qatar",
+      "swiss": "Switzerland",
+      "swizerland": "Switzerland",
+      "switzerand": "Switzerland",
+      "czech republic": "Czechia",
+      "usa": "United States",
+      "u.s.a.": "United States"
+    };
+
     function setStatus(message, isError = false) {
       const box = document.getElementById("status");
       box.textContent = message;
@@ -788,17 +805,30 @@
       return (name || "").toString().trim().toLowerCase();
     }
 
+    function canonicalizeTeamName(name) {
+      const raw = (name || "").toString().trim();
+      const key = raw.toLowerCase();
+      return TEAM_NAME_ALIASES[key] || raw;
+    }
+
+    function normalizeGroupName(groupName) {
+      const raw = (groupName || "").toString().trim();
+      if (!raw) return "";
+      const cleaned = raw.replace(/^group\s+/i, "").trim();
+      return cleaned.toUpperCase();
+    }
+
     function buildTeamMetaMap(teams) {
       const map = new Map();
 
       teams.forEach(team => {
-        const teamName = (team.team_name || team.team || team.name || "").toString().trim();
+        const teamName = canonicalizeTeamName(team.team_name || team.team || team.name || "");
         const key = normalizeTeamName(teamName);
         if (!key) return;
 
         map.set(key, {
           team_name: teamName,
-          group_name: (team.group_name || team.group || "").toString().trim(),
+          group_name: normalizeGroupName(team.group_name || team.group || ""),
           short_name: (team.short_name || "").toString().trim(),
           flag: (team.flag || "").toString().trim(),
           status: (team.status || "").toString().trim()
@@ -866,7 +896,8 @@
     }
 
     function withFlag(teamName, teamMetaMap = null) {
-      const cleanName = (teamName || "TBD").toString().trim();
+      const canonical = canonicalizeTeamName(teamName || "TBD");
+      const cleanName = canonical.toString().trim();
       if (!cleanName) return "TBD";
 
       let flagUrl = "";
@@ -970,7 +1001,7 @@
       if (match.match_date) parts.push(match.match_date);
       if (match.match_time) parts.push(match.match_time);
       if (match.stage) parts.push(match.stage);
-      if (match.group_name) parts.push("Group " + match.group_name);
+      if (match.group_name) parts.push("Group " + normalizeGroupName(match.group_name));
       if (match.city) parts.push(match.city);
 
       return parts.join(" • ");
@@ -1161,10 +1192,11 @@
 
     function buildGroupStandings(matches, teams) {
       const table = {};
+      const teamMetaMap = buildTeamMetaMap(teams);
 
       teams.forEach(teamRow => {
-        const teamName = (teamRow.team_name || teamRow.team || teamRow.name || "").toString().trim();
-        const groupName = (teamRow.group_name || teamRow.group || "").toString().trim();
+        const teamName = canonicalizeTeamName(teamRow.team_name || teamRow.team || teamRow.name || "");
+        const groupName = normalizeGroupName(teamRow.group_name || teamRow.group || "");
 
         if (!teamName || !groupName) return;
 
@@ -1176,12 +1208,18 @@
 
       matches.forEach(match => {
         const stage = (match.stage || "").toString().trim().toLowerCase();
-        const groupName = (match.group_name || "").toString().trim();
-        const homeTeam = (match.home_team || "").toString().trim();
-        const awayTeam = (match.away_team || "").toString().trim();
+        const groupName = normalizeGroupName(match.group_name || "");
+        let homeTeam = canonicalizeTeamName(match.home_team || "");
+        let awayTeam = canonicalizeTeamName(match.away_team || "");
 
         if (stage !== "group") return;
         if (!groupName || !homeTeam || !awayTeam) return;
+
+        const canonicalHomeMeta = teamMetaMap.get(normalizeTeamName(homeTeam));
+        const canonicalAwayMeta = teamMetaMap.get(normalizeTeamName(awayTeam));
+
+        if (canonicalHomeMeta) homeTeam = canonicalHomeMeta.team_name;
+        if (canonicalAwayMeta) awayTeam = canonicalAwayMeta.team_name;
 
         if (!table[groupName]) table[groupName] = {};
 
@@ -1303,12 +1341,11 @@
       const container = document.getElementById("groupsGrid");
       container.innerHTML = "";
 
-      // Grupları SADECE teams.csv'den kur
       const teamsByGroup = {};
 
       teams.forEach(team => {
-        const teamName = (team.team_name || team.team || "").toString().trim();
-        const groupName = (team.group_name || team.group || "").toString().trim();
+        const teamName = canonicalizeTeamName(team.team_name || team.team || "");
+        const groupName = normalizeGroupName(team.group_name || team.group || "");
 
         if (!teamName || !groupName) return;
 
@@ -1495,8 +1532,8 @@
 
       const winner = getKnockoutWinner(match);
 
-      const homeTeamName = (match.home_team || "TBD").toString().trim();
-      const awayTeamName = (match.away_team || "TBD").toString().trim();
+      const homeTeamName = canonicalizeTeamName(match.home_team || "TBD");
+      const awayTeamName = canonicalizeTeamName(match.away_team || "TBD");
 
       const homeScoreText = (match.home_score ?? "").toString().trim();
       const awayScoreText = (match.away_score ?? "").toString().trim();
