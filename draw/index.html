@@ -1,40 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
- <div style="position:absolute; top:20px; left:20px;">
-  <a href="../index.html" style="
-    background:#1e3a8a;
-    color:white;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:bold;
-  ">
-    ⬅ Dashboard
-  </a>
-</div>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World Cup 2026 Draw</title>
   <style>
-  
-   #slotBox {
-  height: 90px;
-  background: #0b1627;
-  border: 2px solid #3aa0ff;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 14px 0;
-}
-
-#slotName {
-  font-size: 28px;
-  font-weight: 900;
-  color: white;
-}
-   * { box-sizing: border-box; }
+    * { box-sizing: border-box; }
 
     :root{
       --bg:#07111f;
@@ -73,7 +44,6 @@
       width:100%;
       margin:0 auto;
       padding:18px;
-      /* height:100%; */
       display:flex;
       flex-direction:column;
       min-height:0;
@@ -86,7 +56,6 @@
       gap:16px;
       margin-bottom:16px;
       flex-wrap:wrap;
-      flex:0 0 auto;
     }
 
     .title-box h1{
@@ -110,25 +79,15 @@
       font-weight:700;
       box-shadow:var(--shadow);
       white-space:nowrap;
-      flex:0 0 auto;
     }
 
     .grid{
       display:grid;
       grid-template-columns: 360px 1fr;
       gap:18px;
-      
     }
 
     @media (max-width: 980px){
-      body{
-        overflow:auto;
-      }
-      .app,
-      .wrap{
-        height:auto;
-        min-height:100vh;
-      }
       .grid{
         grid-template-columns:1fr;
       }
@@ -147,7 +106,6 @@
 
     .panel-head{
       padding:16px 16px 0;
-      flex:0 0 auto;
     }
 
     .panel-head h2{
@@ -194,6 +152,50 @@
       box-shadow:0 0 0 3px rgba(58,160,255,.15);
     }
 
+    #slotBox{
+      height:90px;
+      background:
+        linear-gradient(180deg, #0a1424 0%, #0d1b31 100%);
+      border:2px solid #2f6fc0;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:14px 0 0;
+      overflow:hidden;
+      position:relative;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
+    }
+
+    #slotBox::before,
+    #slotBox::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      height:18px;
+      pointer-events:none;
+    }
+
+    #slotBox::before{
+      top:0;
+      background:linear-gradient(180deg, rgba(7,17,31,.95), rgba(7,17,31,0));
+    }
+
+    #slotBox::after{
+      bottom:0;
+      background:linear-gradient(0deg, rgba(7,17,31,.95), rgba(7,17,31,0));
+    }
+
+    #slotName{
+      font-size:30px;
+      font-weight:900;
+      color:#ffffff;
+      letter-spacing:.3px;
+      text-shadow:0 0 14px rgba(58,160,255,.22);
+      transform:translateY(0);
+    }
+
     .btns{
       display:flex;
       gap:10px;
@@ -237,7 +239,6 @@
       grid-template-columns:repeat(3, 1fr);
       gap:10px;
       margin-bottom:14px;
-      flex:0 0 auto;
     }
 
     .stat{
@@ -274,7 +275,6 @@
       text-align:center;
       position:relative;
       overflow:hidden;
-      flex:0 0 auto;
     }
 
     .draw-label{
@@ -338,24 +338,10 @@
       font-size:12px;
     }
 
-     .results-title{
+    .results-title{
       color:var(--muted);
       font-size:12px;
       margin:0 0 8px;
-      flex:0 0 auto;
-    }
-
-      padding-right:6px;
-      border-radius:14px;
-    }
-
-    .results-scroll::-webkit-scrollbar{
-      width:10px;
-    }
-
-    .results-scroll::-webkit-scrollbar-thumb{
-      background:#254268;
-      border-radius:999px;
     }
 
     .result-list{
@@ -443,7 +429,6 @@
       max-height:180px;
       overflow:auto;
       line-height:1.55;
-      flex:0 0 auto;
     }
 
     .empty{
@@ -466,7 +451,7 @@
       <div class="topbar">
         <div class="title-box">
           <h1>World Cup 2026 – Draw</h1>
-          <p>Tüm takımlar dağıtılır. Sonuçlar tek ekranda düzenli kalır.</p>
+          <p>Tüm takımlar dağıtılır. Sonuçlar aşağı doğru akabilir.</p>
         </div>
         <a class="back-link" href="../index.html">← Back to Dashboard</a>
       </div>
@@ -480,20 +465,14 @@
           <div class="panel-body">
             <label for="names">İsim listesi</label>
             <textarea id="names" placeholder="Örnek:
-
-             <textarea id="names" placeholder="..."></textarea>
-
-<!-- 🎰 SLOT BOX BURAYA -->
-<div id="slotBox">
-  <div id="slotName">Ready</div>
-</div>
-
-<div class="btns">
-             
-             Ali
+Ali
 Ayşe
 Mehmet
 Zeynep"></textarea>
+
+            <div id="slotBox">
+              <div id="slotName">Ready</div>
+            </div>
 
             <div class="btns">
               <button id="drawBtn" class="primary">Çekilişi Başlat</button>
@@ -510,7 +489,7 @@ Zeynep"></textarea>
         <section class="panel">
           <div class="panel-head">
             <h2>Çekiliş Sonuçları</h2>
-            <p>Sonuç alanı sabit kalır, sadece iç kısmı scroll olur.</p>
+            <p>Slot kutusu isim seçimini yapar, sahne takım reveal gösterir.</p>
           </div>
           <div class="panel-body">
             <div class="stats">
@@ -538,11 +517,9 @@ Zeynep"></textarea>
               <div class="subinfo" id="subInfo">teams.csv yüklendiğinde takımlar otomatik okunur</div>
             </div>
 
-              <div class="results-title">Atanan takımlar</div>
-              <div id="resultsArea" class="empty">
-                  Henüz sonuç yok.
-                </div>
-              </div>
+            <div class="results-title">Atanan takımlar</div>
+            <div id="resultsArea" class="empty">
+              Henüz sonuç yok.
             </div>
           </div>
         </section>
@@ -557,6 +534,7 @@ Zeynep"></textarea>
     const clearBtn = document.getElementById("clearBtn");
 
     const logBox = document.getElementById("log");
+    const slotNameEl = document.getElementById("slotName");
     const currentPersonEl = document.getElementById("currentPerson");
     const currentFlagEl = document.getElementById("currentFlag");
     const currentTeamTextEl = document.getElementById("currentTeamText");
@@ -671,7 +649,6 @@ Zeynep"></textarea>
       for(let i = 1; i < lines.length; i++){
         const cols = parseCSVLine(lines[i]);
         const teamName = cols[teamIndex];
-
         if(!teamName) continue;
 
         rows.push({
@@ -724,51 +701,46 @@ Zeynep"></textarea>
     }
 
     function buildBalancedAssignments(participants, teamList){
-  const shuffledTeams = shuffle(teamList);
-  const shuffledPeople = shuffle(participants);
+      const shuffledTeams = shuffle(teamList);
+      const shuffledPeople = shuffle(participants);
 
-  const assignmentMap = {};
-  shuffledPeople.forEach(name => assignmentMap[name] = []);
+      const assignmentMap = {};
+      shuffledPeople.forEach(name => assignmentMap[name] = []);
 
-  if(shuffledPeople.length === 0 || shuffledTeams.length === 0){
-    return assignmentMap;
-  }
+      if(shuffledPeople.length === 0 || shuffledTeams.length === 0){
+        return assignmentMap;
+      }
 
-  for(const team of shuffledTeams){
+      for(const team of shuffledTeams){
+        const counts = shuffledPeople.map(name => ({
+          name,
+          count: assignmentMap[name].length
+        }));
 
-    // 1. Herkesin mevcut takım sayısını bul
-    const counts = shuffledPeople.map(name => ({
-      name,
-      count: assignmentMap[name].length
-    }));
+        const minCount = Math.min(...counts.map(x => x.count));
 
-    const minCount = Math.min(...counts.map(x => x.count));
+        const leastLoaded = counts
+          .filter(x => x.count === minCount)
+          .map(x => x.name);
 
-    // 2. En az takımı olanlar
-    const leastLoaded = counts
-      .filter(x => x.count === minCount)
-      .map(x => x.name);
+        const eligible = leastLoaded.filter(name => {
+          return !assignmentMap[name].some(t => t.group === team.group);
+        });
 
-    // 3. Grup kontrolü yap
-    const eligible = leastLoaded.filter(name => {
-      return !assignmentMap[name].some(t => t.group === team.group);
-    });
+        let chosen;
 
-    let chosen;
+        if(eligible.length > 0){
+          chosen = eligible[Math.floor(Math.random() * eligible.length)];
+        } else {
+          chosen = leastLoaded[Math.floor(Math.random() * leastLoaded.length)];
+        }
 
-    if(eligible.length > 0){
-      // Grup çakışması yoksa buradan seç
-      chosen = eligible[Math.floor(Math.random() * eligible.length)];
-    } else {
-      // fallback → kuralı esnet (çok önemli!)
-      chosen = leastLoaded[Math.floor(Math.random() * leastLoaded.length)];
+        assignmentMap[chosen].push(team);
+      }
+
+      return assignmentMap;
     }
 
-    assignmentMap[chosen].push(team);
-  }
-
-  return assignmentMap;
-}
     function buildSequence(assignmentMap){
       const people = Object.keys(assignmentMap);
       const maxTeams = Math.max(...people.map(p => assignmentMap[p].length), 0);
@@ -783,6 +755,21 @@ Zeynep"></textarea>
         }
       }
       return sequence;
+    }
+
+    async function spinSlot(finalName, participants){
+      const pool = shuffle([...participants]);
+      const totalSteps = 22;
+
+      for(let i = 0; i < totalSteps; i++){
+        const name = pool[i % pool.length] || finalName;
+        slotNameEl.textContent = name;
+        const delay = 45 + (i * 9);
+        await sleep(delay);
+      }
+
+      slotNameEl.textContent = finalName;
+      await sleep(220);
     }
 
     async function animateTeamDraw(person, finalTeam, pool, assignedCount, totalCount){
@@ -884,7 +871,9 @@ Zeynep"></textarea>
         renderResults(progressiveMap);
 
         for(const item of sequence){
+          await spinSlot(item.person, participants);
           await animateTeamDraw(item.person, item.team, flatPool, assigned + 1, sequence.length);
+
           progressiveMap[item.person].push(item.team);
           assigned++;
           statAssigned.textContent = assigned;
@@ -893,6 +882,7 @@ Zeynep"></textarea>
           await sleep(180);
         }
 
+        slotNameEl.textContent = "Completed";
         currentPersonEl.textContent = "Tamamlandı";
         currentFlagEl.innerHTML = "🏆";
         currentTeamTextEl.textContent = "Tüm takımlar dağıtıldı";
@@ -908,6 +898,7 @@ Zeynep"></textarea>
       }catch(err){
         console.error(err);
         log(`Çekiliş sırasında hata oluştu: ${err.message}`, "error");
+        slotNameEl.textContent = "Error";
         currentPersonEl.textContent = "Hata";
         currentFlagEl.innerHTML = "⚠️";
         currentTeamTextEl.textContent = "İşlem tamamlanamadı";
@@ -937,6 +928,7 @@ Selin`;
       namesInput.value = "";
       statPeople.textContent = 0;
       statAssigned.textContent = 0;
+      slotNameEl.textContent = "Ready";
       currentPersonEl.textContent = "Hazır";
       currentFlagEl.innerHTML = "";
       currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
