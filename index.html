@@ -1008,7 +1008,23 @@
 
       return parts.join(" • ");
     }
+function getCountdown(match) {
+  const date = parseMatchDate(match.match_date, match.match_time);
+  if (!date) return "";
 
+  const diff = date - new Date();
+  if (diff <= 0) return "Starting";
+
+  const totalHours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(totalHours / 24);
+  const hours = totalHours % 24;
+
+  if (days > 0) {
+    return `${days}d ${hours}h left`;
+  }
+
+  return `${hours}h left`;
+}
     function createMatchItem(match, teamMetaMap, showDayTag = false, resultIndex = null) {
       const item = document.createElement("div");
       item.className = "match-item";
@@ -1029,9 +1045,13 @@
       }
 
       const meta = document.createElement("div");
-      meta.className = "match-meta";
-      meta.textContent = formatMatchMeta(match);
-      item.appendChild(meta);
+meta.className = "match-meta";
+
+const countdown = getCountdown(match);
+const baseMeta = formatMatchMeta(match);
+
+meta.textContent = countdown ? `${baseMeta} • ${countdown}` : baseMeta;
+item.appendChild(meta);
 
       const homeTeamText = withFlag(match.home_team, teamMetaMap);
       const awayTeamText = withFlag(match.away_team, teamMetaMap);
