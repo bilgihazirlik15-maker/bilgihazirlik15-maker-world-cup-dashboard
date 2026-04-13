@@ -354,6 +354,7 @@
     .group-winner {
       background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(250, 204, 21, 0.1));
       border-left: 4px solid #facc15;
+      box-shadow: 0 0 12px rgba(250,204,21,0.25);
     }
 
     .group-winner td {
@@ -538,12 +539,13 @@
     }
 
     .group-table tbody tr {
-      transition: background 0.2s ease, color 0.2s ease;
-    }
+      transition: all 0.2s ease;
+}
 
     .group-table tbody tr:hover {
-      background: rgba(96, 165, 250, 0.12);
-    }
+   transform: scale(1.02);
+  background: rgba(96,165,250,0.2);
+}
 
     .group-table tbody tr:hover td {
       color: #ffffff;
