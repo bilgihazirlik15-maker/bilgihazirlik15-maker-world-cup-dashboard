@@ -15,82 +15,96 @@
   </style>
 </head>
 <body>
-  <h1>Manage Match Results</h1>
-  <input type="file" id="csvFile" accept=".csv" />
-  
-  <div class="controls" style="margin-top:20px;">
-    <button class="btn-clear" onclick="clearAllScores()">Clear All Scores</button>
-    <button class="btn-save" onclick="downloadCSV()">Save & Download CSV</button>
-  </div>
 
-  <table id="matchTable">
-    <thead>
+<h1>Manage Match Results</h1>
+
+<div class="controls">
+  <button class="btn-clear" onclick="clearAllScores()">Clear All Scores</button>
+  <button class="btn-save" onclick="downloadCSV()">Save & Download CSV</button>
+</div>
+
+<table id="matchTable">
+  <thead>
+    <tr>
+      <th>ID</th><th>Stage</th><th>Home Team</th><th>Away Team</th><th>Home Score</th><th>Away Score</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+
+let matches = [];
+
+/* 🔥 SAYFA AÇILIR AÇILMAZ CSV YÜKLE */
+async function loadCSV() {
+  const res = await fetch("./data/matches.csv");
+  const text = await res.text();
+  parseCSV(text);
+}
+
+/* CSV PARSE */
+function parseCSV(text) {
+  const lines = text.split('\n');
+  matches = lines.slice(1).filter(l => l.trim()).map(line => {
+    const v = line.split(',');
+    return {
+      match_id: v[0], stage: v[1], group: v[2], date: v[3],
+      time: v[4], home: v[5], away: v[6],
+      h_score: v[7], a_score: v[8], status: v[9], venue: v[10], city: v[11]
+    };
+  });
+  renderTable();
+}
+
+/* TABLO */
+function renderTable() {
+  const tbody = document.querySelector('#matchTable tbody');
+  tbody.innerHTML = '';
+  matches.forEach((m, i) => {
+    tbody.innerHTML += `
       <tr>
-        <th>ID</th><th>Stage</th><th>Home Team</th><th>Away Team</th><th>Home Score</th><th>Away Score</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+        <td>${m.match_id}</td>
+        <td>${m.stage}</td>
+        <td>${m.home}</td>
+        <td>${m.away}</td>
+        <td><input type="number" value="${m.h_score}" onchange="updateScore(${i}, 'h_score', this.value)"></td>
+        <td><input type="number" value="${m.a_score}" onchange="updateScore(${i}, 'a_score', this.value)"></td>
+      </tr>`;
+  });
+}
 
-  <script>
-    let matches = [];
+/* SCORE UPDATE */
+function updateScore(i, key, val) {
+  matches[i][key] = val;
+}
 
-    document.getElementById('csvFile').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        parseCSV(e.target.result);
-      };
-      reader.readAsText(file);
-    });
+/* CLEAR */
+function clearAllScores() {
+  matches.forEach(m => { m.h_score = ''; m.a_score = ''; });
+  renderTable();
+}
 
-    function parseCSV(text) {
-      const lines = text.split('\n');
-      const headers = lines[0].split(',');
-      matches = lines.slice(1).filter(l => l.trim()).map(line => {
-        const values = line.split(',');
-        return {
-          match_id: values[0], stage: values[1], group: values[2], date: values[3],
-          time: values[4], home: values[5], away: values[6],
-          h_score: values[7], a_score: values[8], status: values[9], venue: values[10], city: values[11]
-        };
-      });
-      renderTable();
-    }
+/* DOWNLOAD */
+function downloadCSV() {
+  let csv = 'match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,away_score,status,venue,city\n';
+  matches.forEach(m => {
+    csv += `${m.match_id},${m.stage},${m.group},${m.date},${m.time},${m.home},${m.away},${m.h_score},${m.a_score},${m.status},${m.venue},${m.city}\n`;
+  });
 
-    function renderTable() {
-      const tbody = document.querySelector('#matchTable tbody');
-      tbody.innerHTML = '';
-      matches.forEach((m, i) => {
-        tbody.innerHTML += `<tr>
-          <td>${m.match_id}</td>
-          <td>${m.stage}</td>
-          <td>${m.home}</td>
-          <td>${m.away}</td>
-          <td><input type="number" value="${m.h_score}" onchange="updateScore(${i}, 'h_score', this.value)"></td>
-          <td><input type="number" value="${m.a_score}" onchange="updateScore(${i}, 'a_score', this.value)"></td>
-        </tr>`;
-      });
-    }
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
 
-    function updateScore(index, key, val) { matches[index][key] = val; }
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'matches.csv';
+  a.click();
+}
 
-    function clearAllScores() {
-      // Skorlar 0 yerine boş string (empty) olarak güncellendi
-      matches.forEach(m => { m.h_score = ''; m.a_score = ''; });
-      renderTable();
-    }
+/* INIT */
+loadCSV();
 
-    function downloadCSV() {
-      let csv = 'match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,away_score,status,venue,city\n';
-      matches.forEach(m => {
-        csv += `${m.match_id},${m.stage},${m.group},${m.date},${m.time},${m.home},${m.away},${m.h_score},${m.a_score},${m.status},${m.venue},${m.city}\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'matches.csv'; a.click();
-    }
-  </script>
+</script>
+
 </body>
 </html>
