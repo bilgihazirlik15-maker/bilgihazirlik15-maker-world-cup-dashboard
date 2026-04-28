@@ -1,1567 +1,207 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>World Cup 2026 Draw</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    :root{
-      --bg:#07111f;
-      --panel:#0f1b2d;
-      --panel-2:#13233a;
-      --line:#223654;
-      --text:#eaf2ff;
-      --muted:#95a7c6;
-      --accent:#3aa0ff;
-      --accent-2:#00d0ff;
-      --gold:#facc15;
-      --gold-2:#f59e0b;
-      --shadow:0 14px 40px rgba(0,0,0,.35);
-      --radius:18px;
-    }
-
-    html, body{
-      height:100%;
-    }
-
-    body{
-      margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(58,160,255,.10), transparent 35%),
-        linear-gradient(180deg, #08111d 0%, #07111f 100%);
-      color:var(--text);
-      overflow:auto;
-    }
-
-    .app{
-      display:flex;
-      flex-direction:column;
-    }
-
-    .wrap{
-      max-width:1300px;
-      width:100%;
-      margin:0 auto;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      margin-bottom:16px;
-      flex-wrap:wrap;
-    }
-
-    .title-box h1{
-      margin:0;
-      font-size:30px;
-      letter-spacing:.4px;
-    }
-
-    .title-box p{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .back-link{
-      text-decoration:none;
-      color:white;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      padding:10px 16px;
-      border-radius:12px;
-      font-weight:700;
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 360px 1fr;
-      gap:18px;
-    }
-
-    @media (max-width: 980px){
-      .grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    .panel{
-      background:linear-gradient(180deg, rgba(18,31,51,.98), rgba(12,22,37,.98));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .panel-head{
-      padding:16px 16px 0;
-    }
-
-    .panel-head h2{
-      margin:0 0 6px 0;
-      font-size:19px;
-    }
-
-    .panel-head p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .panel-body{
-      padding:16px;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-      flex:1 1 auto;
-    }
-
-    label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:700;
-      font-size:14px;
-    }
-
-    textarea{
-      width:100%;
-      min-height:180px;
-      resize:vertical;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:#091321;
-      color:var(--text);
-      padding:14px;
-      font-size:14px;
-      outline:none;
-    }
-
-    textarea:focus{
-      border-color:var(--accent);
-      box-shadow:0 0 0 3px rgba(58,160,255,.15);
-    }
-
-    #slotBox{
-      height:124px;
-      background:linear-gradient(180deg, #091321 0%, #10203a 100%);
-      border:2px solid #2f6fc0;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin:14px 0 0;
-      overflow:hidden;
-      position:relative;
-      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
-      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-    }
-
-    #slotBox::before,
-    #slotBox::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      height:26px;
-      pointer-events:none;
-      z-index:3;
-    }
-
-    #slotBox::before{
-      top:0;
-      background:linear-gradient(180deg, rgba(7,17,31,.98), rgba(7,17,31,0));
-    }
-
-    #slotBox::after{
-      bottom:0;
-      background:linear-gradient(0deg, rgba(7,17,31,.98), rgba(7,17,31,0));
-    }
-
-    #slotBox .slot-beam{
-      position:absolute;
-      top:0;
-      bottom:0;
-      width:120px;
-      background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.12), rgba(255,255,255,0));
-      transform:translateX(-220px);
-      pointer-events:none;
-      z-index:1;
-    }
-
-    #slotBox.spinning{
-      border-color:#4fb6ff;
-      box-shadow:
-        inset 0 0 22px rgba(0,0,0,.22),
-        0 0 18px rgba(58,160,255,.28),
-        0 0 38px rgba(0,208,255,.16);
-      animation: slotShake .18s linear infinite;
-    }
-
-    #slotBox.spinning .slot-beam{
-      animation: slotSweep .9s linear infinite;
-    }
-
-    #slotBox.reveal{
-      border-color:var(--gold);
-      box-shadow:
-        inset 0 0 22px rgba(0,0,0,.2),
-        0 0 18px rgba(250,204,21,.26),
-        0 0 42px rgba(245,158,11,.18);
-      transform:scale(1.015);
-    }
-
-    @keyframes slotSweep{
-      0% { transform:translateX(-220px); }
-      100% { transform:translateX(420px); }
-    }
-
-    @keyframes slotShake{
-      0% { transform:translateX(0); }
-      25% { transform:translateX(-1px); }
-      50% { transform:translateX(1px); }
-      75% { transform:translateX(-1px); }
-      100% { transform:translateX(0); }
-    }
-
-    .slot-window{
-      position:relative;
-      z-index:2;
-      width:100%;
-      max-width:300px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:8px 12px;
-    }
-
-    .slot-row{
-      width:100%;
-      text-align:center;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      transition:transform .12s ease, color .18s ease, opacity .18s ease, text-shadow .18s ease;
-    }
-
-    .slot-row.top,
-    .slot-row.bottom{
-      font-size:18px;
-      font-weight:700;
-      color:#92abd2;
-      opacity:.42;
-      filter:blur(.2px);
-    }
-
-    .slot-row.middle{
-      font-size:30px;
-      font-weight:900;
-      color:#ffffff;
-      letter-spacing:.3px;
-      text-shadow:0 0 14px rgba(58,160,255,.22);
-    }
-
-    #slotBox.spinning .slot-row.middle{
-      color:#dff3ff;
-      text-shadow:0 0 10px rgba(58,160,255,.26), 0 0 24px rgba(0,208,255,.12);
-    }
-
-    #slotBox.reveal .slot-row.middle{
-      color:#fff4c2;
-      text-shadow:0 0 10px rgba(250,204,21,.24), 0 0 26px rgba(245,158,11,.18);
-      transform:scale(1.08);
-    }
-
-    .slot-center-line{
-      position:absolute;
-      left:12px;
-      right:12px;
-      top:50%;
-      height:42px;
-      transform:translateY(-50%);
-      border-top:1px solid rgba(96,165,250,.18);
-      border-bottom:1px solid rgba(96,165,250,.18);
-      border-radius:10px;
-      z-index:2;
-      pointer-events:none;
-    }
-
-    #slotBox.reveal .slot-center-line{
-      border-top-color:rgba(250,204,21,.28);
-      border-bottom-color:rgba(250,204,21,.28);
-      box-shadow:0 0 10px rgba(250,204,21,.1);
-    }
-
-    .btns{
-      display:flex;
-      gap:10px;
-      margin-top:14px;
-      flex-wrap:wrap;
-    }
-
-    button{
-      border:none;
-      cursor:pointer;
-      border-radius:12px;
-      padding:12px 16px;
-      font-weight:700;
-      font-size:14px;
-      transition:.2s ease;
-    }
-
-    button:hover{
-      transform:translateY(-1px);
-    }
-
-    .primary{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-    }
-
-    .secondary{
-      background:#16263d;
-      color:var(--text);
-      border:1px solid var(--line);
-    }
-
-    .danger{
-      background:#3a1820;
-      color:#ffd4da;
-      border:1px solid #6c2531;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    .stat{
-      background:var(--panel-2);
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-    }
-
-    .stat .k{
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:6px;
-    }
-
-    .stat .v{
-      font-size:22px;
-      font-weight:800;
-    }
-
-    .draw-stage{
-      background:
-        radial-gradient(circle at center, rgba(58,160,255,.10), transparent 45%),
-        linear-gradient(180deg, #0b1627 0%, #0a1220 100%);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:14px;
-      min-height:180px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
-    }
-
-    .draw-stage.reveal{
-      border-color:#4fb6ff;
-      box-shadow:0 0 20px rgba(58,160,255,.16), 0 0 40px rgba(0,208,255,.10);
-      transform:scale(1.01);
-    }
-
-    .draw-stage.final{
-      border-color:var(--gold);
-      box-shadow:0 0 20px rgba(250,204,21,.18), 0 0 42px rgba(245,158,11,.12);
-    }
-
-    .draw-label{
-      position:relative;
-      z-index:1;
-      font-size:12px;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:1.5px;
-      margin-bottom:10px;
-    }
-
-    .current-person{
-      position:relative;
-      z-index:1;
-      font-size:30px;
-      font-weight:900;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-
-    .current-team{
-      position:relative;
-      z-index:1;
-      min-height:52px;
-      font-size:24px;
-      font-weight:800;
-      color:#7dd3fc;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:0 12px;
-      flex-wrap:wrap;
-      transition:transform .18s ease;
-    }
-
-    .draw-stage.reveal .current-team{
-      transform:scale(1.06);
-    }
-
-    .current-flag{
-      width:34px;
-      height:24px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      font-size:26px;
-      line-height:1;
-    }
-
-    .current-flag img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      border-radius:3px;
-    }
-
-    .subinfo{
-      position:relative;
-      z-index:1;
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .reveal-card{
-      margin-bottom:14px;
-      background:linear-gradient(135deg, rgba(250,204,21,.14), rgba(58,160,255,.08));
-      border:1px solid rgba(250,204,21,.35);
-      border-radius:16px;
-      padding:14px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      box-shadow:0 0 18px rgba(250,204,21,.08);
-      opacity:0;
-      transform:translateY(-10px) scale(.98);
-      transition:opacity .25s ease, transform .25s ease;
-    }
-
-    .reveal-card.show{
-      opacity:1;
-      transform:translateY(0) scale(1);
-    }
-
-    .reveal-flag{
-      width:42px;
-      height:30px;
-      border-radius:4px;
-      overflow:hidden;
-      flex:0 0 42px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#0b1627;
-      border:1px solid #35557f;
-    }
-
-    .reveal-flag img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .reveal-text{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .reveal-person{
-      font-size:13px;
-      color:#b9cbed;
-      font-weight:700;
-    }
-
-    .reveal-team{
-      font-size:20px;
-      font-weight:900;
-      color:#fff6cf;
-    }
-
-    .results-toolbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:0 0 8px;
-    }
-
-    .results-title{
-      color:var(--muted);
-      font-size:12px;
-      margin:0;
-    }
-
-    .mini-btns{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .mini-btn{
-      background:#13253f;
-      color:#eaf2ff;
-      border:1px solid #294867;
-      border-radius:10px;
-      padding:8px 10px;
-      font-size:12px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .mini-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .result-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-      gap:12px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, #13233a 0%, #101c2f 100%);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px;
-      animation: cardPop .25s ease;
-      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-    }
-
-    .card.highlight{
-      border-color:rgba(250,204,21,.55);
-      box-shadow:0 0 18px rgba(250,204,21,.12);
-      transform:translateY(-2px);
-    }
-
-    @keyframes cardPop{
-      0% { transform:scale(.96); opacity:.6; }
-      100% { transform:scale(1); opacity:1; }
-    }
-
-    .person{
-      font-size:18px;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .teams{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .team-pill{
-      background:#0b1627;
-      border:1px solid #284063;
-      color:#dcebff;
-      padding:9px 10px;
-      border-radius:12px;
-      font-size:13px;
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .team-pill.latest{
-      border-color:rgba(250,204,21,.55);
-      background:linear-gradient(135deg, rgba(250,204,21,.10), rgba(16,28,47,1));
-      box-shadow:0 0 10px rgba(250,204,21,.08);
-    }
-
-    .flag{
-      width:22px;
-      height:16px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      flex:0 0 22px;
-      overflow:hidden;
-      font-size:16px;
-      line-height:1;
-    }
-
-    .flag img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      border-radius:2px;
-      display:block;
-    }
-
-    .team-text{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      align-items:center;
-    }
-
-    .group-badge{
-      font-size:11px;
-      color:#9cc8ff;
-      background:#102338;
-      border:1px solid #294867;
-      border-radius:999px;
-      padding:3px 7px;
-    }
-
-    .log{
-      margin-top:14px;
-      background:#091321;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      color:var(--muted);
-      font-size:13px;
-      max-height:180px;
-      overflow:auto;
-      line-height:1.55;
-    }
-
-    .empty{
-      border:1px dashed #34507a;
-      border-radius:16px;
-      padding:24px;
-      text-align:center;
-      color:var(--muted);
-      background:rgba(10,18,32,.5);
-    }
-
-    .ok{ color:#86efac; font-weight:700; }
-    .warn-text{ color:#fcd34d; font-weight:700; }
-    .error-text{ color:#fca5a5; font-weight:700; }
-  </style>
+<meta charset="UTF-8">
+<title>World Cup 2026 Dashboard</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0b1020;
+  color:white;
+}
+
+.container {
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.header {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.logo {
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:2px solid #31476f;
+  cursor:pointer;
+}
+
+.card {
+  background:#121933;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.item {
+  background:#1b2345;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:8px;
+}
+
+table {
+  width:100%;
+  font-size:12px;
+}
+
+td {
+  padding:4px;
+}
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <div class="wrap">
-      <div class="topbar">
-        <div class="title-box">
-          <h1>World Cup 2026 – Draw</h1>
-          <p>Tüm takımlar dağıtılır. Sonuçlar aşağı doğru akabilir.</p>
-        </div>
-        <a class="back-link" href="../index.html">← Back to Dashboard</a>
+
+<div class="container">
+
+<div class="header">
+  <img src="logo.png" id="logoTrigger" class="logo">
+  <h2>World Cup Dashboard</h2>
+</div>
+
+<div class="card">
+  <h3>Today's Matches</h3>
+  <input type="date" id="datePicker">
+  <div id="todayMatches"></div>
+</div>
+
+<div class="grid">
+
+<div class="card">
+  <h3>Groups</h3>
+  <div id="groups"></div>
+</div>
+
+<div>
+
+<div class="card">
+  <h3>Next Matches</h3>
+  <div id="next"></div>
+</div>
+
+<div class="card">
+  <h3>Results</h3>
+  <div id="results"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let matches=[], standings=[], selectedDate="";
+
+/* CSV LOAD */
+async function loadCSV(path){
+  let res = await fetch(path);
+  let text = await res.text();
+  let rows = text.trim().split("\n");
+  let headers = rows[0].split(",");
+
+  return rows.slice(1).map(r=>{
+    let cols=r.split(",");
+    let obj={};
+    headers.forEach((h,i)=>obj[h]=cols[i]);
+    return obj;
+  });
+}
+
+/* DATE FIX */
+function normDate(v){
+  if(!v) return "";
+  if(v.includes(".")){
+    let p=v.split(" ")[0].split(".");
+    return p[2]+"-"+p[1].padStart(2,"0")+"-"+p[0].padStart(2,"0");
+  }
+  return v.slice(0,10);
+}
+
+/* TODAY */
+function renderToday(){
+  let list = matches.filter(m=>normDate(m.match_date)==selectedDate);
+
+  document.getElementById("todayMatches").innerHTML =
+    list.map(m=>`
+      <div class="item">
+        ${m.home_team} vs ${m.away_team}
       </div>
-
-      <div class="grid">
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Katılımcılar</h2>
-            <p>Her satıra bir isim yaz. Boş satırlar yok sayılır.</p>
-          </div>
-          <div class="panel-body">
-            <label for="names">İsim listesi</label>
-            <textarea id="names" placeholder="Örnek:
-Ali
-Ayşe
-Mehmet
-Zeynep"></textarea>
-
-            <div id="slotBox">
-              <div class="slot-beam"></div>
-              <div class="slot-center-line"></div>
-              <div class="slot-window">
-                <div id="slotPrev" class="slot-row top">Ready</div>
-                <div id="slotName" class="slot-row middle">Ready</div>
-                <div id="slotNext" class="slot-row bottom">Ready</div>
-              </div>
-            </div>
-
-            <div class="btns">
-              <button id="drawBtn" class="primary">Çekilişi Başlat</button>
-              <button id="sampleBtn" class="secondary">Örnek İsimler</button>
-              <button id="clearBtn" class="danger">Temizle</button>
-            </div>
-
-            <div class="log" id="log">
-              Sistem hazır. Katılımcıları girip çekilişi başlatabilirsin.
-            </div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Çekiliş Sonuçları</h2>
-            <p>
-              Katılımcı sayısı 48’den fazlaysa herkes en az 1 takım alır.<br>
-              Katılımcı sayısı 48’den azsa tüm 48 takım dağıtılana kadar devam eder.
-            </p>
-          </div>
-          <div class="panel-body">
-            <div class="stats">
-              <div class="stat">
-                <div class="k">Katılımcı</div>
-                <div class="v" id="statPeople">0</div>
-              </div>
-              <div class="stat">
-                <div class="k">Benzersiz Takım</div>
-                <div class="v" id="statTeams">0</div>
-              </div>
-              <div class="stat">
-                <div class="k">Dağıtılan</div>
-                <div class="v" id="statAssigned">0</div>
-              </div>
-              <div class="stat">
-                <div class="k">Tur</div>
-                <div class="v" id="statRounds">0</div>
-              </div>
-            </div>
-
-            <div class="draw-stage" id="drawStage">
-              <div class="draw-label">Çekiliş Sahnesi</div>
-              <div class="current-person" id="currentPerson">Hazır</div>
-              <div class="current-team">
-                <span id="currentFlag" class="current-flag"></span>
-                <span id="currentTeamText">Başlamak için soldan isimleri gir</span>
-              </div>
-              <div class="subinfo" id="subInfo">teams.csv yüklendiğinde takımlar otomatik okunur</div>
-            </div>
-
-            <div id="revealCard" class="reveal-card">
-              <div class="reveal-flag" id="revealFlag"></div>
-              <div class="reveal-text">
-                <div class="reveal-person" id="revealPerson">-</div>
-                <div class="reveal-team" id="revealTeam">-</div>
-              </div>
-            </div>
-
-            <div class="results-toolbar">
-              <div class="results-title">Atanan takımlar</div>
-              <div class="mini-btns">
-                <button id="copyBtn" class="mini-btn" type="button">Kopyala</button>
-                <button id="downloadPdfBtn" class="mini-btn" type="button">PDF İndir</button>
-              </div>
-            </div>
-
-            <div id="resultsArea" class="empty">
-              Henüz sonuç yok.
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" referrerpolicy="no-referrer"></script>
-
-  <script>
-    const namesInput = document.getElementById("names");
-    const drawBtn = document.getElementById("drawBtn");
-    const sampleBtn = document.getElementById("sampleBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadPdfBtn = document.getElementById("downloadPdfBtn");
-
-    const logBox = document.getElementById("log");
-    const slotBoxEl = document.getElementById("slotBox");
-    const slotPrevEl = document.getElementById("slotPrev");
-    const slotNameEl = document.getElementById("slotName");
-    const slotNextEl = document.getElementById("slotNext");
-    const drawStageEl = document.getElementById("drawStage");
-    const currentPersonEl = document.getElementById("currentPerson");
-    const currentFlagEl = document.getElementById("currentFlag");
-    const currentTeamTextEl = document.getElementById("currentTeamText");
-    const subInfoEl = document.getElementById("subInfo");
-    const resultsArea = document.getElementById("resultsArea");
-
-    const revealCardEl = document.getElementById("revealCard");
-    const revealFlagEl = document.getElementById("revealFlag");
-    const revealPersonEl = document.getElementById("revealPerson");
-    const revealTeamEl = document.getElementById("revealTeam");
-
-    const statPeople = document.getElementById("statPeople");
-    const statTeams = document.getElementById("statTeams");
-    const statAssigned = document.getElementById("statAssigned");
-    const statRounds = document.getElementById("statRounds");
-
-    let teams = [];
-    let isDrawing = false;
-    let latestResultKey = "";
-    let exportRows = [];
-    let lastRoundCount = 0;
-
-    function log(msg, type="normal"){
-      const time = new Date().toLocaleTimeString("tr-TR");
-      let cls = "";
-      if(type === "ok") cls = "ok";
-      if(type === "warn") cls = "warn-text";
-      if(type === "error") cls = "error-text";
-      logBox.innerHTML = `<div class="${cls}">[${time}] ${msg}</div>` + logBox.innerHTML;
-    }
-
-    function sleep(ms){
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    function shuffle(array){
-      const arr = [...array];
-      for(let i = arr.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function parseCSVLine(line){
-      const result = [];
-      let current = "";
-      let inQuotes = false;
-
-      for(let i = 0; i < line.length; i++){
-        const ch = line[i];
-        const next = line[i + 1];
-
-        if(ch === '"' && inQuotes && next === '"'){
-          current += '"';
-          i++;
-        } else if(ch === '"'){
-          inQuotes = !inQuotes;
-        } else if(ch === ',' && !inQuotes){
-          result.push(current.trim());
-          current = "";
-        } else {
-          current += ch;
-        }
-      }
-
-      result.push(current.trim());
-      return result;
-    }
-
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
-
-    function normalizeFlagUrl(teamName, flagValue){
-      const name = String(teamName || "").trim().toLowerCase();
-
-      if(name === "england"){
-        return "https://flagcdn.com/w40/gb-eng.png";
-      }
-      if(name === "scotland"){
-        return "https://flagcdn.com/w40/gb-sct.png";
-      }
-      return flagValue || "";
-    }
-
-    function getFlagHTML(flagValue){
-      if(!flagValue) return "";
-
-      const value = String(flagValue).trim();
-
-      if(
-        value.startsWith("http://") ||
-        value.startsWith("https://") ||
-        value.startsWith("./") ||
-        value.startsWith("../")
-      ){
-        return `<img src="${escapeHtml(value)}" alt="flag" loading="lazy" referrerpolicy="no-referrer">`;
-      }
-
-      return escapeHtml(value);
-    }
-
-    function parseCSV(text){
-      const lines = text.trim().split(/\r?\n/).filter(Boolean);
-      if(lines.length < 2) return [];
-
-      const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-
-      const teamIndex =
-        headers.indexOf("team_name") !== -1 ? headers.indexOf("team_name") :
-        headers.indexOf("team") !== -1 ? headers.indexOf("team") :
-        headers.indexOf("name") !== -1 ? headers.indexOf("name") :
-        0;
-
-      const groupIndex =
-        headers.indexOf("group") !== -1 ? headers.indexOf("group") :
-        headers.indexOf("group_name") !== -1 ? headers.indexOf("group_name") :
-        -1;
-
-      const flagIndex =
-        headers.indexOf("flag") !== -1 ? headers.indexOf("flag") :
-        headers.indexOf("flag_url") !== -1 ? headers.indexOf("flag_url") :
-        -1;
-
-      const rows = [];
-
-      for(let i = 1; i < lines.length; i++){
-        const cols = parseCSVLine(lines[i]);
-        const teamName = cols[teamIndex];
-        if(!teamName) continue;
-
-        const rawFlag = flagIndex >= 0 ? (cols[flagIndex] || "") : "";
-        rows.push({
-          team: teamName,
-          group: groupIndex >= 0 ? (cols[groupIndex] || "") : "",
-          flag: normalizeFlagUrl(teamName, rawFlag)
-        });
-      }
-
-      return rows;
-    }
-
-    async function loadTeams(){
-      try{
-        const res = await fetch("../teams.csv");
-        if(!res.ok) throw new Error("teams.csv okunamadı");
-        const text = await res.text();
-        teams = parseCSV(text);
-
-        statTeams.textContent = teams.length;
-        subInfoEl.textContent = `${teams.length} benzersiz takım yüklendi`;
-        log(`${teams.length} takım teams.csv içinden yüklendi.`, "ok");
-      }catch(err){
-        console.error(err);
-        teams = [];
-        statTeams.textContent = 0;
-        subInfoEl.textContent = "teams.csv yüklenemedi";
-        log("teams.csv yüklenemedi. Dosya yolu: ../teams.csv olmalı.", "error");
-      }
-    }
-
-    function getParticipants(){
-      const raw = namesInput.value
-        .split(/\r?\n/)
-        .map(x => x.trim())
-        .filter(Boolean);
-
-      const unique = [];
-      const seen = new Set();
-
-      for(const name of raw){
-        const key = name.toLowerCase();
-        if(!seen.has(key)){
-          seen.add(key);
-          unique.push(name);
-        }
-      }
-
-      return unique;
-    }
-
-    function setSlotState(state){
-      slotBoxEl.classList.remove("spinning", "reveal");
-      if(state === "spinning") slotBoxEl.classList.add("spinning");
-      if(state === "reveal") slotBoxEl.classList.add("reveal");
-    }
-
-    function setStageState(state){
-      drawStageEl.classList.remove("reveal", "final");
-      if(state === "reveal") drawStageEl.classList.add("reveal");
-      if(state === "final") drawStageEl.classList.add("final");
-    }
-
-    function setSlotRows(prev, current, next){
-      slotPrevEl.textContent = prev || " ";
-      slotNameEl.textContent = current || " ";
-      slotNextEl.textContent = next || " ";
-    }
-
-    function showRevealCard(person, team){
-      revealPersonEl.textContent = person;
-      revealTeamEl.textContent = `${team.team}${team.group ? ` • Grup ${team.group}` : ""}`;
-      revealFlagEl.innerHTML = getFlagHTML(team.flag) || "🏳️";
-      revealCardEl.classList.remove("show");
-      requestAnimationFrame(() => revealCardEl.classList.add("show"));
-    }
-
-    async function spinSlot(finalName, participants){
-      setSlotState("spinning");
-
-      const pool = shuffle([...participants]);
-      const totalSteps = 26;
-
-      for(let i = 0; i < totalSteps; i++){
-        const prev = pool[(i - 1 + pool.length) % pool.length] || finalName;
-        const current = pool[i % pool.length] || finalName;
-        const next = pool[(i + 1) % pool.length] || finalName;
-
-        setSlotRows(prev, current, next);
-
-        slotPrevEl.style.transform = `translateY(${i % 2 === 0 ? "-1px" : "1px"})`;
-        slotNameEl.style.transform = `translateY(${i % 2 === 0 ? "-2px" : "2px"}) scale(${1 + (i / totalSteps) * 0.03})`;
-        slotNextEl.style.transform = `translateY(${i % 2 === 0 ? "-1px" : "1px"})`;
-
-        const delay = 40 + (i * 8);
-        await sleep(delay);
-      }
-
-      setSlotState("reveal");
-      setSlotRows(finalName, finalName, finalName);
-      slotNameEl.style.transform = "scale(1.08)";
-      await sleep(360);
-      slotNameEl.style.transform = "scale(1)";
-      slotPrevEl.style.transform = "translateY(0)";
-      slotNextEl.style.transform = "translateY(0)";
-    }
-
-    async function animateTeamDraw(person, finalTeam, assignedCount, totalCount, roundNo){
-      currentPersonEl.textContent = person;
-      subInfoEl.textContent = `Tur ${roundNo} • ${assignedCount}/${totalCount} dağıtılıyor`;
-
-      setStageState("reveal");
-
-      const previewPool = shuffle([...teams]);
-      const cycles = Math.min(20, Math.max(12, previewPool.length));
-
-      for(let i = 0; i < cycles; i++){
-        const t = previewPool[i % previewPool.length];
-        currentFlagEl.innerHTML = getFlagHTML(t.flag);
-        currentTeamTextEl.textContent = t.team || "Loading...";
-        await sleep(60 + i * 7);
-      }
-
-      currentFlagEl.innerHTML = getFlagHTML(finalTeam.flag);
-      currentTeamTextEl.textContent = finalTeam.team + (finalTeam.group ? ` • Grup ${finalTeam.group}` : "");
-      showRevealCard(person, finalTeam);
-      await sleep(520);
-
-      setStageState("");
-      setSlotState("");
-    }
-
-    function pickTeamForPerson(person, usedTeamsByPerson, usedGroupsByPerson, pool){
-      const usedTeams = usedTeamsByPerson[person];
-      const usedGroups = usedGroupsByPerson[person];
-
-      let candidates = pool.filter(team => !usedTeams.has(team.team) && !usedGroups.has(team.group));
-      if(candidates.length === 0){
-        candidates = pool.filter(team => !usedTeams.has(team.team));
-      }
-      if(candidates.length === 0){
-        return null;
-      }
-
-      return candidates[Math.floor(Math.random() * candidates.length)];
-    }
-
-    function buildExpandedAssignments(participants, teamList){
-      const shuffledPeople = shuffle([...participants]);
-      const assignmentMap = {};
-      const usedTeamsByPerson = {};
-      const usedGroupsByPerson = {};
-      const sequence = [];
-
-      shuffledPeople.forEach(name => {
-        assignmentMap[name] = [];
-        usedTeamsByPerson[name] = new Set();
-        usedGroupsByPerson[name] = new Set();
-      });
-
-      const totalPeople = shuffledPeople.length;
-      const teamCount = teamList.length;
-
-      let totalAssignmentsTarget;
-      let totalRounds;
-
-      if(totalPeople <= teamCount){
-        totalAssignmentsTarget = teamCount; // tüm 48 takım dağıtılsın
-        totalRounds = Math.ceil(teamCount / totalPeople);
-      } else {
-        totalAssignmentsTarget = totalPeople; // herkes en az 1 takım alsın
-        totalRounds = Math.ceil(totalPeople / teamCount);
-      }
-
-      let assigned = 0;
-      let round = 1;
-      let cursor = 0;
-
-      while(assigned < totalAssignmentsTarget){
-        const remaining = totalAssignmentsTarget - assigned;
-        const peopleThisRound = Math.min(totalPeople, remaining);
-        const roundPeople = [];
-
-        for(let i = 0; i < peopleThisRound; i++){
-          roundPeople.push(shuffledPeople[(cursor + i) % totalPeople]);
-        }
-
-        cursor = (cursor + peopleThisRound) % totalPeople;
-
-        const roundPool = shuffle([...teamList]);
-
-        for(const person of roundPeople){
-          if(assigned >= totalAssignmentsTarget) break;
-
-          const selected = pickTeamForPerson(person, usedTeamsByPerson, usedGroupsByPerson, roundPool);
-          if(!selected) continue;
-
-          assignmentMap[person].push(selected);
-          usedTeamsByPerson[person].add(selected.team);
-          if(selected.group) usedGroupsByPerson[person].add(selected.group);
-
-          assigned += 1;
-          sequence.push({
-            person,
-            team: selected,
-            assignedCount: assigned,
-            totalCount: totalAssignmentsTarget,
-            roundNo: round
-          });
-        }
-
-        round += 1;
-      }
-
-      return {
-        assignmentMap,
-        sequence,
-        totalRounds: round - 1,
-        totalAssignmentsTarget
-      };
-    }
-
-    function teamPillHTML(item, isLatest){
+    `).join("") || "No matches";
+}
+
+/* GROUPS */
+function renderGroups(){
+  let g=[...new Set(standings.map(x=>x.group_name))];
+
+  document.getElementById("groups").innerHTML =
+    g.map(name=>{
+      let rows=standings.filter(x=>x.group_name==name);
       return `
-        <div class="team-pill ${isLatest ? "latest" : ""}">
-          <span class="flag">${getFlagHTML(item.flag) || "🏳️"}</span>
-          <span class="team-text">
-            <span>${escapeHtml(item.team)}</span>
-            ${item.group ? `<span class="group-badge">Grup ${escapeHtml(item.group)}</span>` : ""}
-          </span>
-        </div>
-      `;
-    }
+      <div>
+      <b>Group ${name}</b>
+      <table>
+      ${rows.map(r=>`
+      <tr>
+      <td>${r.team_name}</td>
+      <td>${r.points}</td>
+      </tr>`).join("")}
+      </table>
+      </div>`;
+    }).join("");
+}
 
-    function renderResults(assignmentMap){
-      const people = Object.keys(assignmentMap);
+/* INIT */
+async function init(){
 
-      if(people.length === 0){
-        resultsArea.className = "empty";
-        resultsArea.innerHTML = "Henüz sonuç yok.";
-        return;
-      }
+  matches = await loadCSV("./data/matches.csv");
+  standings = await loadCSV("./data/standings.csv");
 
-      resultsArea.className = "result-list";
-      resultsArea.innerHTML = people.map(person => {
-        const highlightCard = latestResultKey.startsWith(`${person}__`);
-        const teamsHtml = assignmentMap[person]
-          .map(item => teamPillHTML(item, latestResultKey === `${person}__${item.team}`))
-          .join("");
+  selectedDate = normDate(matches[0].match_date);
+  document.getElementById("datePicker").value = selectedDate;
 
-        return `
-          <div class="card ${highlightCard ? "highlight" : ""}">
-            <div class="person">${escapeHtml(person)}</div>
-            <div class="teams">${teamsHtml}</div>
-          </div>
-        `;
-      }).join("");
-    }
+  document.getElementById("datePicker").addEventListener("change", e=>{
+    selectedDate = e.target.value;
+    renderToday();
+  });
 
-    function buildExportText(){
-      if(exportRows.length === 0) return "";
-      const lines = ["Person,Team,Group,Round"];
-      exportRows.forEach(row => {
-        lines.push(`"${row.person}","${row.team}","${row.group}","${row.round}"`);
-      });
-      return lines.join("\n");
-    }
+  renderToday();
+  renderGroups();
+}
 
-    async function copyResults(){
-      const text = buildExportText();
-      if(!text){
-        log("Kopyalanacak sonuç yok.", "warn");
-        return;
-      }
+init();
 
-      try{
-        await navigator.clipboard.writeText(text);
-        log("Sonuçlar panoya kopyalandı.", "ok");
-      }catch{
-        log("Panoya kopyalama başarısız oldu.", "error");
-      }
-    }
+/* 🔥 HIDDEN ADMIN */
+let clicks=0;
+let timer;
 
-    function formatTodayTR(){
-      return new Date().toLocaleDateString("tr-TR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
-    }
+document.getElementById("logoTrigger").addEventListener("click",()=>{
+  clicks++;
 
-    function downloadResultsPDF(){
-      if(exportRows.length === 0){
-        log("PDF için sonuç yok.", "warn");
-        return;
-      }
+  if(clicks===5){
+    window.location.href="manage_matches.html";
+  }
 
-      if(typeof html2pdf !== "function"){
-        log("PDF kütüphanesi yüklenemedi. Sayfayı Live Server veya GitHub Pages üzerinden aç.", "error");
-        alert("PDF oluşturmak için sayfayı file:/// yerine Live Server veya GitHub Pages üzerinden aç.");
-        return;
-      }
+  clearTimeout(timer);
+  timer=setTimeout(()=>clicks=0,1500);
+});
 
-      const grouped = {};
-      exportRows.forEach(row => {
-        if(!grouped[row.person]) grouped[row.person] = [];
-        grouped[row.person].push(row);
-      });
+</script>
 
-      const wrapper = document.createElement("div");
-      wrapper.style.width = "760px";
-      wrapper.style.padding = "28px";
-      wrapper.style.background = "#ffffff";
-      wrapper.style.color = "#111827";
-      wrapper.style.fontFamily = "Arial, Helvetica, sans-serif";
-
-      const header = document.createElement("div");
-      header.style.marginBottom = "24px";
-      header.style.paddingBottom = "14px";
-      header.style.borderBottom = "2px solid #e5e7eb";
-
-      const title = document.createElement("div");
-      title.style.fontSize = "26px";
-      title.style.fontWeight = "700";
-      title.style.marginBottom = "6px";
-      title.textContent = "World Cup 2026 Draw Results";
-      header.appendChild(title);
-
-      const subtitle = document.createElement("div");
-      subtitle.style.fontSize = "12px";
-      subtitle.style.color = "#4b5563";
-      subtitle.textContent = `${formatTodayTR()} • Toplam kişi: ${Object.keys(grouped).length} • Toplam atama: ${exportRows.length} • Tur: ${lastRoundCount}`;
-      header.appendChild(subtitle);
-
-      wrapper.appendChild(header);
-
-      Object.keys(grouped).forEach(person => {
-        const block = document.createElement("div");
-        block.style.marginBottom = "16px";
-        block.style.padding = "14px 16px";
-        block.style.border = "1px solid #dbe3f0";
-        block.style.borderRadius = "12px";
-        block.style.background = "#f8fbff";
-        block.style.pageBreakInside = "avoid";
-
-        const name = document.createElement("div");
-        name.style.fontSize = "18px";
-        name.style.fontWeight = "700";
-        name.style.marginBottom = "10px";
-        name.style.color = "#0f172a";
-        name.textContent = person;
-        block.appendChild(name);
-
-        grouped[person].forEach(item => {
-          const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.alignItems = "flex-start";
-          row.style.justifyContent = "space-between";
-          row.style.gap = "10px";
-          row.style.padding = "8px 10px";
-          row.style.marginBottom = "8px";
-          row.style.background = "#ffffff";
-          row.style.border = "1px solid #e5e7eb";
-          row.style.borderRadius = "10px";
-          row.style.flexWrap = "wrap";
-          row.style.overflow = "hidden";
-
-          const left = document.createElement("div");
-          left.style.display = "flex";
-          left.style.alignItems = "center";
-          left.style.gap = "10px";
-          left.style.flex = "1 1 320px";
-          left.style.minWidth = "0";
-
-          if(item.flag){
-            const flag = document.createElement("img");
-            flag.src = item.flag;
-            flag.alt = item.team;
-            flag.style.width = "22px";
-            flag.style.height = "16px";
-            flag.style.objectFit = "cover";
-            flag.style.borderRadius = "2px";
-            flag.style.border = "1px solid #d1d5db";
-            left.appendChild(flag);
-          }
-
-          const team = document.createElement("div");
-          team.style.fontSize = "14px";
-          team.style.fontWeight = "600";
-          team.style.color = "#111827";
-          team.style.wordBreak = "break-word";
-          team.style.overflowWrap = "anywhere";
-          team.style.lineHeight = "1.35";
-          team.style.maxWidth = "100%";
-          team.textContent = item.team;
-          left.appendChild(team);
-
-          const right = document.createElement("div");
-          right.style.display = "flex";
-          right.style.alignItems = "center";
-          right.style.gap = "6px";
-          right.style.flex = "0 0 auto";
-          right.style.flexWrap = "wrap";
-          right.style.justifyContent = "flex-end";
-          right.style.maxWidth = "100%";
-
-          const roundBadge = document.createElement("div");
-          roundBadge.style.fontSize = "11px";
-          roundBadge.style.fontWeight = "700";
-          roundBadge.style.color = "#065f46";
-          roundBadge.style.background = "#d1fae5";
-          roundBadge.style.border = "1px solid #a7f3d0";
-          roundBadge.style.padding = "4px 8px";
-          roundBadge.style.borderRadius = "999px";
-          roundBadge.textContent = `Round ${item.round}`;
-
-          const badge = document.createElement("div");
-          badge.style.fontSize = "11px";
-          badge.style.fontWeight = "700";
-          badge.style.color = "#1d4ed8";
-          badge.style.background = "#dbeafe";
-          badge.style.border = "1px solid #bfdbfe";
-          badge.style.padding = "4px 8px";
-          badge.style.borderRadius = "999px";
-          badge.textContent = item.group ? `Group ${item.group}` : "-";
-
-          right.appendChild(roundBadge);
-          right.appendChild(badge);
-
-          row.appendChild(left);
-          row.appendChild(right);
-          block.appendChild(row);
-        });
-
-        wrapper.appendChild(block);
-      });
-
-      document.body.appendChild(wrapper);
-
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: "draw-results.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          allowTaint: false
-        },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["css", "legacy"] }
-      };
-
-      html2pdf()
-        .set(opt)
-        .from(wrapper)
-        .save()
-        .then(() => {
-          wrapper.remove();
-          log("PDF dosyası indirildi.", "ok");
-        })
-        .catch((err) => {
-          wrapper.remove();
-          log(`PDF oluşturulamadı: ${err.message}`, "error");
-        });
-    }
-
-    async function startDraw(){
-      if(isDrawing) return;
-
-      const participants = getParticipants();
-
-      statPeople.textContent = participants.length;
-      statAssigned.textContent = 0;
-      statRounds.textContent = 0;
-
-      if(participants.length === 0){
-        log("Önce en az bir katılımcı adı gir.", "warn");
-        currentPersonEl.textContent = "Eksik bilgi";
-        currentFlagEl.innerHTML = "";
-        currentTeamTextEl.textContent = "Katılımcı listesi boş";
-        subInfoEl.textContent = "Soldaki kutuya isim gir";
-        return;
-      }
-
-      if(teams.length === 0){
-        log("Takım listesi boş. teams.csv yüklenemedi.", "error");
-        currentPersonEl.textContent = "Hata";
-        currentFlagEl.innerHTML = "";
-        currentTeamTextEl.textContent = "Takımlar yüklenemedi";
-        subInfoEl.textContent = "teams.csv kontrol edilmeli";
-        return;
-      }
-
-      isDrawing = true;
-      drawBtn.disabled = true;
-      drawBtn.textContent = "Çekiliş Yapılıyor...";
-      exportRows = [];
-      latestResultKey = "";
-      lastRoundCount = 0;
-
-      try{
-        const expanded = buildExpandedAssignments(participants, teams);
-        const assignmentMap = expanded.assignmentMap;
-        const sequence = expanded.sequence;
-        const totalRounds = expanded.totalRounds;
-        const totalAssignmentsTarget = expanded.totalAssignmentsTarget;
-        lastRoundCount = totalRounds;
-
-        statRounds.textContent = totalRounds;
-
-        log(`Çekiliş başladı. ${participants.length} katılımcı, ${teams.length} benzersiz takım, ${totalRounds} tur, ${totalAssignmentsTarget} toplam atama.`, "ok");
-
-        const progressiveMap = {};
-        participants.forEach(p => progressiveMap[p] = []);
-        renderResults(progressiveMap);
-
-        for(const item of sequence){
-          await spinSlot(item.person, participants);
-          await animateTeamDraw(item.person, item.team, item.assignedCount, item.totalCount, item.roundNo);
-
-          progressiveMap[item.person].push(item.team);
-          latestResultKey = `${item.person}__${item.team.team}`;
-          exportRows.push({
-            person: item.person,
-            team: item.team.team,
-            group: item.team.group || "",
-            flag: item.team.flag || "",
-            round: item.roundNo
-          });
-
-          statAssigned.textContent = item.assignedCount;
-          renderResults(progressiveMap);
-          log(`${item.person} → ${item.team.team}${item.team.group ? ` (Grup ${item.team.group})` : ""} • Tur ${item.roundNo}`);
-          await sleep(180);
-        }
-
-        setStageState("final");
-        setSlotState("reveal");
-        setSlotRows("Completed", "Completed", "Completed");
-        currentPersonEl.textContent = "Tamamlandı";
-        currentFlagEl.innerHTML = "🏆";
-
-        if(participants.length <= teams.length){
-          currentTeamTextEl.textContent = "Tüm 48 takım dağıtıldı";
-          subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
-          log("Katılımcı sayısı 48’den az olduğu için tüm takımlar dağıtıldı.", "ok");
-        } else {
-          currentTeamTextEl.textContent = "Herkes en az 1 takım aldı";
-          subInfoEl.textContent = `${sequence.length} atama tamamlandı • ${totalRounds} tur`;
-          log("Katılımcı sayısı 48’i aştığı için herkes en az 1 takım aldı.", "ok");
-        }
-
-      }catch(err){
-        console.error(err);
-        log(`Çekiliş sırasında hata oluştu: ${err.message}`, "error");
-        setSlotRows("Error", "Error", "Error");
-        currentPersonEl.textContent = "Hata";
-        currentFlagEl.innerHTML = "⚠️";
-        currentTeamTextEl.textContent = "İşlem tamamlanamadı";
-        subInfoEl.textContent = "Konsolu kontrol et";
-        setSlotState("");
-        setStageState("");
-      }finally{
-        isDrawing = false;
-        drawBtn.disabled = false;
-        drawBtn.textContent = "Çekilişi Başlat";
-      }
-    }
-
-    sampleBtn.addEventListener("click", () => {
-      namesInput.value = `Ali
-Ayşe
-Mehmet
-Zeynep
-Can
-Elif
-Mert
-Selin
-Bora
-Derya
-Ece
-Kemal`;
-      statPeople.textContent = getParticipants().length;
-      log("Örnek isimler eklendi.");
-    });
-
-    clearBtn.addEventListener("click", () => {
-      if(isDrawing) return;
-      namesInput.value = "";
-      statPeople.textContent = 0;
-      statAssigned.textContent = 0;
-      statRounds.textContent = 0;
-      exportRows = [];
-      latestResultKey = "";
-      lastRoundCount = 0;
-      setSlotRows("Ready", "Ready", "Ready");
-      slotNameEl.style.transform = "scale(1)";
-      setSlotState("");
-      setStageState("");
-      currentPersonEl.textContent = "Hazır";
-      currentFlagEl.innerHTML = "";
-      currentTeamTextEl.textContent = "Başlamak için soldan isimleri gir";
-      subInfoEl.textContent = teams.length ? `${teams.length} benzersiz takım yüklendi` : "teams.csv yüklendiğinde takımlar otomatik okunur";
-      resultsArea.className = "empty";
-      resultsArea.textContent = "Henüz sonuç yok.";
-      revealCardEl.classList.remove("show");
-      revealFlagEl.innerHTML = "";
-      revealPersonEl.textContent = "-";
-      revealTeamEl.textContent = "-";
-      log("Form temizlendi.");
-    });
-
-    copyBtn.addEventListener("click", copyResults);
-    downloadPdfBtn.addEventListener("click", downloadResultsPDF);
-    drawBtn.addEventListener("click", startDraw);
-
-    namesInput.addEventListener("input", () => {
-      statPeople.textContent = getParticipants().length;
-    });
-
-    loadTeams();
-  </script>
 </body>
 </html>
