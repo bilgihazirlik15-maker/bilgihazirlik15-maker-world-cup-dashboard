@@ -625,8 +625,14 @@
 </head>
 <body>
   <div class="page">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h1>World Cup 2026 Dashboard</h1>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:#102242; padding:15px; border-radius:16px; border:1px solid #31476f;">
+      <div style="display:flex; align-items:center; gap:15px;">
+        <img src="logo.jpg" alt="Logo" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid #31476f;">
+        <div>
+          <h1 style="margin:0; font-size:32px;">World Cup 2026 Dashboard</h1>
+          <p style="margin:5px 0 0 0; color:#9fb3d9; font-size:14px;">Groups, Next Matches, Recent Results, Group Leaders, and Knockout Bracket</p>
+        </div>
+      </div>
       <a href="./draw/index.html" style="
         background:linear-gradient(135deg,#facc15,#f59e0b);
         color:#111;
@@ -634,12 +640,11 @@
         padding:10px 16px;
         border-radius:10px;
         text-decoration:none;
+        white-space:nowrap;
       ">
         🎰 Go to Draw
       </a>
     </div>
-
-    <p class="subtitle">Groups, Next Matches, Recent Results, Group Leaders, and Knockout Bracket</p>
 
     <div id="status" class="status">Loading CSV files...</div>
 
