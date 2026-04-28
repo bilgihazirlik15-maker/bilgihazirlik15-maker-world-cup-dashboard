@@ -12,7 +12,7 @@
     .btn-save { background: #22c55e; color: #fff; }
     .btn-clear { background: #ef4444; color: #fff; }
     .controls { display: flex; gap: 10px; margin-bottom: 20px; }
-    .status { margin: 12px 0; color: #c7d2fe; }
+    .status { margin: 12px 0 18px; color: #c7d2fe; }
     .error { color: #fecaca; }
   </style>
 </head>
@@ -44,21 +44,42 @@
     let matches = [];
 
     async function loadMatchesCSV() {
-      try {
-        const response = await fetch("./matches.csv");
+      const possiblePaths = ["./matches.csv", "./data/matches.csv"];
 
-        if (!response.ok) {
-          throw new Error("matches.csv could not be loaded.");
+      for (const path of possiblePaths) {
+        try {
+          const response = await fetch(path);
+
+          if (!response.ok) continue;
+
+          const text = await response.text();
+
+          if (!looksLikeMatchesCSV(text)) {
+            continue;
+          }
+
+          parseCSV(text);
+          setStatus("Loaded: " + path, false);
+          return;
+        } catch (error) {
+          console.error(error);
         }
-
-        const text = await response.text();
-        parseCSV(text);
-        document.getElementById("status").textContent = "matches.csv loaded successfully.";
-      } catch (error) {
-        document.getElementById("status").textContent = error.message;
-        document.getElementById("status").classList.add("error");
-        console.error(error);
       }
+
+      setStatus("Error: matches.csv could not be found or the wrong file is being loaded.", true);
+    }
+
+    function setStatus(message, isError) {
+      const status = document.getElementById("status");
+      status.textContent = message;
+      status.className = isError ? "status error" : "status";
+    }
+
+    function looksLikeMatchesCSV(text) {
+      const firstLine = text.replace(/^\uFEFF/, "").split(/\r?\n/)[0] || "";
+      return firstLine.includes("match_id") &&
+             firstLine.includes("home_team") &&
+             firstLine.includes("away_team");
     }
 
     function splitCSVLine(line) {
@@ -91,15 +112,7 @@
       const clean = text.replace(/^\uFEFF/, "").trim();
       const lines = clean.split(/\r?\n/).filter(line => line.trim() !== "");
 
-      if (lines.length < 2) {
-        throw new Error("matches.csv is empty or invalid.");
-      }
-
       const headers = splitCSVLine(lines[0]).map(h => h.trim());
-
-      if (!headers.includes("match_id") || !headers.includes("home_team") || !headers.includes("away_team")) {
-        throw new Error("Wrong file loaded. Expected matches.csv with match_id, home_team, away_team columns.");
-      }
 
       matches = lines.slice(1).map(line => {
         const values = splitCSVLine(line);
