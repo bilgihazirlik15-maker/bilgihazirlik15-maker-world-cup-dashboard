@@ -1,5 +1,5 @@
 match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,away_score,status,venue,city
-1,Group,A,11-Jun-26,22:00,Mexico,South Africa,,,scheduled,Test Stadium,Miami
+1,Group,A,11-Jun-26,22:00,Mexico,South Africa,1,0,played,Test Stadium,Miami
 2,Group,A,12-Jun-26,5:00,South Korea,Czechia,,,scheduled,Test Arena,Dallas
 3,Group,B,12-Jun-26,22:00,Canada,Bosnia and Herzegovina,,,scheduled,Test Stadium,Miami
 4,Group,D,13-Jun-26,4:00,United States,Paraguay,,,scheduled,Test Arena,Dallas
@@ -26,55 +26,55 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 25,Group,A,18-Jun-26,19:00,Czechia,South Africa,,,scheduled,Test Arena,Dallas
 26,Group,B,18-Jun-26,22:00,Switzerland,Bosnia and Herzegovina,,,scheduled,Test Arena,Dallas
 27,Group,B,19-Jun-26,1:00,Canada,Qatar,,,scheduled,Test Arena,Dallas
-28,Group,A,19-Jun-26,4:00,Mexico,South Korea,,,played,Test Arena,Dallas
-29,Group,D,19-Jun-26,22:00,United States,Australia,,,played,Test Arena,Dallas
-30,Group,C,20-Jun-26,1:00,Scotland,Morocco,,,played,Test Arena,Dallas
-31,Group,C,20-Jun-26,4:00,Brazil,Haiti,,,played,Test Arena,Dallas
-32,Group,D,20-Jun-26,7:00,Turkey,Paraguay,,,played,Test Arena,Dallas
-33,Group,F,20-Jun-26,20:00,Netherlands,Sweden,,,played,Test Arena,Dallas
-34,Group,E,20-Jun-26,23:00,Germany,Ivory Coast,,,played,Test Arena,Dallas
-35,Group,E,21-Jun-26,3:00,Equador,Curacao,,,played,Test Arena,Dallas
-36,Group,F,21-Jun-26,7:00,Tunisia,Japan,,,played,Test Arena,Dallas
-37,Group,H,21-Jun-26,19:00,Spain,Saudi Arabia,,,played,Test Arena,Dallas
-38,Group,G,21-Jun-26,22:00,Belgium,Iran,,,played,Test Arena,Dallas
-39,Group,H,22-Jun-26,1:00,Uruguay,Cape Verde,,,played,Test Arena,Dallas
-40,Group,G,22-Jun-26,4:00,New Zealand,Egypt,,,played,Test Arena,Dallas
-41,Group,J,22-Jun-26,20:00,Argentina,Austria,,,played,Test Arena,Dallas
-42,Group,I,23-Jun-26,0:00,France,Iraq,,,played,Test Arena,Dallas
-43,Group,I,23-Jun-26,3:00,Norway,Senegal,,,played,Test Arena,Dallas
-44,Group,J,23-Jun-26,6:00,Jordan,Algeria,,,played,Test Arena,Dallas
-45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,,,played,Test Arena,Dallas
-46,Group,L,23-Jun-26,23:00,England,Ghana,,,played,Test Arena,Dallas
-47,Group,L,24-Jun-26,2:00,Panama,Croatia,,,played,Test Arena,Dallas
-48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,,,played,Test Arena,Dallas
-49,Group,B,24-Jun-26,22:00,Switzerland,Canada,,,played,Test Arena,Dallas
-50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,,,played,Test Arena,Dallas
-51,Group,C,25-Jun-26,1:00,Morocco,Haiti,,,played,Test Arena,Dallas
-52,Group,C,25-Jun-26,1:00,Scotland,Brazil,,,played,Test Arena,Dallas
-53,Group,A,25-Jun-26,4:00,South Africa,South Korea,,,played,Test Arena,Dallas
-54,Group,A,25-Jun-26,4:00,Czechia,Mexico,,,played,Test Arena,Dallas
-55,Group,E,25-Jun-26,23:00,Curacao,Ivory Coast,,,played,Test Arena,Dallas
-56,Group,E,25-Jun-26,23:00,Equador,Germany,,,played,Test Arena,Dallas
-57,Group,F,26-Jun-26,2:00,Tunisia,Netherlands,,,played,Test Arena,Dallas
-58,Group,F,26-Jun-26,2:00,Japan,Sweden,,,played,Test Arena,Dallas
-59,Group,D,26-Jun-26,5:00,Turkey,United States,,,played,Test Arena,Dallas
-60,Group,D,26-Jun-26,5:00,Paraguay,Australia,,,played,Test Arena,Dallas
-61,Group,I,26-Jun-26,22:00,Norway,France,,,played,Test Arena,Dallas
-62,Group,I,26-Jun-26,22:00,Senegal,Iraq,,,played,Test Arena,Dallas
-63,Group,H,27-Jun-26,3:00,Cape Verde,Saudi Arabia,,,played,Test Arena,Dallas
-64,Group,H,27-Jun-26,3:00,Uruguay,Spain,,,played,Test Arena,Dallas
-65,Group,G,27-Jun-26,6:00,New Zealand,Belgium,,,played,Test Arena,Dallas
-66,Group,G,27-Jun-26,6:00,Egypt,Iran,,,played,Test Arena,Dallas
-67,Group,L,28-Jun-26,0:00,Panama,England,,,played,Test Arena,Dallas
-68,Group,L,28-Jun-26,0:00,Croatia,Ghana,,,played,Test Arena,Dallas
-69,Group,K,28-Jun-26,2:30,Colombia,Portugal,,,played,Test Arena,Dallas
-70,Group,K,28-Jun-26,2:30,DR Congo,Uzbekistan,,,played,Test Arena,Dallas
-71,Group,J,28-Jun-26,5:00,Algeria,Austria,,,played,Test Arena,Dallas
-72,Group,J,28-Jun-26,5:00,Jordan,Argentina,,,played,Test Arena,Dallas
-301,Round of 32,,10-Jul-26,22:00,Winner Group A,Runner-up Group B,,,played,Test Stadium,Miami
-302,Round of 32,,11-Jul-26,02:00,Winner Group C,Runner-up Group D,,,played,Test Arena,Dallas
-303,Round of 16,,14-Jul-26,22:00,Winner Match 301,Winner Match 302,,,played,Test Stadium,Miami
-304,Quarter-final,,18-Jul-26,22:00,Team A,Team B,,,played,Test Arena,Dallas
-305,Semi-final,,22-Jul-26,22:00,Team C,Team D,,,played,Test Stadium,Miami
-306,Third place,,25-Jul-26,21:00,Semi-final Loser 1,Semi-final Loser 2,,,played,Test Arena,Dallas
-307,Final,,26-Jul-26,22:00,Semi-final Winner 1,Semi-final Winner 2,,,played,Test Stadium,Miami
+28,Group,A,19-Jun-26,4:00,Mexico,South Korea,,,scheduled,Test Arena,Dallas
+29,Group,D,19-Jun-26,22:00,United States,Australia,,,scheduled,Test Arena,Dallas
+30,Group,C,20-Jun-26,1:00,Scotland,Morocco,,,scheduled,Test Arena,Dallas
+31,Group,C,20-Jun-26,4:00,Brazil,Haiti,,,scheduled,Test Arena,Dallas
+32,Group,D,20-Jun-26,7:00,Turkey,Paraguay,,,scheduled,Test Arena,Dallas
+33,Group,F,20-Jun-26,20:00,Netherlands,Sweden,,,scheduled,Test Arena,Dallas
+34,Group,E,20-Jun-26,23:00,Germany,Ivory Coast,,,scheduled,Test Arena,Dallas
+35,Group,E,21-Jun-26,3:00,Equador,Curacao,,,scheduled,Test Arena,Dallas
+36,Group,F,21-Jun-26,7:00,Tunisia,Japan,,,scheduled,Test Arena,Dallas
+37,Group,H,21-Jun-26,19:00,Spain,Saudi Arabia,,,scheduled,Test Arena,Dallas
+38,Group,G,21-Jun-26,22:00,Belgium,Iran,,,scheduled,Test Arena,Dallas
+39,Group,H,22-Jun-26,1:00,Uruguay,Cape Verde,,,scheduled,Test Arena,Dallas
+40,Group,G,22-Jun-26,4:00,New Zealand,Egypt,,,scheduled,Test Arena,Dallas
+41,Group,J,22-Jun-26,20:00,Argentina,Austria,,,scheduled,Test Arena,Dallas
+42,Group,I,23-Jun-26,0:00,France,Iraq,,,scheduled,Test Arena,Dallas
+43,Group,I,23-Jun-26,3:00,Norway,Senegal,,,scheduled,Test Arena,Dallas
+44,Group,J,23-Jun-26,6:00,Jordan,Algeria,,,scheduled,Test Arena,Dallas
+45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,,,scheduled,Test Arena,Dallas
+46,Group,L,23-Jun-26,23:00,England,Ghana,,,scheduled,Test Arena,Dallas
+47,Group,L,24-Jun-26,2:00,Panama,Croatia,,,scheduled,Test Arena,Dallas
+48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,,,scheduled,Test Arena,Dallas
+49,Group,B,24-Jun-26,22:00,Switzerland,Canada,,,scheduled,Test Arena,Dallas
+50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,,,scheduled,Test Arena,Dallas
+51,Group,C,25-Jun-26,1:00,Morocco,Haiti,,,scheduled,Test Arena,Dallas
+52,Group,C,25-Jun-26,1:00,Scotland,Brazil,,,scheduled,Test Arena,Dallas
+53,Group,A,25-Jun-26,4:00,South Africa,South Korea,,,scheduled,Test Arena,Dallas
+54,Group,A,25-Jun-26,4:00,Czechia,Mexico,,,scheduled,Test Arena,Dallas
+55,Group,E,25-Jun-26,23:00,Curacao,Ivory Coast,,,scheduled,Test Arena,Dallas
+56,Group,E,25-Jun-26,23:00,Equador,Germany,,,scheduled,Test Arena,Dallas
+57,Group,F,26-Jun-26,2:00,Tunisia,Netherlands,,,scheduled,Test Arena,Dallas
+58,Group,F,26-Jun-26,2:00,Japan,Sweden,,,scheduled,Test Arena,Dallas
+59,Group,D,26-Jun-26,5:00,Turkey,United States,,,scheduled,Test Arena,Dallas
+60,Group,D,26-Jun-26,5:00,Paraguay,Australia,,,scheduled,Test Arena,Dallas
+61,Group,I,26-Jun-26,22:00,Norway,France,,,scheduled,Test Arena,Dallas
+62,Group,I,26-Jun-26,22:00,Senegal,Iraq,,,scheduled,Test Arena,Dallas
+63,Group,H,27-Jun-26,3:00,Cape Verde,Saudi Arabia,,,scheduled,Test Arena,Dallas
+64,Group,H,27-Jun-26,3:00,Uruguay,Spain,,,scheduled,Test Arena,Dallas
+65,Group,G,27-Jun-26,6:00,New Zealand,Belgium,,,scheduled,Test Arena,Dallas
+66,Group,G,27-Jun-26,6:00,Egypt,Iran,,,scheduled,Test Arena,Dallas
+67,Group,L,28-Jun-26,0:00,Panama,England,,,scheduled,Test Arena,Dallas
+68,Group,L,28-Jun-26,0:00,Croatia,Ghana,,,scheduled,Test Arena,Dallas
+69,Group,K,28-Jun-26,2:30,Colombia,Portugal,,,scheduled,Test Arena,Dallas
+70,Group,K,28-Jun-26,2:30,DR Congo,Uzbekistan,,,scheduled,Test Arena,Dallas
+71,Group,J,28-Jun-26,5:00,Algeria,Austria,,,scheduled,Test Arena,Dallas
+72,Group,J,28-Jun-26,5:00,Jordan,Argentina,,,scheduled,Test Arena,Dallas
+301,Round of 32,,10-Jul-26,22:00,Winner Group A,Runner-up Group B,,,scheduled,Test Stadium,Miami
+302,Round of 32,,11-Jul-26,02:00,Winner Group C,Runner-up Group D,,,scheduled,Test Arena,Dallas
+303,Round of 16,,14-Jul-26,22:00,Winner Match 301,Winner Match 302,,,scheduled,Test Stadium,Miami
+304,Quarter-final,,18-Jul-26,22:00,Team A,Team B,,,scheduled,Test Arena,Dallas
+305,Semi-final,,22-Jul-26,22:00,Team C,Team D,,,scheduled,Test Stadium,Miami
+306,Third place,,25-Jul-26,21:00,Semi-final Loser 1,Semi-final Loser 2,,,scheduled,Test Arena,Dallas
+307,Final,,26-Jul-26,22:00,Semi-final Winner 1,Semi-final Winner 2,,,scheduled,Test Stadium,Miami
