@@ -42,12 +42,7 @@ async function loadCsv(path) {
 }
 
 function parseMatchDate(dateText, timeText = "00:00") {
-  const months = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
-  const [day, monthName, shortYear] = String(dateText || "").split("-");
-  const [hour = 0, minute = 0] = String(timeText || "").split(":").map(Number);
-  if (!day || months[monthName] === undefined || !shortYear) return null;
-  const date = new Date(2000 + Number(shortYear), months[monthName], Number(day), hour, minute);
-  return Number.isNaN(date.getTime()) ? null : date;
+  return WorldCupDateTime.parse(dateText, timeText);
 }
 
 function isPlayed(match) {
@@ -61,10 +56,70 @@ function includesTeam(match, teamName) {
 }
 
 function formatDate(match) {
-  const date = parseMatchDate(match.match_date, match.match_time);
-  return date ? new Intl.DateTimeFormat("tr-TR", {
-    day: "numeric", month: "long", hour: "2-digit", minute: "2-digit"
-  }).format(date) : "Tarih belirtilmedi";
+  return WorldCupDateTime.formatMatch(match) || "Tarih belirtilmedi";
+}
+
+function escapeIcs(value) {
+  return String(value || "")
+    .replace(/\\/g, "\\\\")
+    .replace(/\r?\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
+}
+
+function slugify(value) {
+  return String(value || "team")
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ı/g, "i")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function buildCalendar(team, matches) {
+  const events = matches.map(match => {
+    const start = parseMatchDate(match.match_date, match.match_time);
+    if (!start) return "";
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const location = [match.venue, match.city].filter(Boolean).join(", ");
+    const description = `${stageLabel(match)} • Saat kaynağı: Türkiye saati`;
+    return [
+      "BEGIN:VEVENT",
+      `UID:world-cup-2026-${match.match_id}@bilgihazirlik15-maker.github.io`,
+      `DTSTAMP:${WorldCupDateTime.toIcsUtc(new Date())}`,
+      `DTSTART:${WorldCupDateTime.toIcsUtc(start)}`,
+      `DTEND:${WorldCupDateTime.toIcsUtc(end)}`,
+      `SUMMARY:${escapeIcs(`${match.home_team} - ${match.away_team}`)}`,
+      `DESCRIPTION:${escapeIcs(description)}`,
+      `LOCATION:${escapeIcs(location)}`,
+      "END:VEVENT"
+    ].join("\r\n");
+  }).filter(Boolean);
+
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//World Cup 2026 Dashboard//TR",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    `X-WR-CALNAME:${escapeIcs(`${team.team_name} - Dünya Kupası 2026`)}`,
+    ...events,
+    "END:VCALENDAR",
+    ""
+  ].join("\r\n");
+}
+
+function downloadCalendar(team, matches) {
+  const blob = new Blob([buildCalendar(team, matches)], { type:"text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${slugify(team.team_name)}-world-cup-2026.ics`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function stageLabel(match) {
@@ -186,6 +241,9 @@ async function init() {
     $("nextMatchStat").textContent = upcoming[0]
       ? `${upcoming[0].home_team} - ${upcoming[0].away_team} • ${formatDate(upcoming[0])}`
       : "Planlanmış maç bulunmuyor";
+    $("timeZoneNote").textContent = WorldCupDateTime.userTimeZone === WorldCupDateTime.sourceTimeZone
+      ? "Maç saatleri Türkiye saatine göre gösteriliyor."
+      : `İlk saat cihazınızın yerel saatine (${WorldCupDateTime.userTimeZone}), ikinci saat Türkiye saatine göredir.`;
 
     renderMatchList($("upcomingMatches"), upcoming, team.team_name, teamsByName, "Yaklaşan maç bulunmuyor.");
     renderMatchList($("resultMatches"), results, team.team_name, teamsByName, "Henüz tamamlanan maç bulunmuyor.");
@@ -201,6 +259,7 @@ async function init() {
       } catch (error) {}
       updateFavoriteButton(team.team_name);
     });
+    $("calendarButton").addEventListener("click", () => downloadCalendar(team, teamMatches));
     updateFavoriteButton(team.team_name);
     $("pageStatus").className = "status success";
     $("pageStatus").textContent = "Takım bilgileri yüklendi.";

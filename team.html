@@ -22,10 +22,14 @@
           <p id="teamStatus" class="hero-copy">Takım bilgileri hazırlanıyor.</p>
         </div>
       </div>
-      <button id="favoriteButton" class="favorite-button" type="button">☆ Favoriye ekle</button>
+      <div class="team-actions">
+        <button id="calendarButton" class="calendar-button" type="button">Takvime ekle (.ics)</button>
+        <button id="favoriteButton" class="favorite-button" type="button">☆ Favoriye ekle</button>
+      </div>
     </header>
 
     <div id="pageStatus" class="status" role="status" aria-live="polite">Veriler yükleniyor...</div>
+    <p id="timeZoneNote" class="timezone-note"></p>
 
     <section class="summary-grid team-summary" aria-label="Takım özeti">
       <article class="summary-card"><div class="summary-label">Oynanan</div><div id="playedStat" class="summary-value">-</div></article>
@@ -50,6 +54,7 @@
       <div id="teamGroupTable"></div>
     </section>
   </main>
+  <script src="datetime.js" defer></script>
   <script src="team.js" defer></script>
 </body>
 </html>
