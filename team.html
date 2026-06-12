@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071426">
+  <meta name="description" content="2026 Dünya Kupası takım fikstürü, sonuçları ve grup performansı.">
+  <title>Takım Detayı | 2026 Dünya Kupası</title>
+  <link rel="icon" href="logo.webp">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="team.css">
+</head>
+<body>
+  <main class="page">
+    <header class="team-hero card">
+      <a class="back-link" href="index.html">← Turnuva merkezine dön</a>
+      <div class="team-identity">
+        <img id="teamFlag" class="team-flag-large" src="" alt="">
+        <div>
+          <div id="teamGroup" class="eyebrow">Takım detayı</div>
+          <h1 id="teamName">Yükleniyor...</h1>
+          <p id="teamStatus" class="hero-copy">Takım bilgileri hazırlanıyor.</p>
+        </div>
+      </div>
+      <button id="favoriteButton" class="favorite-button" type="button">☆ Favoriye ekle</button>
+    </header>
+
+    <div id="pageStatus" class="status" role="status" aria-live="polite">Veriler yükleniyor...</div>
+
+    <section class="summary-grid team-summary" aria-label="Takım özeti">
+      <article class="summary-card"><div class="summary-label">Oynanan</div><div id="playedStat" class="summary-value">-</div></article>
+      <article class="summary-card"><div class="summary-label">Galibiyet</div><div id="wonStat" class="summary-value">-</div></article>
+      <article class="summary-card"><div class="summary-label">Puan</div><div id="pointsStat" class="summary-value">-</div></article>
+      <article class="summary-card summary-card-accent"><div class="summary-label">Sıradaki maç</div><div id="nextMatchStat" class="summary-next">-</div></article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="card">
+        <div class="section-heading"><div><div class="eyebrow">Takvim</div><h2>Yaklaşan maçlar</h2></div></div>
+        <div id="upcomingMatches" class="team-match-list"></div>
+      </article>
+      <article class="card">
+        <div class="section-heading"><div><div class="eyebrow">Performans</div><h2>Sonuçlar</h2></div></div>
+        <div id="resultMatches" class="team-match-list"></div>
+      </article>
+    </section>
+
+    <section class="card group-context">
+      <div class="section-heading"><div><div class="eyebrow">Grup görünümü</div><h2 id="groupTitle">Puan durumu</h2></div></div>
+      <div id="teamGroupTable"></div>
+    </section>
+  </main>
+  <script src="team.js" defer></script>
+</body>
+</html>

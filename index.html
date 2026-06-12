@@ -37,7 +37,9 @@
       <div class="filter-bar">
         <label class="search-field"><span class="sr-only">Takım, şehir veya stadyum ara</span><input id="matchSearch" type="search" placeholder="Takım, şehir veya stadyum ara..." autocomplete="off"></label>
         <label class="select-field"><span class="sr-only">Turnuva aşaması</span><select id="stageFilter"><option value="all">Tüm aşamalar</option><option value="Group">Grup aşaması</option><option value="knockout">Eleme aşaması</option></select></label>
+        <label class="select-field"><span class="sr-only">Favori takım</span><select id="favoriteTeamSelect"><option value="">Favori takım seç</option></select></label>
         <div class="toolbar-left" aria-label="Tarih filtresi"><button id="filterAllBtn" class="toolbar-btn active" type="button">Tümü</button><button id="filterTodayBtn" class="toolbar-btn" type="button">Bugün</button><button id="filterTomorrowBtn" class="toolbar-btn" type="button">Yarın</button></div>
+        <button id="favoriteOnlyBtn" class="toolbar-btn favorite-filter" type="button" disabled>Favorimin maçları</button>
       </div>
       <div id="nextMatches" class="match-grid"></div>
       <button id="nextToggleBtn" class="toolbar-btn load-more" type="button">Daha fazla göster</button>

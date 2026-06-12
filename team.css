@@ -1,0 +1,28 @@
+.team-hero { display:flex; align-items:center; justify-content:space-between; gap:22px; margin-bottom:18px; }
+.team-identity { display:flex; align-items:center; gap:20px; flex:1; }
+.team-flag-large { width:116px; height:78px; object-fit:cover; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+.back-link { align-self:flex-start; color:#b9d9ff; text-decoration:none; font-size:.82rem; font-weight:750; }
+.back-link:hover { text-decoration:underline; }
+.favorite-button { min-height:44px; padding:10px 16px; color:var(--text); background:#17375f; border:1px solid #37618e; border-radius:12px; cursor:pointer; font-weight:800; }
+.favorite-button.active { color:#172033; background:var(--gold); border-color:#ffe58b; }
+.team-summary { grid-template-columns:repeat(3,minmax(0,1fr)) minmax(260px,1.5fr); }
+.team-match-list { display:grid; gap:11px; }
+.team-fixture { padding:13px; background:rgba(18,49,85,.76); border:1px solid #31547e; border-radius:14px; }
+.team-fixture-meta { margin-bottom:9px; color:var(--muted); font-size:.75rem; }
+.team-fixture-line { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.team-fixture-opponent { display:flex; align-items:center; gap:8px; font-weight:800; }
+.team-fixture-opponent img { width:25px; height:17px; object-fit:cover; border-radius:2px; }
+.team-fixture-score { font-size:1.15rem; font-weight:850; }
+.result-win { border-left:4px solid var(--green); }
+.result-draw { border-left:4px solid var(--gold); }
+.result-loss { border-left:4px solid #ff6b7a; }
+.group-context { margin-bottom:32px; overflow-x:auto; }
+.group-context .group-table { min-width:620px; }
+@media(max-width:1000px) { .team-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:700px) {
+  .team-hero { align-items:stretch; flex-direction:column; }
+  .team-identity { align-items:flex-start; }
+  .team-flag-large { width:82px; height:55px; }
+  .favorite-button { width:100%; }
+  .team-summary { grid-template-columns:1fr; }
+}
