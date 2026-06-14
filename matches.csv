@@ -4,8 +4,8 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 3,Group,B,12-Jun-26,22:00,Canada,Bosnia and Herzegovina,1,1,played,Toronto Stadium,Toronto
 4,Group,D,13-Jun-26,4:00,United States,Paraguay,4,1,played,Los Angeles Stadium,Los Angeles
 5,Group,B,13-Jun-26,22:00,Qatar,Switzerland,1,1,played,San Francisco Bay Area Stadium,San Francisco Bay Area
-6,Group,C,14-Jun-26,1:00,Brazil,Morocco,,,scheduled,New York New Jersey Stadium,New York/New Jersey
-7,Group,C,14-Jun-26,4:00,Haiti,Scotland,,,scheduled,Boston Stadium,Boston
+6,Group,C,14-Jun-26,1:00,Brazil,Morocco,1,1,played,New York New Jersey Stadium,New York/New Jersey
+7,Group,C,14-Jun-26,4:00,Haiti,Scotland,0,1,played,Boston Stadium,Boston
 8,Group,D,14-Jun-26,7:00,Australia,Turkey,,,scheduled,BC Place Vancouver,Vancouver
 9,Group,E,14-Jun-26,20:00,Germany,Curacao,,,scheduled,Houston Stadium,Houston
 10,Group,F,14-Jun-26,23:00,Netherlands,Japan,,,scheduled,Dallas Stadium,Dallas
