@@ -8,9 +8,9 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 7,Group,C,14-Jun-26,4:00,Haiti,Scotland,0,1,played,Boston Stadium,Boston
 8,Group,D,14-Jun-26,7:00,Australia,Turkey,2,0,played,BC Place Vancouver,Vancouver
 9,Group,E,14-Jun-26,20:00,Germany,Curacao,7,1,played,Houston Stadium,Houston
-10,Group,F,14-Jun-26,23:00,Netherlands,Japan,,,scheduled,Dallas Stadium,Dallas
-11,Group,E,15-Jun-26,2:00,Ivory Coast,Ecuador,,,scheduled,Philadelphia Stadium,Philadelphia
-12,Group,F,15-Jun-26,5:00,Sweden,Tunisia,,,scheduled,Estadio Monterrey,Monterrey
+10,Group,F,14-Jun-26,23:00,Netherlands,Japan,2,2,played,Dallas Stadium,Dallas
+11,Group,E,15-Jun-26,2:00,Ivory Coast,Ecuador,1,0,played,Philadelphia Stadium,Philadelphia
+12,Group,F,15-Jun-26,5:00,Sweden,Tunisia,2,1,played,Estadio Monterrey,Monterrey
 13,Group,H,15-Jun-26,19:00,Spain,Cape Verde,,,scheduled,Atlanta Stadium,Atlanta
 14,Group,G,15-Jun-26,22:00,Belgium,Egypt,,,scheduled,Seattle Stadium,Seattle
 15,Group,H,16-Jun-26,1:00,Saudi Arabia,Uruguay,,,scheduled,Miami Stadium,Miami
