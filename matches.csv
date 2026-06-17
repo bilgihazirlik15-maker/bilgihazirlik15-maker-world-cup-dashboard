@@ -19,7 +19,7 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 18,Group,I,17-Jun-26,1:00,Iraq,Norway,1,4,played,Boston Stadium,Boston
 19,Group,J,17-Jun-26,4:00,Argentina,Algeria,3,0,played,Kansas City Stadium,Kansas City
 20,Group,J,17-Jun-26,7:00,Austria,Jordan,3,1,played,San Francisco Bay Area Stadium,San Francisco Bay Area
-21,Group,K,17-Jun-26,20:00,Portugal,DR Congo,,,scheduled,Houston Stadium,Houston
+21,Group,K,17-Jun-26,20:00,Portugal,DR Congo,1,1,played,Houston Stadium,Houston
 22,Group,L,17-Jun-26,23:00,England,Croatia,,,scheduled,Dallas Stadium,Dallas
 23,Group,L,18-Jun-26,2:00,Ghana,Panama,,,scheduled,Toronto Stadium,Toronto
 24,Group,K,18-Jun-26,5:00,Uzbekistan,Colombia,,,scheduled,Mexico City Stadium,Mexico City
