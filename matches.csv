@@ -35,7 +35,7 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 34,Group,E,20-Jun-26,23:00,Germany,Ivory Coast,2,1,played,Toronto Stadium,Toronto
 35,Group,E,21-Jun-26,3:00,Ecuador,Curacao,0,0,played,Kansas City Stadium,Kansas City
 36,Group,F,21-Jun-26,7:00,Tunisia,Japan,0,4,played,Estadio Monterrey,Monterrey
-37,Group,H,21-Jun-26,19:00,Spain,Saudi Arabia,,,scheduled,Atlanta Stadium,Atlanta
+37,Group,H,21-Jun-26,19:00,Spain,Saudi Arabia,4,0,played,Atlanta Stadium,Atlanta
 38,Group,G,21-Jun-26,22:00,Belgium,Iran,,,scheduled,Los Angeles Stadium,Los Angeles
 39,Group,H,22-Jun-26,1:00,Uruguay,Cape Verde,,,scheduled,Miami Stadium,Miami
 40,Group,G,22-Jun-26,4:00,New Zealand,Egypt,,,scheduled,BC Place Vancouver,Vancouver
