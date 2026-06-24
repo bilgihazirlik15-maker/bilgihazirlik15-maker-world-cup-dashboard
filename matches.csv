@@ -46,7 +46,7 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,5,0,played,Houston Stadium,Houston
 46,Group,L,23-Jun-26,23:00,England,Ghana,0,0,played,Boston Stadium,Boston
 47,Group,L,24-Jun-26,2:00,Panama,Croatia,0,1,played,Toronto Stadium,Toronto
-48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,,,scheduled,Estadio Guadalajara,Guadalajara
+48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,1,0,played,Estadio Guadalajara,Guadalajara
 49,Group,B,24-Jun-26,22:00,Switzerland,Canada,,,scheduled,BC Place Vancouver,Vancouver
 50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,,,scheduled,Seattle Stadium,Seattle
 51,Group,C,25-Jun-26,1:00,Morocco,Haiti,,,scheduled,Atlanta Stadium,Atlanta
