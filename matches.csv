@@ -43,9 +43,9 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 42,Group,I,23-Jun-26,0:00,France,Iraq,3,0,played,Philadelphia Stadium,Philadelphia
 43,Group,I,23-Jun-26,3:00,Norway,Senegal,3,2,played,New York New Jersey Stadium,New York/New Jersey
 44,Group,J,23-Jun-26,6:00,Jordan,Algeria,0,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
-45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,,,scheduled,Houston Stadium,Houston
-46,Group,L,23-Jun-26,23:00,England,Ghana,,,scheduled,Boston Stadium,Boston
-47,Group,L,24-Jun-26,2:00,Panama,Croatia,,,scheduled,Toronto Stadium,Toronto
+45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,5,0,played,Houston Stadium,Houston
+46,Group,L,23-Jun-26,23:00,England,Ghana,0,0,played,Boston Stadium,Boston
+47,Group,L,24-Jun-26,2:00,Panama,Croatia,0,1,played,Toronto Stadium,Toronto
 48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,,,scheduled,Estadio Guadalajara,Guadalajara
 49,Group,B,24-Jun-26,22:00,Switzerland,Canada,,,scheduled,BC Place Vancouver,Vancouver
 50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,,,scheduled,Seattle Stadium,Seattle
