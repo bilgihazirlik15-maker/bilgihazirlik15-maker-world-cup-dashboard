@@ -47,12 +47,12 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 46,Group,L,23-Jun-26,23:00,England,Ghana,0,0,played,Boston Stadium,Boston
 47,Group,L,24-Jun-26,2:00,Panama,Croatia,0,1,played,Toronto Stadium,Toronto
 48,Group,K,24-Jun-26,5:00,Colombia,DR Congo,1,0,played,Estadio Guadalajara,Guadalajara
-49,Group,B,24-Jun-26,22:00,Switzerland,Canada,,,scheduled,BC Place Vancouver,Vancouver
-50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,,,scheduled,Seattle Stadium,Seattle
-51,Group,C,25-Jun-26,1:00,Morocco,Haiti,,,scheduled,Atlanta Stadium,Atlanta
-52,Group,C,25-Jun-26,1:00,Scotland,Brazil,,,scheduled,Miami Stadium,Miami
-53,Group,A,25-Jun-26,4:00,South Africa,South Korea,,,scheduled,Estadio Monterrey,Monterrey
-54,Group,A,25-Jun-26,4:00,Czechia,Mexico,,,scheduled,Mexico City Stadium,Mexico City
+49,Group,B,24-Jun-26,22:00,Switzerland,Canada,2,1,played,BC Place Vancouver,Vancouver
+50,Group,B,24-Jun-26,22:00,Bosnia and Herzegovina,Qatar,3,1,played,Seattle Stadium,Seattle
+51,Group,C,25-Jun-26,1:00,Morocco,Haiti,4,2,played,Atlanta Stadium,Atlanta
+52,Group,C,25-Jun-26,1:00,Scotland,Brazil,0,3,played,Miami Stadium,Miami
+53,Group,A,25-Jun-26,4:00,South Africa,South Korea,1,0,played,Estadio Monterrey,Monterrey
+54,Group,A,25-Jun-26,4:00,Czechia,Mexico,0,3,played,Mexico City Stadium,Mexico City
 55,Group,E,25-Jun-26,23:00,Curacao,Ivory Coast,,,scheduled,Philadelphia Stadium,Philadelphia
 56,Group,E,25-Jun-26,23:00,Ecuador,Germany,,,scheduled,New York New Jersey Stadium,New York/New Jersey
 57,Group,F,26-Jun-26,2:00,Tunisia,Netherlands,,,scheduled,Kansas City Stadium,Kansas City
