@@ -59,12 +59,12 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 58,Group,F,26-Jun-26,2:00,Japan,Sweden,1,1,played,Dallas Stadium,Dallas
 59,Group,D,26-Jun-26,5:00,Turkey,United States,3,2,played,Los Angeles Stadium,Los Angeles
 60,Group,D,26-Jun-26,5:00,Paraguay,Australia,0,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
-61,Group,I,26-Jun-26,22:00,Norway,France,,,scheduled,Boston Stadium,Boston
-62,Group,I,26-Jun-26,22:00,Senegal,Iraq,,,scheduled,Toronto Stadium,Toronto
-63,Group,H,27-Jun-26,3:00,Cape Verde,Saudi Arabia,,,scheduled,Houston Stadium,Houston
-64,Group,H,27-Jun-26,3:00,Uruguay,Spain,,,scheduled,Estadio Guadalajara,Guadalajara
-65,Group,G,27-Jun-26,6:00,New Zealand,Belgium,,,scheduled,BC Place Vancouver,Vancouver
-66,Group,G,27-Jun-26,6:00,Egypt,Iran,,,scheduled,Seattle Stadium,Seattle
+61,Group,I,26-Jun-26,22:00,Norway,France,1,4,played,Boston Stadium,Boston
+62,Group,I,26-Jun-26,22:00,Senegal,Iraq,5,0,played,Toronto Stadium,Toronto
+63,Group,H,27-Jun-26,3:00,Cape Verde,Saudi Arabia,0,0,played,Houston Stadium,Houston
+64,Group,H,27-Jun-26,3:00,Uruguay,Spain,0,1,played,Estadio Guadalajara,Guadalajara
+65,Group,G,27-Jun-26,6:00,New Zealand,Belgium,1,5,played,BC Place Vancouver,Vancouver
+66,Group,G,27-Jun-26,6:00,Egypt,Iran,1,1,played,Seattle Stadium,Seattle
 67,Group,L,28-Jun-26,0:00,Panama,England,,,scheduled,New York New Jersey Stadium,New York/New Jersey
 68,Group,L,28-Jun-26,0:00,Croatia,Ghana,,,scheduled,Philadelphia Stadium,Philadelphia
 69,Group,K,28-Jun-26,2:30,Colombia,Portugal,,,scheduled,Miami Stadium,Miami
