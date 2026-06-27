@@ -32,11 +32,19 @@
       <article class="summary-card summary-card-accent"><div class="summary-label">Sıradaki maç</div><div id="statNextMatch" class="summary-next">-</div></article>
     </section>
 
+    <section class="content-section round32-showcase" aria-labelledby="round32Title">
+      <div class="section-heading">
+        <div><div class="eyebrow">Son 32 grubu</div><h2 id="round32Title">Eleme eşleşmeleri</h2></div>
+        <div id="round32Count" class="toolbar-count">0 maç</div>
+      </div>
+      <div id="round32Groups" class="round32-groups"></div>
+    </section>
+
     <section class="card match-center">
       <div class="section-heading"><div><div class="eyebrow">Maç merkezi</div><h2>Fikstürü keşfet</h2></div><div id="nextMatchesCount" class="toolbar-count">0 maç</div></div>
       <div class="filter-bar">
         <label class="search-field"><span class="sr-only">Takım, şehir veya stadyum ara</span><input id="matchSearch" type="search" placeholder="Takım, şehir veya stadyum ara..." autocomplete="off"></label>
-        <label class="select-field"><span class="sr-only">Turnuva aşaması</span><select id="stageFilter"><option value="all">Tüm aşamalar</option><option value="Group">Grup aşaması</option><option value="knockout">Eleme aşaması</option></select></label>
+        <label class="select-field"><span class="sr-only">Turnuva aşaması</span><select id="stageFilter"><option value="all">Tüm aşamalar</option><option value="Group">Grup aşaması</option><option value="Round of 32">Son 32</option><option value="knockout">Eleme aşaması</option></select></label>
         <label class="select-field"><span class="sr-only">Favori takım</span><select id="favoriteTeamSelect"><option value="">Favori takım seç</option></select></label>
         <div class="toolbar-left" aria-label="Tarih filtresi"><button id="filterAllBtn" class="toolbar-btn active" type="button">Tümü</button><button id="filterTodayBtn" class="toolbar-btn" type="button">Bugün</button><button id="filterTomorrowBtn" class="toolbar-btn" type="button">Yarın</button></div>
         <button id="favoriteOnlyBtn" class="toolbar-btn favorite-filter" type="button" disabled>Favorimin maçları</button>

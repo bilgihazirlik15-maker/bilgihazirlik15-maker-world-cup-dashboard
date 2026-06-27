@@ -71,10 +71,35 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 70,Group,K,28-Jun-26,2:30,DR Congo,Uzbekistan,,,scheduled,Atlanta Stadium,Atlanta
 71,Group,J,28-Jun-26,5:00,Algeria,Austria,,,scheduled,Kansas City Stadium,Kansas City
 72,Group,J,28-Jun-26,5:00,Jordan,Argentina,,,scheduled,Dallas Stadium,Dallas
-301,Round of 32,,10-Jul-26,22:00,Winner Group A,Runner-up Group B,,,scheduled,Knockout schedule pending,
-302,Round of 32,,11-Jul-26,02:00,Winner Group C,Runner-up Group D,,,scheduled,Knockout schedule pending,
-303,Round of 16,,14-Jul-26,22:00,Winner Match 301,Winner Match 302,,,scheduled,Knockout schedule pending,
-304,Quarter-final,,18-Jul-26,22:00,Team A,Team B,,,scheduled,Knockout schedule pending,
-305,Semi-final,,22-Jul-26,22:00,Team C,Team D,,,scheduled,Knockout schedule pending,
-306,Third place,,25-Jul-26,21:00,Semi-final Loser 1,Semi-final Loser 2,,,scheduled,Knockout schedule pending,
-307,Final,,26-Jul-26,22:00,Semi-final Winner 1,Semi-final Winner 2,,,scheduled,Knockout schedule pending,
+73,Round of 32,,28-Jun-26,22:00,Runner-up Group A,Runner-up Group B,,,scheduled,Los Angeles Stadium,Los Angeles
+74,Round of 32,,29-Jun-26,02:00,Winner Group E,3rd Group A/B/C/D/F,,,scheduled,Boston Stadium,Boston
+75,Round of 32,,29-Jun-26,22:00,Winner Group F,Runner-up Group C,,,scheduled,Mexico City Stadium,Mexico City
+76,Round of 32,,30-Jun-26,02:00,Winner Group C,3rd Group D/E/F/I/J,,,scheduled,Estadio Monterrey,Monterrey
+77,Round of 32,,30-Jun-26,05:00,Winner Group I,3rd Group C/D/F/G/H,,,scheduled,Houston Stadium,Houston
+78,Round of 32,,30-Jun-26,22:00,Runner-up Group E,Runner-up Group I,,,scheduled,Dallas Stadium,Dallas
+79,Round of 32,,01-Jul-26,02:00,Winner Group A,3rd Group C/E/F/H/I,,,scheduled,New York New Jersey Stadium,New York/New Jersey
+80,Round of 32,,01-Jul-26,05:00,Runner-up Group L,Runner-up Group K,,,scheduled,Atlanta Stadium,Atlanta
+81,Round of 32,,01-Jul-26,22:00,Winner Group H,Runner-up Group J,,,scheduled,Miami Stadium,Miami
+82,Round of 32,,02-Jul-26,02:00,Winner Group D,3rd Group B/E/F/I/J,,,scheduled,San Francisco Bay Area Stadium,San Francisco Bay Area
+83,Round of 32,,02-Jul-26,05:00,Winner Group G,3rd Group A/E/H/I/J,,,scheduled,Seattle Stadium,Seattle
+84,Round of 32,,02-Jul-26,22:00,Winner Group B,3rd Group E/F/G/I/J,,,scheduled,Toronto Stadium,Toronto
+85,Round of 32,,03-Jul-26,02:00,Winner Group J,Runner-up Group H,,,scheduled,BC Place Vancouver,Vancouver
+86,Round of 32,,03-Jul-26,05:00,Winner Group K,3rd Group D/E/I/J/L,,,scheduled,Dallas Stadium,Dallas
+87,Round of 32,,03-Jul-26,22:00,Winner Group L,3rd Group E/H/I/J/K,,,scheduled,Atlanta Stadium,Atlanta
+88,Round of 32,,04-Jul-26,02:00,Runner-up Group D,Runner-up Group G,,,scheduled,Kansas City Stadium,Kansas City
+89,Round of 16,,04-Jul-26,22:00,Winner Match 74,Winner Match 77,,,scheduled,Philadelphia Stadium,Philadelphia
+90,Round of 16,,05-Jul-26,02:00,Winner Match 73,Winner Match 75,,,scheduled,Houston Stadium,Houston
+91,Round of 16,,05-Jul-26,22:00,Winner Match 76,Winner Match 78,,,scheduled,New York New Jersey Stadium,New York/New Jersey
+92,Round of 16,,06-Jul-26,02:00,Winner Match 79,Winner Match 80,,,scheduled,Dallas Stadium,Dallas
+93,Round of 16,,06-Jul-26,22:00,Winner Match 83,Winner Match 84,,,scheduled,Seattle Stadium,Seattle
+94,Round of 16,,07-Jul-26,02:00,Winner Match 81,Winner Match 82,,,scheduled,Atlanta Stadium,Atlanta
+95,Round of 16,,07-Jul-26,22:00,Winner Match 86,Winner Match 88,,,scheduled,BC Place Vancouver,Vancouver
+96,Round of 16,,08-Jul-26,02:00,Winner Match 85,Winner Match 87,,,scheduled,Miami Stadium,Miami
+97,Quarter-final,,09-Jul-26,22:00,Winner Match 89,Winner Match 90,,,scheduled,Boston Stadium,Boston
+98,Quarter-final,,10-Jul-26,22:00,Winner Match 93,Winner Match 94,,,scheduled,Los Angeles Stadium,Los Angeles
+99,Quarter-final,,11-Jul-26,02:00,Winner Match 91,Winner Match 92,,,scheduled,Kansas City Stadium,Kansas City
+100,Quarter-final,,12-Jul-26,02:00,Winner Match 95,Winner Match 96,,,scheduled,Miami Stadium,Miami
+101,Semi-final,,15-Jul-26,03:00,Winner Match 97,Winner Match 98,,,scheduled,Dallas Stadium,Dallas
+102,Semi-final,,16-Jul-26,03:00,Winner Match 99,Winner Match 100,,,scheduled,Atlanta Stadium,Atlanta
+103,Third place,,18-Jul-26,23:00,Loser Match 101,Loser Match 102,,,scheduled,Miami Stadium,Miami
+104,Final,,19-Jul-26,22:00,Winner Match 101,Winner Match 102,,,scheduled,New York New Jersey Stadium,New York/New Jersey
