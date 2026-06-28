@@ -42,7 +42,7 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 41,Group,J,22-Jun-26,20:00,Argentina,Austria,2,0,played,Dallas Stadium,Dallas
 42,Group,I,23-Jun-26,0:00,France,Iraq,3,0,played,Philadelphia Stadium,Philadelphia
 43,Group,I,23-Jun-26,3:00,Norway,Senegal,3,2,played,New York New Jersey Stadium,New York/New Jersey
-44,Group,J,23-Jun-26,6:00,Jordan,Algeria,0,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
+44,Group,J,23-Jun-26,6:00,Jordan,Algeria,0,2,played,San Francisco Bay Area Stadium,San Francisco Bay Area
 45,Group,K,23-Jun-26,20:00,Portugal,Uzbekistan,5,0,played,Houston Stadium,Houston
 46,Group,L,23-Jun-26,23:00,England,Ghana,0,0,played,Boston Stadium,Boston
 47,Group,L,24-Jun-26,2:00,Panama,Croatia,0,1,played,Toronto Stadium,Toronto
@@ -71,22 +71,22 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 70,Group,K,28-Jun-26,2:30,DR Congo,Uzbekistan,3,1,played,Atlanta Stadium,Atlanta
 71,Group,J,28-Jun-26,5:00,Algeria,Austria,3,3,played,Kansas City Stadium,Kansas City
 72,Group,J,28-Jun-26,5:00,Jordan,Argentina,1,3,played,Dallas Stadium,Dallas
-73,Round of 32,,28-Jun-26,22:00,South Africa,Canada,,,scheduled,Los Angeles Stadium,Los Angeles
+73,Round of 32,,29-Jun-26,00:30,South Africa,Canada,,,scheduled,Los Angeles Stadium,Los Angeles
 74,Round of 32,,29-Jun-26,23:30,Germany,Paraguay,,,scheduled,Boston Stadium,Boston
 75,Round of 32,,30-Jun-26,04:00,Netherlands,Morocco,,,scheduled,Mexico City Stadium,Mexico City
-76,Round of 32,,30-Jun-26,20:00,Brazil,Belirsiz,,,scheduled,Estadio Monterrey,Monterrey
+76,Round of 32,,29-Jun-26,22:30,Brazil,Japan,,,scheduled,Estadio Monterrey,Monterrey
 77,Round of 32,,01-Jul-26,00:00,France,Sweden,,,scheduled,Houston Stadium,Houston
 78,Round of 32,,30-Jun-26,20:00,Ivory Coast,Norway,,,scheduled,Dallas Stadium,Dallas
-79,Round of 32,,01-Jul-26,04:00,Mexico,Belirsiz,,,scheduled,New York New Jersey Stadium,New York/New Jersey
-80,Round of 32,,01-Jul-26,19:00,Belirsiz,Belirsiz,,,scheduled,Atlanta Stadium,Atlanta
-81,Round of 32,,02-Jul-26,22:00,Spain,Belirsiz,,,scheduled,Miami Stadium,Miami
+79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,,,scheduled,New York New Jersey Stadium,New York/New Jersey
+80,Round of 32,,03-Jul-26,04:30,Portugal,Croatia,,,scheduled,Atlanta Stadium,Atlanta
+81,Round of 32,,03-Jul-26,00:30,Spain,Austria,,,scheduled,Miami Stadium,Miami
 82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,,,scheduled,San Francisco Bay Area Stadium,San Francisco Bay Area
-83,Round of 32,,01-Jul-26,23:00,Belgium,Belirsiz,,,scheduled,Seattle Stadium,Seattle
-84,Round of 32,,03-Jul-26,02:00,Switzerland,Belirsiz,,,scheduled,Toronto Stadium,Toronto
-85,Round of 32,,03-Jul-26,22:00,Belirsiz,Cape Verde,,,scheduled,BC Place Vancouver,Vancouver
-86,Round of 32,,03-Jul-26,05:00,Belirsiz,Belirsiz,,,scheduled,Dallas Stadium,Dallas
-87,Round of 32,,04-Jul-26,02:00,Belirsiz,Belirsiz,,,scheduled,Atlanta Stadium,Atlanta
-88,Round of 32,,03-Jul-26,02:00,Australia,Egypt,,,scheduled,Kansas City Stadium,Kansas City
+83,Round of 32,,02-Jul-26,01:30,Belgium,Senegal,,,scheduled,Seattle Stadium,Seattle
+84,Round of 32,,03-Jul-26,08:30,Switzerland,Algeria,,,scheduled,Toronto Stadium,Toronto
+85,Round of 32,,04-Jul-26,03:30,Argentina,Cape Verde,,,scheduled,BC Place Vancouver,Vancouver
+86,Round of 32,,04-Jul-26,07:00,Colombia,Ghana,,,scheduled,Dallas Stadium,Dallas
+87,Round of 32,,01-Jul-26,21:30,England,DR Congo,,,scheduled,Atlanta Stadium,Atlanta
+88,Round of 32,,03-Jul-26,23:30,Australia,Egypt,,,scheduled,Kansas City Stadium,Kansas City
 89,Round of 16,,04-Jul-26,22:00,Winner Match 74,Winner Match 77,,,scheduled,Philadelphia Stadium,Philadelphia
 90,Round of 16,,05-Jul-26,02:00,Winner Match 73,Winner Match 75,,,scheduled,Houston Stadium,Houston
 91,Round of 16,,05-Jul-26,22:00,Winner Match 76,Winner Match 78,,,scheduled,New York New Jersey Stadium,New York/New Jersey
