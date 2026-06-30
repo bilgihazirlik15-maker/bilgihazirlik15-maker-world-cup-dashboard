@@ -72,9 +72,9 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 71,Group,J,28-Jun-26,5:00,Algeria,Austria,3,3,played,Kansas City Stadium,Kansas City
 72,Group,J,28-Jun-26,5:00,Jordan,Argentina,1,3,played,Dallas Stadium,Dallas
 73,Round of 32,,29-Jun-26,00:30,South Africa,Canada,0,1,played,Los Angeles Stadium,Los Angeles
-74,Round of 32,,29-Jun-26,23:30,Germany,Paraguay,,,scheduled,Boston Stadium,Boston
-75,Round of 32,,30-Jun-26,04:00,Netherlands,Morocco,,,scheduled,Mexico City Stadium,Mexico City
-76,Round of 32,,29-Jun-26,22:30,Brazil,Japan,,,scheduled,Estadio Monterrey,Monterrey
+74,Round of 32,,29-Jun-26,23:30,Germany,Paraguay,3,4,played,Boston Stadium,Boston
+75,Round of 32,,30-Jun-26,04:00,Netherlands,Morocco,2,3,played,Mexico City Stadium,Mexico City
+76,Round of 32,,29-Jun-26,22:30,Brazil,Japan,2,1,played,Estadio Monterrey,Monterrey
 77,Round of 32,,01-Jul-26,00:00,France,Sweden,,,scheduled,Houston Stadium,Houston
 78,Round of 32,,30-Jun-26,20:00,Ivory Coast,Norway,,,scheduled,Dallas Stadium,Dallas
 79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,,,scheduled,New York New Jersey Stadium,New York/New Jersey
