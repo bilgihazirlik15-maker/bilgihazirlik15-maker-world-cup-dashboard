@@ -33,7 +33,7 @@
     </div>
     <div id="thirdPlaceGrid" class="third-place-grid"></div>
   `;
-  bracketSection.before(thirdSection);
+  bracketSection.after(thirdSection);
 
   const podium = document.createElement("div");
   podium.id = "podium";
