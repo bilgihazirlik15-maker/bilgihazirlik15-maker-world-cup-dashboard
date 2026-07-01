@@ -75,9 +75,9 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 74,Round of 32,,29-Jun-26,23:30,Germany,Paraguay,3,4,played,Boston Stadium,Boston
 75,Round of 32,,30-Jun-26,04:00,Netherlands,Morocco,2,3,played,Mexico City Stadium,Mexico City
 76,Round of 32,,29-Jun-26,22:30,Brazil,Japan,2,1,played,Estadio Monterrey,Monterrey
-77,Round of 32,,01-Jul-26,00:00,France,Sweden,,,scheduled,Houston Stadium,Houston
-78,Round of 32,,30-Jun-26,20:00,Ivory Coast,Norway,,,scheduled,Dallas Stadium,Dallas
-79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,,,scheduled,New York New Jersey Stadium,New York/New Jersey
+77,Round of 32,,01-Jul-26,00:00,France,Sweden,3,0,played,Houston Stadium,Houston
+78,Round of 32,,30-Jun-26,20:00,Ivory Coast,Norway,1,2,played,Dallas Stadium,Dallas
+79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,2,0,played,New York New Jersey Stadium,New York/New Jersey
 80,Round of 32,,03-Jul-26,04:30,Portugal,Croatia,,,scheduled,Atlanta Stadium,Atlanta
 81,Round of 32,,03-Jul-26,00:30,Spain,Austria,,,scheduled,Miami Stadium,Miami
 82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,,,scheduled,San Francisco Bay Area Stadium,San Francisco Bay Area
