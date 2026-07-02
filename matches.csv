@@ -80,8 +80,8 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,2,0,played,New York New Jersey Stadium,New York/New Jersey
 80,Round of 32,,03-Jul-26,04:30,Portugal,Croatia,,,scheduled,Atlanta Stadium,Atlanta
 81,Round of 32,,03-Jul-26,00:30,Spain,Austria,,,scheduled,Miami Stadium,Miami
-82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,,,scheduled,San Francisco Bay Area Stadium,San Francisco Bay Area
-83,Round of 32,,02-Jul-26,01:30,Belgium,Senegal,,,scheduled,Seattle Stadium,Seattle
+82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,2,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
+83,Round of 32,,02-Jul-26,01:30,Belgium,Senegal,3,2,played,Seattle Stadium,Seattle
 84,Round of 32,,03-Jul-26,08:30,Switzerland,Algeria,,,scheduled,Toronto Stadium,Toronto
 85,Round of 32,,04-Jul-26,03:30,Argentina,Cape Verde,,,scheduled,BC Place Vancouver,Vancouver
 86,Round of 32,,04-Jul-26,07:00,Colombia,Ghana,,,scheduled,Dallas Stadium,Dallas
