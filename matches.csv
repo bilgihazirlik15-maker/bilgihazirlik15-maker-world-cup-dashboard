@@ -78,11 +78,11 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 77,Round of 32,,01-Jul-26,00:00,France,Sweden,3,0,played,Houston Stadium,Houston
 78,Round of 32,,30-Jun-26,20:00,Ivory Coast,Norway,1,2,played,Dallas Stadium,Dallas
 79,Round of 32,,01-Jul-26,06:30,Mexico,Ecuador,2,0,played,New York New Jersey Stadium,New York/New Jersey
-80,Round of 32,,03-Jul-26,04:30,Portugal,Croatia,,,scheduled,Atlanta Stadium,Atlanta
+80,Round of 32,,03-Jul-26,04:30,Portugal,Croatia,2,1,played,Atlanta Stadium,Atlanta
 81,Round of 32,,03-Jul-26,00:30,Spain,Austria,3,0,played,Miami Stadium,Miami
 82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,2,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
 83,Round of 32,,02-Jul-26,01:30,Belgium,Senegal,3,2,played,Seattle Stadium,Seattle
-84,Round of 32,,03-Jul-26,08:30,Switzerland,Algeria,,,scheduled,Toronto Stadium,Toronto
+84,Round of 32,,03-Jul-26,08:30,Switzerland,Algeria,2,0,played,Toronto Stadium,Toronto
 85,Round of 32,,04-Jul-26,03:30,Argentina,Cape Verde,,,scheduled,BC Place Vancouver,Vancouver
 86,Round of 32,,04-Jul-26,07:00,Colombia,Ghana,,,scheduled,Dallas Stadium,Dallas
 87,Round of 32,,01-Jul-26,21:30,England,DR Congo,2,1,played,Atlanta Stadium,Atlanta
