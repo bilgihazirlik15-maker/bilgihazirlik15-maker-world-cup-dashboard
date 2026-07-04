@@ -83,8 +83,8 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 82,Round of 32,,02-Jul-26,03:00,United States,Bosnia and Herzegovina,2,0,played,San Francisco Bay Area Stadium,San Francisco Bay Area
 83,Round of 32,,02-Jul-26,01:30,Belgium,Senegal,3,2,played,Seattle Stadium,Seattle
 84,Round of 32,,03-Jul-26,08:30,Switzerland,Algeria,2,0,played,Toronto Stadium,Toronto
-85,Round of 32,,04-Jul-26,03:30,Argentina,Cape Verde,,,scheduled,BC Place Vancouver,Vancouver
-86,Round of 32,,04-Jul-26,07:00,Colombia,Ghana,,,scheduled,Dallas Stadium,Dallas
+85,Round of 32,,04-Jul-26,03:30,Argentina,Cape Verde,3,2,played,BC Place Vancouver,Vancouver
+86,Round of 32,,04-Jul-26,07:00,Colombia,Ghana,1,0,played,Dallas Stadium,Dallas
 87,Round of 32,,01-Jul-26,21:30,England,DR Congo,2,1,played,Atlanta Stadium,Atlanta
 88,Round of 32,,03-Jul-26,23:30,Australia,Egypt,2,4,played,Kansas City Stadium,Kansas City
 89,Round of 16,,04-Jul-26,22:00,Winner Match 74,Winner Match 77,,,scheduled,Philadelphia Stadium,Philadelphia
