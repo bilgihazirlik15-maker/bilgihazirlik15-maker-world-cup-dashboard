@@ -165,5 +165,6 @@
     const resolved = resolveParticipants(matches);
     baseRenderBracket(resolved);
     renderPodium(resolved);
+    celebrateFinalWinner(resolved);
   };
 })();
