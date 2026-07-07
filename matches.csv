@@ -91,8 +91,8 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 90,Round of 16,,05-Jul-26,02:00,Winner Match 73,Winner Match 75,0,3,played,Houston Stadium,Houston
 91,Round of 16,,05-Jul-26,22:00,Winner Match 76,Winner Match 78,1,2,played,New York New Jersey Stadium,New York/New Jersey
 92,Round of 16,,06-Jul-26,02:00,Winner Match 79,Winner Match 87,2,3,played,Dallas Stadium,Dallas
-93,Round of 16,,06-Jul-26,22:00,Winner Match 80,Winner Match 81,,,scheduled,Seattle Stadium,Seattle
-94,Round of 16,,07-Jul-26,02:00,Winner Match 82,Winner Match 83,,,scheduled,Atlanta Stadium,Atlanta
+93,Round of 16,,06-Jul-26,22:00,Winner Match 80,Winner Match 81,0,1,played,Seattle Stadium,Seattle
+94,Round of 16,,07-Jul-26,02:00,Winner Match 82,Winner Match 83,1,4,played,Atlanta Stadium,Atlanta
 95,Round of 16,,07-Jul-26,22:00,Winner Match 85,Winner Match 88,,,scheduled,BC Place Vancouver,Vancouver
 96,Round of 16,,08-Jul-26,02:00,Winner Match 84,Winner Match 86,,,scheduled,Miami Stadium,Miami
 97,Quarter-final,,09-Jul-26,22:00,Winner Match 89,Winner Match 90,,,scheduled,Boston Stadium,Boston
