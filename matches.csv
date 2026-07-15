@@ -100,6 +100,6 @@ match_id,stage,group_name,match_date,match_time,home_team,away_team,home_score,a
 99,Quarter-final,,11-Jul-26,02:00,Winner Match 91,Winner Match 92,1,2,played,Kansas City Stadium,Kansas City
 100,Quarter-final,,12-Jul-26,02:00,Winner Match 95,Winner Match 96,3,1,played,Miami Stadium,Miami
 101,Semi-final,,15-Jul-26,03:00,Winner Match 97,Winner Match 98,0,2,played,Dallas Stadium,Dallas
-102,Semi-final,,16-Jul-26,03:00,Winner Match 99,Winner Match 100,,,scheduled,Atlanta Stadium,Atlanta
+102,Semi-final,,16-Jul-26,03:00,Winner Match 99,Winner Match 100,1,2,played,Atlanta Stadium,Atlanta
 103,Third place,,18-Jul-26,23:00,Loser Match 101,Loser Match 102,,,scheduled,Miami Stadium,Miami
 104,Final,,19-Jul-26,22:00,Winner Match 101,Winner Match 102,,,scheduled,New York New Jersey Stadium,New York/New Jersey
